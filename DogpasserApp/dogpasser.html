@@ -3,7 +3,48 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <link rel="stylesheet" href="dogpasser.css" />
+
+    <title>DogpasserApp</title>
   </head>
-  <body></body>
+
+  <body>
+    <form id="breed-filter">
+      <label>
+        <input type="checkbox" name="breed" value="labrador" />
+        Labrador Retriever
+      </label>
+      <label>
+        <input type="checkbox" name="breed" value="germanshepherd" />
+        German Shepherd
+      </label>
+      <label>
+        <input type="checkbox" name="breed" value="goldenretriever" />
+        Golden Retriever
+      </label>
+      <label>
+        <input type="checkbox" name="breed" value="beagle" />
+        Beagle
+      </label>
+      <label>
+        <input type="checkbox" name="breed" value="bulldog" />
+        Bulldog
+      </label>
+
+      <button type="button" onclick="filterDogBreeds()">Filtrer</button>
+    </form>
+
+    <input type="button" value="Vis 10 nye kort" id="show-cards-btn" />
+
+    <div class="profile-card">
+      <div class="dog-img"></div>
+      <div class="name"></div>
+      <div class="location"></div>
+      <div class="user-img"></div>
+      <div class="delete-button"></div>
+      <div class="chat-button"></div>
+    </div>
+
+    <script src="dogpasser.js"></script>
+  </body>
 </html>
