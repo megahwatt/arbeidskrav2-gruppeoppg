@@ -4,6 +4,8 @@ html {
 	height: 100;
 	padding: 0;
 	margin: 0;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 24px;
 }
 
 .card-container {
@@ -16,7 +18,7 @@ html {
 .profile-card {
 	width: 250px;
 	height: 300px;
-	background-color: #3a3537;
+	background-color: antiquewhite;
 	margin: 15px;
 }
 
@@ -25,14 +27,19 @@ html {
 	padding: 5px;
 	width: 100%;
 	height: 150px;
-	background-color: antiquewhite;
+	background-color: #3a3537;
 }
 
 .random-user {
+	box-sizing: border-box;
+	font-size: 12px;
+	margin: auto auto auto 5px;
 }
 
-.delete-button {
-}
-
-.chat-button {
+#delete-btn,
+#chat-btn {
+	box-sizing: border-box;
+	width: 25px;
+	height: 25px;
+	margin: auto;
 }
