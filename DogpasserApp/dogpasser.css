@@ -25,9 +25,9 @@ html {
 #random-dog-img {
 	box-sizing: border-box;
 	padding: 5px;
-	width: 100%;
 	height: 150px;
 	background-color: #3a3537;
+	overflow: hidden;
 }
 
 .random-user {
