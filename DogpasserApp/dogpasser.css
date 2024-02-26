@@ -14,23 +14,21 @@ html {
 }
 
 .profile-card {
-	box-sizing: border-box;
 	width: 250px;
 	height: 300px;
-	background-color: black;
+	background-color: #3a3537;
 	margin: 15px;
 }
 
-.dog-img {
+#random-dog-img {
+	box-sizing: border-box;
+	padding: 5px;
+	width: 100%;
+	height: 150px;
+	background-color: antiquewhite;
 }
 
-.name {
-}
-
-.location {
-}
-
-.user-img {
+.random-user {
 }
 
 .delete-button {
