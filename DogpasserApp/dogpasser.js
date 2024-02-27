@@ -1,5 +1,5 @@
 // Globale variabler
-const showCardsBtn = document.querySelector("#show-cards-btn").addEventListener("click", fetchAndDisplayRandomUser());
+const showCardsBtn = document.getElementById("show-cards-btn").addEventListener("click", fetchAndDisplayRandomUser);
 
 const cardContainer = document.querySelector(".card-container");
 
@@ -27,10 +27,8 @@ async function fetchAndDisplayRandomUser() {
 			const cardContainer = createCardContainer();
 
 			// dog
-			const dogBreeds = ["labrador", "germanshepherd", "goldenretriever", "beagle", "akita"];
-			const randomDogBreed = dogBreeds[Math.floor(Math.random() * dogBreeds.length)];
-
-			const dogRequest = await fetch(`https://dog.ceo/api/breed/${randomDogBreed}/images/random`);
+			const dogRequest = await fetch("https://dog.ceo/api/breed/spaniel/list"); //henta inn en rase som allerede har fem sub-kategorier, da jeg ikke fikk filteret til å virke
+			//27. feb 18:11 må løpe men kan se mer på det senere!!
 			const dogResult = await dogRequest.json();
 
 			const randomDogImg = document.createElement("img");
@@ -55,9 +53,9 @@ async function fetchAndDisplayRandomUser() {
 			randomUser.className = "random-user";
 
 			randomUser.innerHTML = `
-                <img src="${chosenUser.picture.thumbnail}">
-                <p>Navn: ${chosenUser.name.first}</p>
-                <p>Bosted: ${chosenUser.location.city}, ${chosenUser.location.state}</p>`;
+				<img src="${chosenUser[i].thumbnail}">
+				<p>Navn: ${chosenUser[i].name}</p>
+				<p>Bosted: ${chosenUser[i].location.city}, ${chosenUser[i].location.state}</p>`;
 
 			cardContainer.querySelector(".profile-card").appendChild(randomUser);
 
