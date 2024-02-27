@@ -1,26 +1,58 @@
-async function fetchAndDisplayRandomUser() {
-	try {
-		const request = await fetch("https://randomuser.me/api/?results=10&nat=us&inc=name,location,picture");
-		const { results } = await request.json();
+// Globale variabler
+const showCardsBtn = document.querySelector("#show-cards-btn").addEventListener("click", createAndShowCards());
 
-		const user = results.map(({ name, location, picture }) => ({
-			name: name.first,
-			location: { city: location.city, state: location.state },
-			thumbnail: picture.thumbnail,
-		}));
+const cardContainer = document.querySelector(".card-container");
+
+/*
+fetchAndDisplayRandomUser
+
+Fyller kortene fra createCardContainer
+med informasjon innhentet fra APIene.
+Den første delen innhenter 10 unike brukere,
+og legger disse i en DIV.
+Den andre delen innhenter et tilfeldig hundebilde,
+basert på et filter av fem raser som vi har definert først i funksjonen.
+Bildet blir lagt i en DIV,
+og begge de nye elementene blir dytta inn i DOM.
+Loopen sørger for at vi får 10 nye HTML-elementer
+hver gang vi fornyer siden.
+Ved å legge bruker- og hunde-APIene inne i en
+FOR-loop garanterer vi at hver bruker-profil er unik,
+i stedet for at vi får 10 kopier av samme kort.
+*/
+
+async function fetchAndDisplayRandomUser() {
+	const dogBreeds = ["labrador", "germanshepherd", "goldenretriever", "beagle", "akita"];
+
+	try {
+		const userRequest = await fetch("https://randomuser.me/api/?results=10&nat=us&inc=name,location,picture");
+		const { userResults } = await userRequest.json();
 
 		for (let i = 0; i < 10; i++) {
 			const cardContainer = createCardContainer();
 
-			const chosenUser = user[Math.floor(Math.random() * user.length)];
+			// dog
+			const randomDogBreed = dogBreeds[Math.floor(Math.random() * dogBreeds.length)];
+
+			const dogRequest = await fetch(`https://dog.ceo/api/breed/${randomDogBreed}/images/random`);
+			const dogResult = await dogRequest.json();
+
+			const randomDogImg = document.createElement("img");
+			randomDogImg.id = "random-dog-img";
+			randomDogImg.src = dogResult.message;
+
+			cardContainer.querySelector(".profile-card").appendChild(randomDogImg);
+
+			// human
+			const chosenUser = userResults[Math.floor(Math.random() * userResults.length)];
 
 			const randomUser = document.createElement("div");
 			randomUser.className = "random-user";
 
 			randomUser.innerHTML = `
-            <img src="${chosenUser.thumbnail}">
-            <p>Navn: ${chosenUser.name}</p>
-            <p>Bosted: ${chosenUser.location.city}, ${chosenUser.location.state}</p>`;
+                <img src="${chosenUser.picture.thumbnail}">
+                <p>Navn: ${chosenUser.name.first}</p>
+                <p>Bosted: ${chosenUser.location.city}, ${chosenUser.location.state}</p>`;
 
 			cardContainer.querySelector(".profile-card").appendChild(randomUser);
 
@@ -37,12 +69,6 @@ async function fetchAndDisplayRandomUser() {
 		const profileCard = document.createElement("div");
 		profileCard.className = "profile-card";
 
-		const randomDogImg = document.createElement("img");
-		randomDogImg.id = "random-dog-img";
-
-		const randomUser = document.createElement("div");
-		randomUser.className = "random-user";
-
 		const deleteBtn = document.createElement("img");
 		deleteBtn.src = "assets/delete.png";
 		deleteBtn.id = "delete-btn";
@@ -51,8 +77,6 @@ async function fetchAndDisplayRandomUser() {
 		chatBtn.src = "assets/chat.png";
 		chatBtn.id = "chat-btn";
 
-		profileCard.appendChild(randomDogImg);
-		profileCard.appendChild(randomUser);
 		profileCard.appendChild(deleteBtn);
 		profileCard.appendChild(chatBtn);
 
@@ -63,79 +87,3 @@ async function fetchAndDisplayRandomUser() {
 }
 
 fetchAndDisplayRandomUser();
-
-/* CAMILLA'S ORG KODE
- const showCardsBtn = document.querySelector("#show-cards-btn").addEventListener("click", createAndShowCards());
-
-// Globale variabler
-const cardContainer = document.querySelector(".card-container");
-*/
-
-/*
-// showCardsBtn --- Vis 10 nye kort --- ikke ferdig
-const showCardsBtn = document.querySelector("#show-cards-btn").addEventListener("click", showCards);
-
-function showCards() {
-	console.log("Inne i showCards!");
-}
-
-// fetchAndDisplayRandomUser --- henter inn brukere fra API og viser dem i nederste delen av kortet
-async function fetchAndDisplayRandomUser() {
-	try {
-		const request = await fetch("https://randomuser.me/api/?results=500&nat=us&inc=name,location,picture");
-		const { results } = await request.json();
-
-		const users = results.map(({ name, location, picture }) => ({
-			name: name.first,
-			location: { city: location.city, state: location.state },
-			thumbnail: picture.thumbnail,
-		}));
-
-		const chosenUser = users[Math.floor(Math.random() * users.length)];
-		const randomUser = document.querySelector(".random-user");
-		randomUser.innerHTML = `
-        <img src="${chosenUser.thumbnail}">
-        <p>Navn: ${chosenUser.name}</p>
-        <p>Bosted: ${chosenUser.location.city}, ${chosenUser.location.state}</p>`;
-	} catch (error) {
-		console.log("404", error);
-	}
-}
-
-fetchAndDisplayRandomUser();
-
-
---hundebilder--
-
-// fetchRandomDogImg --- henter inn et tilfeldig bilde fra API og viser den i øverste delen av kortet
-async function fetchRandomDogImg() {
-	try {
-		const request = await fetch("https://dog.ceo/api/breeds/image/random");
-		const dogImg = await request.json();
-
-		document.getElementById("random-dog-img").src = dogImg.message;
-	} catch (error) {
-		console.log("404", error);
-	}
-}
-
-fetchRandomDogImg();
-
-CAMILLA'S ORG KODE
-//fetch ETT tilfeldig hundebilde, men kun ut ifra 5 valgte raser
-
-const dogBreeds = ["labrador", "germanshepherd", "goldenretriever", "beagle", "bulldog"];
-
-async function fetchRandomDogImg() {
-	try {
-		let randomDogBreed = dogBreeds[Math.floor(Math.random() * dogBreeds.length)];
-		const request = await fetch(`https://dog.ceo/api/breed/${randomDogBreed}/images/random`);
-		const response = await request.json();
-		let randomDogImg = response.message;
-
-		return randomDogImg;
-	} catch (error) {
-		console.error("Kunne ikke hente hundebilde", error);
-	}
-}
-  */
