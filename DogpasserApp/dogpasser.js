@@ -1,56 +1,78 @@
-//fetch EN random user med bilde, navn og lokasjon. Vurdere om vi heller bør hente 10 stk samtidig her?
-
-async function fetchRandomUser() {
+async function fetchAndDisplayRandomUser() {
 	try {
-		const request = await fetch("https://randomuser.me/api/?nat=us&inc=picture,name,location");
-		let { results } = await request.json();
-		return results;
+		const request = await fetch("https://randomuser.me/api/?results=10&nat=us&inc=name,location,picture");
+		const { results } = await request.json();
+
+		const user = results.map(({ name, location, picture }) => ({
+			name: name.first,
+			location: { city: location.city, state: location.state },
+			thumbnail: picture.thumbnail,
+		}));
+
+		for (let i = 0; i < 10; i++) {
+			const cardContainer = createCardContainer();
+
+			const chosenUser = user[Math.floor(Math.random() * user.length)];
+
+			const randomUser = document.createElement("div");
+			randomUser.className = "random-user";
+
+			randomUser.innerHTML = `
+            <img src="${chosenUser.thumbnail}">
+            <p>Navn: ${chosenUser.name}</p>
+            <p>Bosted: ${chosenUser.location.city}, ${chosenUser.location.state}</p>`;
+
+			cardContainer.querySelector(".profile-card").appendChild(randomUser);
+
+			document.body.appendChild(cardContainer);
+		}
 	} catch (error) {
-		console.error("Kunne ikke hente users", error);
+		console.log("404", error);
+	}
+
+	function createCardContainer() {
+		const cardContainer = document.createElement("div");
+		cardContainer.className = "card-container";
+
+		const profileCard = document.createElement("div");
+		profileCard.className = "profile-card";
+
+		const randomDogImg = document.createElement("img");
+		randomDogImg.id = "random-dog-img";
+
+		const randomUser = document.createElement("div");
+		randomUser.className = "random-user";
+
+		const deleteBtn = document.createElement("img");
+		deleteBtn.src = "assets/delete.png";
+		deleteBtn.id = "delete-btn";
+
+		const chatBtn = document.createElement("img");
+		chatBtn.src = "assets/chat.png";
+		chatBtn.id = "chat-btn";
+
+		profileCard.appendChild(randomDogImg);
+		profileCard.appendChild(randomUser);
+		profileCard.appendChild(deleteBtn);
+		profileCard.appendChild(chatBtn);
+
+		cardContainer.appendChild(profileCard);
+
+		return cardContainer;
 	}
 }
 
-//fetch ETT tilfeldig hundebilde, men kun ut ifra 5 valgte raser
+fetchAndDisplayRandomUser();
 
-const dogBreeds = ["havanese", "dingo", "pitbull", "akita", "eskimo"];
-
-async function fetchRandomDogImg() {
-	try {
-		let randomDogBreed = dogBreeds[Math.floor(Math.random() * dogBreeds.length)];
-		const request = await fetch(`https://dog.ceo/api/breed/${randomDogBreed}/images/random`);
-		const response = await request.json();
-		let randomDogImg = response.message;
-
-		return randomDogImg;
-	} catch (error) {
-		console.error("Kunne ikke hente hundebilde", error);
-	}
-}
+/* CAMILLA'S ORG KODE
+ const showCardsBtn = document.querySelector("#show-cards-btn").addEventListener("click", createAndShowCards());
 
 // Globale variabler
-const cardContainer = document.querySelector("#card-container");
-
-//Lage og vise kort på siden. Her har jeg appendet alt inn i profile-card, så det må vi endre på slik at de appender til hver sin div, slik det er delt inn i HTML-koden.
-async function createAndShowCards() {
-	cardContainer.innerHTML = "";
-
-	for (let i = 0; i < 10; i++) {
-		let dogImgUrl = await fetchRandomDogImg();
-		let user = await fetchRandomUser();
-
-		let profileCard = document.createElement("div");
-		profileCard.innerHTML = `<img src="${dogImgUrl}" width="200px"/>
-    <img src="${user[0].picture.large}" width="100px"/>
-      <p>Navn: ${user[0].name.first + user[0].name.last}</p>
-      <p>Bosted: ${user[0].location.city}</p>`;
-		profileCard.classList.add("profile-card");
-		cardContainer.append(profileCard); //denne må endres til
-	}
-}
-const showCardsBtn = document.querySelector("#show-cards-btn").addEventListener("click", createAndShowCards());
+const cardContainer = document.querySelector(".card-container");
+*/
 
 /*
- // showCardsBtn --- Vis 10 nye kort --- ikke ferdig
+// showCardsBtn --- Vis 10 nye kort --- ikke ferdig
 const showCardsBtn = document.querySelector("#show-cards-btn").addEventListener("click", showCards);
 
 function showCards() {
@@ -82,6 +104,9 @@ async function fetchAndDisplayRandomUser() {
 
 fetchAndDisplayRandomUser();
 
+
+--hundebilder--
+
 // fetchRandomDogImg --- henter inn et tilfeldig bilde fra API og viser den i øverste delen av kortet
 async function fetchRandomDogImg() {
 	try {
@@ -95,4 +120,22 @@ async function fetchRandomDogImg() {
 }
 
 fetchRandomDogImg();
+
+CAMILLA'S ORG KODE
+//fetch ETT tilfeldig hundebilde, men kun ut ifra 5 valgte raser
+
+const dogBreeds = ["labrador", "germanshepherd", "goldenretriever", "beagle", "bulldog"];
+
+async function fetchRandomDogImg() {
+	try {
+		let randomDogBreed = dogBreeds[Math.floor(Math.random() * dogBreeds.length)];
+		const request = await fetch(`https://dog.ceo/api/breed/${randomDogBreed}/images/random`);
+		const response = await request.json();
+		let randomDogImg = response.message;
+
+		return randomDogImg;
+	} catch (error) {
+		console.error("Kunne ikke hente hundebilde", error);
+	}
+}
   */
