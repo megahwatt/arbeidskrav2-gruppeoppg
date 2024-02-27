@@ -1,14 +1,12 @@
-//fetch EN random user med bilde, navn og lokasjon
+//fetch EN random user med bilde, navn og lokasjon. Vurdere om vi heller bør hente 10 stk samtidig her?
 
 async function fetchRandomUser() {
   try {
     const request = await fetch(
-      "https://randomuser.me/api/?inc=picture,name,location"
+      "https://randomuser.me/api/?nat=us&inc=picture,name,location"
     );
-    const response = await request.json();
-    let randomUser = response.results;
-
-    return randomUser;
+    let { results } = await request.json();
+    return results;
   } catch (error) {
     console.error("Kunne ikke hente users", error);
   }
@@ -36,11 +34,8 @@ async function fetchRandomDogImg() {
 
 // Globale variabler
 const cardContainer = document.querySelector("#card-container");
-const showCardsBtn = document
-  .querySelector("#show-cards-btn")
-  .addEventListener("click", createAndShowCards());
 
-//Lage og vise kort på siden
+//Lage og vise kort på siden. Her har jeg appendet alt inn i profile-card, så det må vi endre på slik at de appender til hver sin div, slik det er delt inn i HTML-koden.
 async function createAndShowCards() {
   cardContainer.innerHTML = "";
 
@@ -51,9 +46,12 @@ async function createAndShowCards() {
     let profileCard = document.createElement("div");
     profileCard.innerHTML = `<img src="${dogImgUrl}" width="200px"/>
     <img src="${user[0].picture.large}" width="100px"/>
-      <p>Navn: ${(user[0].name.first, user[0].name.last)}</p>
+      <p>Navn: ${user[0].name.first + user[0].name.last}</p>
       <p>Bosted: ${user[0].location.city}</p>`;
     profileCard.classList.add("profile-card");
-    cardContainer.append(profileCard);
+    cardContainer.append(profileCard); //denne må endres til
   }
 }
+const showCardsBtn = document
+  .querySelector("#show-cards-btn")
+  .addEventListener("click", createAndShowCards());
