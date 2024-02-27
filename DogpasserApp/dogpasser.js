@@ -1,5 +1,5 @@
 // Globale variabler
-const showCardsBtn = document.querySelector("#show-cards-btn").addEventListener("click", createAndShowCards());
+const showCardsBtn = document.querySelector("#show-cards-btn").addEventListener("click", fetchAndDisplayRandomUser());
 
 const cardContainer = document.querySelector(".card-container");
 
@@ -22,16 +22,12 @@ i stedet for at vi får 10 kopier av samme kort.
 */
 
 async function fetchAndDisplayRandomUser() {
-	const dogBreeds = ["labrador", "germanshepherd", "goldenretriever", "beagle", "akita"];
-
 	try {
-		const userRequest = await fetch("https://randomuser.me/api/?results=10&nat=us&inc=name,location,picture");
-		const { userResults } = await userRequest.json();
-
 		for (let i = 0; i < 10; i++) {
 			const cardContainer = createCardContainer();
 
 			// dog
+			const dogBreeds = ["labrador", "germanshepherd", "goldenretriever", "beagle", "akita"];
 			const randomDogBreed = dogBreeds[Math.floor(Math.random() * dogBreeds.length)];
 
 			const dogRequest = await fetch(`https://dog.ceo/api/breed/${randomDogBreed}/images/random`);
@@ -44,7 +40,16 @@ async function fetchAndDisplayRandomUser() {
 			cardContainer.querySelector(".profile-card").appendChild(randomDogImg);
 
 			// human
-			const chosenUser = userResults[Math.floor(Math.random() * userResults.length)];
+			const userRequest = await fetch("https://randomuser.me/api/?results=10&nat=us&inc=name,location,picture");
+			const { userResults } = await userRequest.json();
+
+			//const chosenUser = userResults;
+
+			const chosenUser = userResults.map(({ name, location, picture }) => ({
+				name: name.first,
+				location: { city: location.city, state: location.state },
+				thumbnail: picture.thumbnail,
+			}));
 
 			const randomUser = document.createElement("div");
 			randomUser.className = "random-user";
@@ -85,5 +90,3 @@ async function fetchAndDisplayRandomUser() {
 		return cardContainer;
 	}
 }
-
-fetchAndDisplayRandomUser();
