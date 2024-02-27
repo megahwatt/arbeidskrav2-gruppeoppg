@@ -30,7 +30,7 @@ async function fetchAndDisplayRandomUser() {
 
 fetchAndDisplayRandomUser();
 
-// fetchRandomDogImg --- henter inn et tilfeldig bilde fra API og viser den i øverste delen av kortet
+// fetchRandomDogImg --- henter inn et tilfeldig bilde fra API og viser den i øverste delen av k ortet
 async function fetchRandomDogImg() {
 	try {
 		const request = await fetch("https://dog.ceo/api/breeds/image/random");
