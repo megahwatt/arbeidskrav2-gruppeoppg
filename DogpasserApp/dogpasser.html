@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
+  <head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="dogpasser.css" />
@@ -8,42 +8,56 @@
 		<title>DogpasserApp</title>
 	</head>
 
-	<body>
-		<form id="breed-filter">
+  <body>
+    <h1>Hundepasser App</h1>
+    <form id="breed-filter">
 			<label>
 				<input type="checkbox" name="breed" value="labrador" />
-				Labrador Retriever
+				Labrador
 			</label>
 			<label>
 				<input type="checkbox" name="breed" value="germanshepherd" />
-				German Shepherd
+				Schäfer
 			</label>
 			<label>
-				<input type="checkbox" name="breed" value="goldenretriever" />
-				Golden Retriever
+				<input type="checkbox" name="breed" value="husky" />
+				Husky
 			</label>
 			<label>
 				<input type="checkbox" name="breed" value="beagle" />
 				Beagle
 			</label>
 			<label>
-				<input type="checkbox" name="breed" value="bulldog" />
-				Bulldog
+				<input type="checkbox" name="breed" value="akita" />
+				Akita
 			</label>
 
 			<input type="button" value="Filtrer" id="filter-btn" />
 		</form>
 
-		<input type="button" value="Vis 10 nye kort" id="show-cards-btn" />
+    <input type="button" value="Vis 10 nye kort" id="show-cards-btn" />
 
-		<div class="card-container">
-			<div class="profile-card">
-				<img id="random-dog-img" />
-				<div class="random-user"></div>
-				<img src="assets/delete.png" alt="Slett" id="delete-btn" />
-				<img src="assets/chat.png" alt="Chat med denne brukeren" id="chat-btn" />
-			</div>
-		</div>
-		<script src="dogpasser.js"></script>
-	</body>
+    <div class="card-container"></div>
+
+    <!--  Oppsettet som brukes i JS-koden når den oppretter cards:
+        
+
+        <div class="profile-card">
+
+        <div class="dog-img-container"></div>
+
+        <div class="user-container">
+          <div class="user-img-container"></div>
+          <div class="user-txt"></div>
+
+          <div class="btn-container">
+            <button class="delete-btn"></button>
+            <button class="chat-btn"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+ -->
+    <script src="dogpasser.js"></script>
+  </body>
 </html>
