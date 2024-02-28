@@ -1,7 +1,9 @@
 // Globale variabler
+/*
 const showCardsBtn = document.getElementById("show-cards-btn").addEventListener("click", fetchAndDisplayRandomUser);
 
 const cardContainer = document.querySelector(".card-container");
+*/
 
 // kopier og lag nye card containers --- må fikses, ikke ferdig
 function createCardContainer() {
