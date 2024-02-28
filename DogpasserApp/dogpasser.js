@@ -19,6 +19,14 @@ async function fetchRandomUser() {
   }
 }
 
+async function pageLoad() {
+  await fetchRandomDogImg();
+  await fetchRandomUser();
+  await createAndShowCards();
+}
+
+pageLoad();
+
 //fetch ett tilfeldig hundebilde, men kun ut ifra 5 valgte raser
 const dogBreeds = ["havanese", "dingo", "pitbull", "akita", "eskimo"];
 
@@ -52,7 +60,7 @@ async function createAndShowCards() {
     const profileCard = document.createElement("div");
     const dogImgContainer = document.createElement("div");
     const userContainer = document.createElement("div");
-    const userImg = document.createElement("div");
+    const userImgContainer = document.createElement("div");
     const userTxt = document.createElement("div");
     const btnContainer = document.createElement("div");
     const deleteBtn = document.createElement("button");
@@ -62,7 +70,7 @@ async function createAndShowCards() {
     profileCard.classList.add("profile-card");
     dogImgContainer.classList.add("dog-img-container");
     userContainer.classList.add("user-container");
-    userImg.classList.add("user-img");
+    userImgContainer.classList.add("user-img-container");
     userTxt.classList.add("user-txt");
     btnContainer.classList.add("btn-container");
     deleteBtn.classList.add("delete-btn");
@@ -70,7 +78,7 @@ async function createAndShowCards() {
 
     //legger til innhold i elementene på kortet
     dogImgContainer.innerHTML = `<img src="${dogImgUrl}" id="dog-img">`;
-    userImg.innerHTML = `<img src="${user.picture.large}" />`;
+    userImgContainer.innerHTML = `<img src="${user.picture.large}" class="user-img-container" />`;
     userTxt.innerHTML = `<p>Navn: ${user.name.first} ${user.name.last}</p>      <p>Bosted: ${user.location.city}</p>`;
     deleteBtn.innerHTML = "Slett";
     chatBtn.innerHTML = "Chat";
@@ -78,7 +86,7 @@ async function createAndShowCards() {
     //appender alt
     cardContainer.append(profileCard);
     profileCard.append(dogImgContainer, userContainer, btnContainer);
-    userContainer.append(userImg, userTxt);
+    userContainer.append(userImgContainer, userTxt);
     btnContainer.append(chatBtn, deleteBtn);
   }
 }

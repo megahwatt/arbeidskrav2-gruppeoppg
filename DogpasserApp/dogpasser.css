@@ -7,6 +7,10 @@ html {
   font-family: "Courier New", Courier, monospace;
 }
 
+h1 {
+  text-align: center;
+}
+
 .card-container {
   display: flex;
   flex-flow: row wrap;
@@ -16,12 +20,12 @@ html {
 .profile-card {
   width: 300px;
   height: 400px;
-  background-color: lightblue;
+  background-color: lightgray;
   margin: 15px;
   display: flex;
   justify-content: space-around;
   flex-direction: column;
-  border: solid purple;
+  gap: 10px;
 }
 
 .dog-img-container {
@@ -38,21 +42,18 @@ html {
 }
 
 .user-container {
-  border: solid red;
   flex: 40;
   display: flex;
-  flex-flow: row wrap;
 }
 
-.user-img {
-  border: solid green;
+.user-img-container {
   width: 100px;
   height: 100px;
   object-fit: cover;
+  overflow: hidden;
 }
 
 .user-txt {
-  border: solid blue;
 }
 
 .button-container {
@@ -68,10 +69,3 @@ html {
   height: 50px;
   margin: auto;
 }
-
-/*
-.random-user {
-  box-sizing: border-box;
-  font-size: 12px;
-  margin: auto auto auto 5px;
-} */
