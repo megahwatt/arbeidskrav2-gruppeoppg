@@ -79,7 +79,7 @@ async function createAndShowCards() {
     //legger til innhold i elementene på kortet
     dogImgContainer.innerHTML = `<img src="${dogImgUrl}" id="dog-img">`;
     userImgContainer.innerHTML = `<img src="${user.picture.large}" class="user-img-container" />`;
-    userTxt.innerHTML = `<p>Navn: ${user.name.first} ${user.name.last}</p>      <p>Bosted: ${user.location.city}</p>`;
+    userTxt.innerHTML = `<p>${user.name.first} ${user.name.last}, </p> <p>${user.location.city}</p>`;
     deleteBtn.innerHTML = "Slett";
     chatBtn.innerHTML = "Chat";
 
