@@ -1,7 +1,7 @@
 // Globale variabler
 const cardContainer = document.querySelector(".card-container");
 const showCardsBtn = document.querySelector("#show-cards-btn");
-showCardsBtn.onclick = createAndShowCards;
+showCardsBtn.onclick = showCards;
 
 //fetch en random user med bilde, navn og lokasjon
 async function fetchRandomUser() {
@@ -11,21 +11,13 @@ async function fetchRandomUser() {
     );
     const data = await request.json();
     const user = data.results[0];
-    console.log("Inne i fetchRandomUser", user);
+    console.log("Hentet en user");
 
     return user;
   } catch (error) {
     console.error("Kunne ikke hente users", error);
   }
 }
-
-async function pageLoad() {
-  await fetchRandomDogImg();
-  await fetchRandomUser();
-  await createAndShowCards();
-}
-
-pageLoad();
 
 //fetch ett tilfeldig hundebilde, men kun ut ifra 5 valgte raser
 const dogBreeds = ["havanese", "dingo", "pitbull", "akita", "eskimo"];
@@ -39,22 +31,27 @@ async function fetchRandomDogImg() {
     );
     const response = await request.json();
     let randomDogImg = response.message;
-
+    console.log("Hentet en hund");
     return randomDogImg;
   } catch (error) {
     console.error("Kunne ikke hente hundebilde", error);
   }
 }
 
-//Lage og vise kort på siden.
-//Denne funksjonen må deles opp i mindre ansvarsområder, men da må vi nok inn med parametere, hufff.
-async function createAndShowCards() {
-  cardContainer.innerHTML = "";
+// Viser kort når siden lastes
 
+showCards();
+
+//Lage kort
+
+async function createCard() {
   for (let i = 0; i < 10; i++) {
-    //henter inn user og dog
-    const dogImgUrl = await fetchRandomDogImg();
-    const user = await fetchRandomUser();
+    //Henter inn user og hundebilde
+    //Bruker Promise.all for at innlastingen av kortene skal gå bittelitt raksere
+    const [dogImgUrl, user] = await Promise.all([
+      fetchRandomDogImg(),
+      fetchRandomUser(),
+    ]);
 
     //lager selve kortet
     const profileCard = document.createElement("div");
@@ -83,10 +80,22 @@ async function createAndShowCards() {
     deleteBtn.innerHTML = "Slett";
     chatBtn.innerHTML = "Chat";
 
-    //appender alt
-    cardContainer.append(profileCard);
+    //appender alt til profileCard
     profileCard.append(dogImgContainer, userContainer, btnContainer);
     userContainer.append(userImgContainer, userTxt);
     btnContainer.append(chatBtn, deleteBtn);
+
+    return profileCard;
+  }
+}
+
+// Viser kortene på siden
+
+async function showCards() {
+  cardContainer.innerHTML = "";
+
+  for (let i = 0; i < 10; i++) {
+    const card = await createCard();
+    cardContainer.appendChild(card);
   }
 }
