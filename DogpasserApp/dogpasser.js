@@ -1,38 +1,37 @@
 // Globale variabler
-/*
+
 const showCardsBtn = document.getElementById("show-cards-btn").addEventListener("click", fetchAndDisplayRandomUser);
 
-const cardContainer = document.querySelector(".card-container");
-*/
+//const cardContainer = document.querySelector(".card-container");
 
 // kopier og lag nye card containers --- må fikses, ikke ferdig
 function createCardContainer() {
-	for (let i = 0; i < 10; i++) {
-		const cardContainer = document.createElement("div");
-		cardContainer.className = "card-container";
+	const cardContainer = document.createElement("div");
+	cardContainer.className = "card-container";
 
-		const profileCard = document.createElement("div");
-		profileCard.className = "profile-card";
+	const profileCard = document.createElement("div");
+	profileCard.className = "profile-card";
 
-		const randomUser = document.createElement("div");
-		randomUser.className = "random-user";
+	const randomUser = document.createElement("div");
+	randomUser.className = "random-user";
 
-		const deleteBtn = document.createElement("img");
-		deleteBtn.src = "assets/delete.png";
-		deleteBtn.id = "delete-btn";
+	const deleteBtn = document.createElement("img");
+	deleteBtn.src = "assets/delete.png";
+	deleteBtn.id = "delete-btn";
 
-		const chatBtn = document.createElement("img");
-		chatBtn.src = "assets/chat.png";
-		chatBtn.id = "chat-btn";
+	const chatBtn = document.createElement("img");
+	chatBtn.src = "assets/chat.png";
+	chatBtn.id = "chat-btn";
 
-		profileCard.appendChild(deleteBtn);
-		profileCard.appendChild(chatBtn);
+	profileCard.appendChild(deleteBtn);
+	profileCard.appendChild(chatBtn);
 
-		cardContainer.appendChild(profileCard);
-		cardContainer.appendChild(randomUser);
-	}
+	cardContainer.appendChild(profileCard);
+	cardContainer.appendChild(randomUser);
+
+	document.body.appendChild(cardContainer);
 }
-createCardContainer();
+//createCardContainer();
 
 // denne virker, og setter inn bildet på rett plass
 // må implementeres i en loop
@@ -49,7 +48,7 @@ async function fetchRandomDogImg() {
 		console.error("Dog 404", error);
 	}
 }
-fetchRandomDogImg();
+//fetchRandomDogImg();
 
 // denne virker, og setter inn all informasjon på rett plass
 // må implementeres i en loop
@@ -70,13 +69,24 @@ async function fetchRandomUsers() {
 
 		randomUser.innerHTML = `
 				<img src="${oneUser.thumbnail}">
-                <p>Navn: ${oneUser.name.first}</p>
+                <p>Navn: ${oneUser.name}</p>
                 <p>Bosted: ${oneUser.location.city}, ${oneUser.location.state}</p>`;
 	} catch (error) {
 		console.log("Human 404", error);
 	}
 }
-fetchRandomUsers();
+//fetchRandomUsers();
+
+// for-loop test
+function fetchAndDisplayRandomUser() {
+	//createCardContainer();
+	for (let i = 0; i < 10; i++) {
+		createCardContainer();
+		fetchRandomDogImg();
+		fetchRandomUsers();
+	}
+	//createCardContainer();
+}
 
 /*
 fetchAndDisplayRandomUser
