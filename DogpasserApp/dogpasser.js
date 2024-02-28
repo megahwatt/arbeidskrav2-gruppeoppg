@@ -17,7 +17,6 @@ async function fetchRandomUser() {
 }
 
 //fetch ett tilfeldig hundebilde, men kun ut ifra 5 valgte raser
-
 async function fetchRandomDogImg() {
 	const dogBreeds = ["labrador", "germanshepherd", "husky", "beagle", "akita"];
 	try {
@@ -33,11 +32,9 @@ async function fetchRandomDogImg() {
 }
 
 // Viser kort når siden lastes
-
 showCards();
 
 //Lage kort
-
 async function createCard() {
 	for (let i = 0; i < 10; i++) {
 		//Henter inn user og hundebilde
@@ -65,11 +62,11 @@ async function createCard() {
 		chatBtn.classList.add("chat-btn");
 
 		//legger til innhold i elementene på kortet
-		dogImgContainer.innerHTML = `<img src="${dogImgUrl}" id="dog-img">`;
+		dogImgContainer.innerHTML = `<img src="${dogImgUrl}" id="dog-img" />`;
 		userImgContainer.innerHTML = `<img src="${user.picture.large}" class="user-img-container" />`;
 		userTxt.innerHTML = `<p>${user.name.first}</p> <p>${user.location.city}, ${user.location.state}</p>`;
-		deleteBtn.innerHTML = "Slett";
-		chatBtn.innerHTML = "Chat";
+		deleteBtn.innerHTML = `<img src="assets/delete.png" class="delete-btn" />`;
+		chatBtn.innerHTML = `<img src="assets/chat.png" class="chat-btn" />`;
 
 		//appender alt til profileCard
 		profileCard.append(dogImgContainer, userContainer, btnContainer);
@@ -81,10 +78,8 @@ async function createCard() {
 }
 
 // Viser kortene på siden
-
 async function showCards() {
 	cardContainer.innerHTML = "";
-
 	for (let i = 0; i < 10; i++) {
 		const card = await createCard();
 		cardContainer.appendChild(card);
