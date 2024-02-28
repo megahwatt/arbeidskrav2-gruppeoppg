@@ -31,20 +31,32 @@
         Bulldog
       </label>
 
-      <button type="button" onclick="filterDogBreeds()">Filtrer</button>
+      <button type="button">Filtrer</button>
     </form>
 
     <input type="button" value="Vis 10 nye kort" id="show-cards-btn" />
 
-    <div class="profile-card">
-      <div class="dog-img"></div>
-      <div class="name"></div>
-      <div class="location"></div>
-      <div class="user-img"></div>
-      <div class="delete-button"></div>
-      <div class="chat-button"></div>
-    </div>
+    <div class="card-container"></div>
 
+    <!--  Oppsettet som brukes i JS-koden når den oppretter cards:
+        
+
+        <div class="profile-card">
+
+        <div class="dog-img-container"></div>
+
+        <div class="user-container">
+          <div class="user-img"></div>
+          <div class="user-txt"></div>
+
+          <div class="btn-container">
+            <button class="delete-btn"></button>
+            <button class="chat-btn"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+ -->
     <script src="dogpasser.js"></script>
   </body>
 </html>
