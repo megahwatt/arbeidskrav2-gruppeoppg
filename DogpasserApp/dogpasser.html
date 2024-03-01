@@ -1,45 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="dogpasser.css" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="dogpasser.css" />
 
-		<title>DogpasserApp</title>
-	</head>
+    <title>DogpasserApp</title>
+  </head>
 
-	<body>
-		<h1>Hundepasser App</h1>
-		<form id="breed-filter">
-			<label>
-				<input type="checkbox" name="breed" value="labrador" />
-				Labrador
-			</label>
-			<label>
-				<input type="checkbox" name="breed" value="germanshepherd" />
-				Schäfer
-			</label>
-			<label>
-				<input type="checkbox" name="breed" value="husky" />
-				Husky
-			</label>
-			<label>
-				<input type="checkbox" name="breed" value="beagle" />
-				Beagle
-			</label>
-			<label>
-				<input type="checkbox" name="breed" value="akita" />
-				Akita
-			</label>
+  <body>
+    <h1>Hundepasser App</h1>
 
-			<input type="button" value="Filtrer" id="filter-btn" />
-		</form>
+    <select id="breed-filter">
+      <option value="all">Alle</option>
+      <option value="labrador">Labrador</option>
+      <option value="germanshepherd">German Shepherd</option>
+      <option value="husky">Husky</option>
+      <option value="beagle">Beagle</option>
+      <option value="akita">Akita</option>
+    </select>
 
-		<input type="button" value="Vis 10 nye kort" id="show-cards-btn" />
+    <input type="button" value="Vis 10 nye kort" id="show-cards-btn" />
 
-		<div class="card-container"></div>
+    <div class="card-container"></div>
 
-		<!--  Oppsettet som brukes i JS-koden når den oppretter cards:
+    <!--  Oppsettet som brukes i JS-koden når den oppretter cards:
         
 
         <div class="profile-card">
@@ -57,7 +42,6 @@
       </div>
     </div>
  -->
-		<script src="dogpasser.js"></script>
-		<script src="sletteknapp.js"></script>
-	</body>
+    <script src="dogpasser.js"></script>
+  </body>
 </html>
