@@ -19,3 +19,18 @@ function updateScore() {
     }
 }
 
+
+// Function to fetch random user based on gender
+async function fetchRandomUser(gender) {
+    try {
+        const response = await fetch(`https://randomuser.me/api/?gender=${gender}`);
+        const data = await response.json();
+        const user = data.results[0];
+        nameElement.textContent = `${user.name.first} ${user.name.last}`;
+        locationElement.textContent = `${user.location.city}, ${user.location.country}`;
+        profileImgElement.src = user.picture.large;
+    } catch (error) {
+        console.error('Error fetching random user:', error);
+    }
+}
+
