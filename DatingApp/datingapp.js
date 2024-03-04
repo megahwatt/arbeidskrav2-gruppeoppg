@@ -50,3 +50,6 @@ notInterestedBtn.addEventListener('click', () => {
 interestedBtn.addEventListener('click', () => {
     updateScore();
    
+     // Logic to handle interested user
+     messageElement.textContent = "Added to your liked profiles!";
+     fetchRandomUser(getSelectedGender()); // 
