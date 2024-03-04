@@ -67,3 +67,8 @@ function getSelectedGender() {
         return '';
     }
 }
+
+// Initial fetch on page load
+window.addEventListener('load', () => {
+    fetchRandomUser('');
+});
