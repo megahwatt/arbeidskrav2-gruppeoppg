@@ -52,4 +52,18 @@ interestedBtn.addEventListener('click', () => {
    
      // Logic to handle interested user
      messageElement.textContent = "Added to your liked profiles!";
-     fetchRandomUser(getSelectedGender()); // 
+     fetchRandomUser(getSelectedGender());
+     // Fetch next random user based on selected gender
+});
+
+// Function to get the selected gender for filtering
+function getSelectedGender() {
+    const selectedGender = document.querySelector('input[name="gender"]:checked').value;
+    if (selectedGender === 'women') {
+        return 'female';
+    } else if (selectedGender === 'men') {
+        return 'male';
+    } else {
+        return '';
+    }
+}
