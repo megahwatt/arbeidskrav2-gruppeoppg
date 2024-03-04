@@ -34,3 +34,19 @@ async function fetchRandomUser(gender) {
     }
 }
 
+
+document.getElementById('filter-both').addEventListener('click', () => {
+    // Fetch random user without specifying gender (both)
+    fetchRandomUser('');
+});
+
+
+// Event listeners for swipe buttons
+notInterestedBtn.addEventListener('click', () => {
+    updateScore();
+    fetchRandomUser(getSelectedGender()); // Fetch next random user based on selected gender
+});
+
+interestedBtn.addEventListener('click', () => {
+    updateScore();
+   
