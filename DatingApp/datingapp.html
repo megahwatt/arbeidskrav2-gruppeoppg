@@ -3,9 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dating App gruppe 9</title>
+    <link rel="stylesheet" href="datingapp.css">
 </head>
 <body>
-    
+    <div class="container">
+        <div class="header">
+            <h1>Dating App Gruppe 9</h1>
+            <div class="score">Score: <span id="score">10</span></div>
+        </div>
+        <div class="filter-buttons">
+            <button id="filter-women">Women</button>
+            <button id="filter-men">Men</button>
+            <button id="filter-both">Both</button>
+        </div>
+        <div class="profile-card">
+            <img src="" alt="Profile Picture">
+            <h2 class="name"></h2>
+            <p class="location"></p>
+            <div class="swipe-buttons">
+                <button id="not-interested">Not Interested</button>
+                <button id="interested">Interested</button>
+            </div>
+        </div>
+        <div id="message"></div>
+    </div>
+    <script src="datingapp.js"></script>
 </body>
 </html>
