@@ -4,18 +4,29 @@ const locationElement = document.querySelector('.location');
 const profileImgElement = document.querySelector('.profile-card img');
 const notInterestedBtn = document.getElementById('not-interested');
 const interestedBtn = document.getElementById('interested');
+const editBtn = document.getElementById('edit-profile');
 const messageElement = document.getElementById('message');
 
 let score = 10;
+let likedProfiles = [];
 
 // Function to update score
 function updateScore() {
     score--;
     scoreElement.textContent = score;
     if (score <= 0) {
-        messageElement.textContent = "Out of swipes! Would you like to swipe more?";
-        notInterestedBtn.disabled = true;
-        interestedBtn.disabled = true;
+        const response = prompt("Out of swipes! Would you like to swipe more? Yes/No");
+        if (response && response.toLowerCase() === "yes") {
+            score = 10;
+            scoreElement.textContent = score;
+            messageElement.textContent = "";
+            notInterestedBtn.disabled = false;
+            interestedBtn.disabled = false;
+        } else {
+            messageElement.textContent = "Come back later when you're ready to swipe more!";
+            notInterestedBtn.disabled = true;
+            interestedBtn.disabled = true;
+        }
     }
 }
 
@@ -43,8 +54,29 @@ document.getElementById('filter-men').addEventListener('click', () => {
 });
 
 document.getElementById('filter-both').addEventListener('click', () => {
-    // Fetch random user without specifying gender (both)
     fetchRandomUser('');
+});
+
+// Event listener for edit button
+editBtn.addEventListener('click', () => {
+    const newName = prompt("Enter new name:");
+    const newLocation = prompt("Enter new location:");
+    // Update profile information
+    nameElement.textContent = newName;
+    locationElement.textContent = newLocation;
+    // Update information in likedProfiles array
+    likedProfiles = likedProfiles.map(profile => {
+        if (profile.name === nameElement.textContent) {
+            return {
+                ...profile,
+                name: newName,
+                location: newLocation
+            };
+        }
+        return profile;
+    });
+    // Update information in localStorage
+    localStorage.setItem('likedProfiles', JSON.stringify(likedProfiles));
 });
 
 // Event listeners for swipe buttons
@@ -55,10 +87,12 @@ notInterestedBtn.addEventListener('click', () => {
 
 interestedBtn.addEventListener('click', () => {
     updateScore();
-    // Logic to handle interested user
+    likedProfiles.push({
+        name: nameElement.textContent,
+        location: locationElement.textContent
+    }); // Add the current user to likedProfiles array
     messageElement.textContent = "Added to your liked profiles!";
-    fetchRandomUser(getSelectedGender());
-    // Fetch next random user based on selected gender
+    fetchRandomUser(getSelectedGender()); // Fetch next random user based on selected gender
 });
 
 // Function to get the selected gender for filtering
