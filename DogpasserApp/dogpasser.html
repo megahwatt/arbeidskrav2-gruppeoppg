@@ -11,16 +11,19 @@
 	<body>
 		<h1>Hundepasser App</h1>
 
-		<select id="breed-filter">
-			<option value="all">Alle</option>
-			<option value="labrador">Labrador</option>
-			<option value="germanshepherd">German Shepherd</option>
-			<option value="husky">Husky</option>
-			<option value="beagle">Beagle</option>
-			<option value="akita">Akita</option>
-		</select>
+    <div class="filter-container">
+      <select id="breed-filter">
+        <option value="all">Alle</option>
+        <option value="labrador">Labrador</option>
+        <option value="germanshepherd">German Shepherd</option>
+        <option value="husky">Husky</option>
+        <option value="beagle">Beagle</option>
+        <option value="akita">Akita</option>
+      </select>
+      <input type="button" value="Filtrer" id="filter-btn" />
+    </div>
+    <input type="button" value="Vis 10 nye kort" id="show-cards-btn" />
 
-		<input type="button" value="Vis 10 nye kort" id="show-cards-btn" />
 
 		<div class="card-container"></div>
 
