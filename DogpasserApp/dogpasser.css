@@ -12,15 +12,18 @@ h1 {
   text-align: center;
 }
 
-.breed-filter {
-  background-color: lightcyan;
+.filter-container {
+  display: flex;
+  justify-content: center;
   text-align: center;
+  gap: 10px;
 }
 
 #show-cards-btn {
   margin: 20px auto;
   display: block;
 }
+
 .card-container {
   display: flex;
   flex-flow: row wrap;
@@ -77,8 +80,4 @@ h1 {
   height: 50px;
   box-sizing: border-box;
   padding: 5px;
-}
-
-.hidden {
-  display: none;
 }
