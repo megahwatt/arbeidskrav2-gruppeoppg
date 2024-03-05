@@ -2,22 +2,34 @@ const scoreElement = document.getElementById("score");
 const nameElement = document.querySelector(".name");
 const locationElement = document.querySelector(".location");
 const profileImgElement = document.querySelector(".profile-card img");
+const editBtn = document.getElementById("edit-profile");
+const messageElement = document.getElementById("message");
 
+let score = 10;
 let likedProfiles = [];
 let currentProfile;
 let selectedGender = "both"; //default
-let score = 10;
-
-fetchRandomUser();
 
 // Function to update score
 function updateScore() {
   score--;
   scoreElement.textContent = score;
   if (score <= 0) {
-    messageElement.textContent = "Out of swipes! Would you like to swipe more?";
-    notInterestedBtn.disabled = true;
-    interestedBtn.disabled = true;
+    const response = prompt(
+      "Out of swipes! Would you like to swipe more? Yes/No"
+    );
+    if (response && response.toLowerCase() === "yes") {
+      score = 10;
+      scoreElement.textContent = score;
+      messageElement.textContent = "";
+      notInterestedBtn.disabled = false;
+      interestedBtn.disabled = false;
+    } else {
+      messageElement.textContent =
+        "Come back later when you're ready to swipe more!";
+      notInterestedBtn.disabled = true;
+      interestedBtn.disabled = true;
+    }
   }
 }
 
@@ -38,22 +50,6 @@ async function fetchRandomUser() {
     console.error("Error fetching random user:", error);
   }
 }
-
-// "SWIPE" piltast høyre/venstre
-document.addEventListener("keydown", function (e) {
-  if (e.key === "ArrowRight") {
-    //interessert
-    likedProfiles.unshift(currentProfile); //begrense til å bare kunne like en gang, så ikke man fyller arrayet med den samme profilen flere ganger
-    console.log(likedProfiles);
-    updateLikedProfilesList();
-    updateScore();
-    fetchRandomUser(selectedGender);
-  } else if (e.key === "ArrowLeft") {
-    //ikke interessert
-    console.log("Du trykket venstre");
-    fetchRandomUser(selectedGender);
-  }
-});
 
 // Filtrering av kjønn
 const filterWomen = document.querySelector("#filter-women");
@@ -77,17 +73,47 @@ function updateSelectedGender(gender) {
   fetchRandomUser(selectedGender);
 }
 
-// Oversikt over likte profiler - ikke ferdig
+// Event listener for edit button
+editBtn.addEventListener("click", () => {
+  const newName = prompt("Enter new name:");
+  const newLocation = prompt("Enter new location:");
 
-function updateLikedProfilesList() {
-  likedProfiles.forEach((profile) => {
-    const card = document.createElement("div");
-    card.innerHTML = `<img src="${profile.picture.large}"> <p> ${profile.name.first} ${profile.name.last},${profile.location.city}, ${profile.location.country} </p>`;
+  // Update profile information
+  nameElement.textContent = newName;
+  locationElement.textContent = newLocation;
 
-    const likedProfileContainer = document.querySelector(
-      ".liked-profiles-container"
-    );
-
-    likedProfileContainer.append(card);
+  // Update information in likedProfiles array
+  likedProfiles = likedProfiles.map((profile) => {
+    if (profile.name === nameElement.textContent) {
+      return {
+        ...profile,
+        name: newName,
+        location: newLocation,
+      };
+    }
+    return profile;
   });
-}
+  // Update information in localStorage
+  localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
+});
+
+// "SWIPE" piltast høyre/venstre
+document.addEventListener("keydown", function (e) {
+  if (e.key === "ArrowRight") {
+    //interessert
+    likedProfiles.unshift(currentProfile); //begrense til å bare kunne like en gang, så ikke man fyller arrayet med den samme profilen flere ganger
+    console.log(likedProfiles);
+    updateLikedProfilesList();
+    updateScore();
+    fetchRandomUser(selectedGender);
+  } else if (e.key === "ArrowLeft") {
+    //ikke interessert
+    console.log("Du trykket venstre");
+    fetchRandomUser(selectedGender);
+  }
+});
+
+// Initial fetch on page load
+window.addEventListener("load", () => {
+  fetchRandomUser("");
+});
