@@ -62,8 +62,11 @@ async function getNewCards() {
 getNewCards();
 
 //slettefunksjon
-function deleteCard(index) {
+async function deleteCard(index) {
 	currentUsers.splice(index, 1);
+
+	await fetchRandomUserWithDog();
+
 	createAndShowCards(currentUsers);
 }
 
