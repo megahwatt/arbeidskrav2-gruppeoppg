@@ -8,7 +8,6 @@ const messageElement = document.getElementById("message");
 let score = 10;
 let likedProfiles = [];
 let currentProfile;
-let selectedGender = "both"; //default
 
 // Function to update score
 function updateScore() {
@@ -41,7 +40,7 @@ async function fetchRandomUser() {
     );
     const data = await response.json();
     const user = data.results[0];
-    currentProfile = user;
+    currentProfile = user; //for å huke tak i denne i
 
     nameElement.innerHTML = `${user.name.first} ${user.name.last}`;
     locationElement.innerHTML = `${user.location.city}, ${user.location.country}`;
@@ -55,21 +54,23 @@ async function fetchRandomUser() {
 const filterWomen = document.querySelector("#filter-women");
 const filterMen = document.querySelector("#filter-men");
 const filterBoth = document.querySelector("#filter-both");
+let selectedGender;
 
 filterWomen.addEventListener("click", function () {
-  updateSelectedGender("women");
+  updateSelectedGender("female");
 });
 
 filterMen.addEventListener("click", function () {
-  updateSelectedGender("men");
+  updateSelectedGender("male");
 });
 
 filterBoth.addEventListener("click", function () {
-  updateSelectedGender("both");
+  updateSelectedGender("");
 });
 
 function updateSelectedGender(gender) {
   selectedGender = gender;
+  console.log("Inne i updateSelectedGender", selectedGender);
   fetchRandomUser(selectedGender);
 }
 
@@ -94,6 +95,7 @@ editBtn.addEventListener("click", () => {
     return profile;
   });
   // Update information in localStorage
+
   localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
 });
 
@@ -108,10 +110,23 @@ document.addEventListener("keydown", function (e) {
     fetchRandomUser(selectedGender);
   } else if (e.key === "ArrowLeft") {
     //ikke interessert
-    console.log("Du trykket venstre");
     fetchRandomUser(selectedGender);
   }
 });
+
+//Oppdaterer liste over likte profiler
+function updateLikedProfilesList() {
+  likedProfiles.forEach((profile) => {
+    const card = document.createElement("div");
+    card.innerHTML = `<img src="${profile.picture.large}"> <p> ${profile.name.first} ${profile.name.last},${profile.location.city}, ${profile.location.country} </p>`;
+
+    const likedProfileContainer = document.querySelector(
+      ".liked-profiles-container"
+    );
+
+    likedProfileContainer.append(card);
+  });
+}
 
 // Initial fetch on page load
 window.addEventListener("load", () => {
