@@ -52,7 +52,7 @@ body {
     outline: none;
 }
 
-  /* D button background on hover */
+  /* button background on hover */
 .filter-buttons button:hover {
     background-color: #4d2900;
   color: #ffffff;
@@ -75,16 +75,16 @@ body {
 .profile-card h2 {
     font-size: 1.25rem;
     margin: 0.625rem 0;
-    color: #ffff99; /* Dark blue profile text */
+    color: #ffff99; 
 }
 
 .profile-card p {
     font-size: 1rem;
     margin: 0.625rem 0;
-    color: #ffff99; /* Dark gray profile text */
+    color: #ffff99; 
 }
 
-/* Swipe buttons styles */
+
 .swipe-buttons {
     display: flex;
     justify-content: center;
@@ -95,18 +95,18 @@ body {
     padding: 1.25rem 1.25rem;
     margin: 1.25rem;
     font-size: 1.25rem;
-    border: 0.125rem solid #ffff80; /* Dark green border */
+    border: 0.125rem solid #ffff80; 
     border-radius: 0.3125rem;
-    background-color: #FFA033; /* White button background */
-    color: #4d2900; /* Dark green button text */
+    background-color: #FFA033; 
+    color: #4d2900;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
     outline: none;
 }
 
 .swipe-buttons button:hover {
-    background-color: #4d2900; /* Dark green button background on hover */
-    color: #ffffff; /* White button text on hover */
+    background-color: #4d2900; 
+    color: #ffffff; 
 }
 
 /* Message styles */
