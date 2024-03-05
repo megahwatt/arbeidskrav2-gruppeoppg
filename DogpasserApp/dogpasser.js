@@ -1,5 +1,6 @@
 // Globale variabler
 const cardContainer = document.querySelector(".card-container");
+
 const showCardsBtn = document.querySelector("#show-cards-btn");
 showCardsBtn.addEventListener("click", getNewCards);
 const breeds = ["labrador", "germanshepherd", "husky", "beagle", "akita"];
