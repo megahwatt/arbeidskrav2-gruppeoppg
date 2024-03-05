@@ -78,12 +78,10 @@ function setupDeleteBtn(index) {
 }
 
 // createCard -- setter sammen alle elementene med informasjonen fra de to forrige funksjonene, og lager et kort
-async function createCard(index) {
-	for (let i = 0; i < 10; i++) {
-		//Henter inn user og hundebilde
-		//Bruker Promise.all for at innlastingen av kortene skal gå bittelitt raksere
-		const [dogImgUrl, user] = await Promise.all([fetchRandomDogImg(), fetchRandomUser()]);
+function createAndShowCards(users) {
+	cardContainer.innerHTML = "";
 
+	users.forEach((user, index) => {
 		//lager selve kortet
 		const profileCard = document.createElement("div");
 		const dogImgContainer = document.createElement("div");
@@ -96,6 +94,7 @@ async function createCard(index) {
 
 		//legger til klasse på hvert element
 		profileCard.classList.add("profile-card");
+		profileCard.classList.add(`${user.dogBreed}`); // legger til breed som klasse på kortet
 		dogImgContainer.classList.add("dog-img-container");
 		userContainer.classList.add("user-container");
 		userImgContainer.classList.add("user-img-container");
@@ -104,8 +103,8 @@ async function createCard(index) {
 		chatBtn.classList.add("chat-btn");
 
 		//legger til innhold i elementene på kortet
-		dogImgContainer.innerHTML = `<img src="${dogImgUrl}" id="dog-img" />`;
-		userImgContainer.innerHTML = `<img src="${user.picture.large}" class="user-img-container" />`;
+		dogImgContainer.innerHTML = `<img src="${user.dogImg}" id="dog-img" />`;
+		userImgContainer.innerHTML = `<img src="${user.userImg}" class="user-img-container" />`;
 		userTxt.innerHTML = `<p>${user.name.first}</p> <p>${user.location.city}, ${user.location.state}</p>`;
 		chatBtn.innerHTML = `<img src="assets/chat.png" class="chat-btn" />`;
 
@@ -113,9 +112,16 @@ async function createCard(index) {
 		profileCard.append(dogImgContainer, userContainer, btnContainer);
 		userContainer.append(userImgContainer, userTxt);
 		btnContainer.append(chatBtn, deleteBtn);
+		cardContainer.appendChild(profileCard);
 
-		return profileCard;
-	}
+		/*
+		Slette-knapp - skal kun vises om det IKKE er filter på, dette må kodes
+		const deleteBtn = document.createElement("button");
+		deleteBtn.classList.add("delete-btn");
+		deleteBtn.innerHTML = `<img src="assets/delete.png" class="delete-btn" />`;
+		btnContainer.append(deleteBtn);
+		*/
+	});
 }
 
 //filter
