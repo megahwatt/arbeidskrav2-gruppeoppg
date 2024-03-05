@@ -34,6 +34,37 @@ async function fetchRandomDogImg() {
 	}
 }
 
+// showCards -- viser 10 nye kort hver gang man trykker på knappen, og legger til index-paramteret i kortene
+async function showCards() {
+	const cardContainer = document.querySelector("card-container");
+
+	cardContainer.innerHTML = "";
+
+	card.forEach((user, index) => {
+		const 
+	})
+	for (let i = 0; i < 10; i++) {
+		const card = await createCard(i);
+		cardContainer.appendChild(card);
+	}
+}
+
+//slettefunksjon
+function deleteCard(index) {
+	card.splice(index, 1);
+
+	showCards();
+}
+
+function setupDeleteBtn(index) {
+	const deleteBtn = document.createElement("button");
+	deleteBtn.classList.add("delete-btn");
+	deleteBtn.innerHTML = `<img src="assets/delete.png" class="delete-btn" />`;
+
+	deleteBtn.onclick = () => deleteCard(index);
+	return deleteBtn;
+}
+
 // createCard -- setter sammen alle elementene med informasjonen fra de to forrige funksjonene, og lager et kort
 async function createCard(index) {
 	for (let i = 0; i < 10; i++) {
@@ -73,34 +104,6 @@ async function createCard(index) {
 
 		return profileCard;
 	}
-}
-
-// showCards -- viser 10 nye kort hver gang man trykker på knappen, og legger til index-paramteret i kortene
-async function showCards() {
-	cardContainer.innerHTML = "";
-	for (let i = 0; i < 10; i++) {
-		const card = await createCard(i);
-		cardContainer.appendChild(card);
-	}
-}
-
-// Viser kort når siden lastes
-showCards();
-
-//slettefunksjon
-function deleteCard(index) {
-	card.splice(index, 1);
-
-	showCards();
-}
-
-function setupDeleteBtn(index) {
-	const deleteBtn = document.createElement("button");
-	deleteBtn.classList.add("delete-btn");
-	deleteBtn.innerHTML = `<img src="assets/delete.png" class="delete-btn" />`;
-
-	deleteBtn.onclick = () => deleteCard(index);
-	return deleteBtn;
 }
 
 showCards();
