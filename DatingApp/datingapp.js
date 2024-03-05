@@ -19,7 +19,6 @@ function updateScore() {
     }
 }
 
-
 // Function to fetch random user based on gender
 async function fetchRandomUser(gender) {
     try {
@@ -34,12 +33,19 @@ async function fetchRandomUser(gender) {
     }
 }
 
+// Event listeners for filter buttons
+document.getElementById('filter-women').addEventListener('click', () => {
+    fetchRandomUser('female');
+});
+
+document.getElementById('filter-men').addEventListener('click', () => {
+    fetchRandomUser('male');
+});
 
 document.getElementById('filter-both').addEventListener('click', () => {
     // Fetch random user without specifying gender (both)
     fetchRandomUser('');
 });
-
 
 // Event listeners for swipe buttons
 notInterestedBtn.addEventListener('click', () => {
@@ -49,11 +55,10 @@ notInterestedBtn.addEventListener('click', () => {
 
 interestedBtn.addEventListener('click', () => {
     updateScore();
-   
-     // Logic to handle interested user
-     messageElement.textContent = "Added to your liked profiles!";
-     fetchRandomUser(getSelectedGender());
-     // Fetch next random user based on selected gender
+    // Logic to handle interested user
+    messageElement.textContent = "Added to your liked profiles!";
+    fetchRandomUser(getSelectedGender());
+    // Fetch next random user based on selected gender
 });
 
 // Function to get the selected gender for filtering
