@@ -17,7 +17,7 @@ async function fetchRandomUserWithDog() {
 		const randomDog = await fetchRandomDog();
 
 		const userWithDog = {
-			name: `${user.name.last}, ${user.name.first}`,
+			name: `${user.name.first}`,
 			location: `${user.location.city}, ${user.location.state}`,
 			userImg: user.picture.large,
 			dogImg: randomDog.url,
@@ -63,9 +63,8 @@ getNewCards();
 
 //slettefunksjon
 function deleteCard(index) {
-	card.splice(index, 1);
-
-	showCards();
+	currentUsers.splice(index, 1);
+	createAndShowCards(currentUsers);
 }
 
 function setupDeleteBtn(index) {
@@ -105,7 +104,7 @@ function createAndShowCards(users) {
 		//legger til innhold i elementene på kortet
 		dogImgContainer.innerHTML = `<img src="${user.dogImg}" id="dog-img" />`;
 		userImgContainer.innerHTML = `<img src="${user.userImg}" class="user-img-container" />`;
-		userTxt.innerHTML = `<p>${user.name.first}</p> <p>${user.location.city}, ${user.location.state}</p>`;
+		userTxt.innerHTML = `<p>${user.name}</p> <p>${user.location}</p>`;
 		chatBtn.innerHTML = `<img src="assets/chat.png" class="chat-btn" />`;
 
 		//appender alt til profileCard
