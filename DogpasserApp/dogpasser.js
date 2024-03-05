@@ -1,14 +1,11 @@
 // Globale variabler
 const cardContainer = document.querySelector(".card-container");
 const showCardsBtn = document.querySelector("#show-cards-btn");
-showCardsBtn.onclick = showCards;
-const breedFilter = document.querySelector("#breed-filter");
-const filterBtn = document.querySelector("#filter-btn");
-filterBtn.onclick = filterByBreed;
-//let usersWithDogs = [];
+showCardsBtn.addEventListener("click", getNewCards);
+const breeds = ["labrador", "germanshepherd", "husky", "beagle", "akita"];
+let currentUsers = [];
 
-//fetch en random user med bilde, navn og lokasjon, og legg til et hundebilde som attributt på hver user
-
+//fetch en random user, og legg til et hundebilde på hver user
 async function fetchRandomUserWithDog() {
   try {
     const request = await fetch(
@@ -16,7 +13,6 @@ async function fetchRandomUserWithDog() {
     );
     const data = await request.json();
     const user = data.results[0];
-
     const randomDog = await fetchRandomDog();
 
     const userWithDog = {
@@ -26,25 +22,22 @@ async function fetchRandomUserWithDog() {
       dogImg: randomDog.url,
       dogBreed: randomDog.breed,
     };
-    return userWithDog;
 
-    //usersWithDogs.push(userWithDog);
+    currentUsers.unshift(userWithDog);
   } catch (error) {
-    console.error("Kunne ikke hente brukere og hundebilde", error);
+    console.error("Kunne ikke hente user og randomdog", error);
   }
 }
 
 //fetch ett tilfeldig hundebilde, men kun ut ifra 5 valgte raser
 async function fetchRandomDog() {
-  const dogBreeds = ["labrador", "germanshepherd", "husky", "beagle", "akita"];
   try {
-    let randomDogBreed =
-      dogBreeds[Math.floor(Math.random() * dogBreeds.length)];
+    const randomDogBreed = breeds[Math.floor(Math.random() * breeds.length)];
     const request = await fetch(
       `https://dog.ceo/api/breed/${randomDogBreed}/images/random`
     );
     const response = await request.json();
-    let randomDog = { url: response.message, breed: randomDogBreed }; //legger til breed som attributt
+    const randomDog = { url: response.message, breed: randomDogBreed };
 
     return randomDog;
   } catch (error) {
@@ -52,17 +45,27 @@ async function fetchRandomDog() {
   }
 }
 
-// Viser kort når siden lastes
-showCards();
+//tømmer users-arrayet hver gang så det bare vises 10 av gangen
+function emptyCurrentUsers() {
+  currentUsers = [];
+}
 
-//Lage kort
-async function createCard() {
+//Vis 10 nye kort
+async function getNewCards() {
+  emptyCurrentUsers();
   for (let i = 0; i < 10; i++) {
-    //Henter inn user og hundebilde
-    //Bruker Promise.all for at innlastingen av kortene skal gå bittelitt raksere
-    const user = await fetchRandomUserWithDog();
-    console.log(user);
+    await fetchRandomUserWithDog();
+  }
+  createAndShowCards(currentUsers);
+}
 
+getNewCards(); // Viser kort når siden lastes
+
+//Lage og vise kort på siden
+function createAndShowCards(users) {
+  cardContainer.innerHTML = "";
+
+  users.forEach((user) => {
     //lager selve kortet
     const profileCard = document.createElement("div");
     const dogImgContainer = document.createElement("div");
@@ -70,7 +73,6 @@ async function createCard() {
     const userImgContainer = document.createElement("div");
     const userTxt = document.createElement("div");
     const btnContainer = document.createElement("div");
-    const deleteBtn = document.createElement("button");
     const chatBtn = document.createElement("button");
 
     //legger til klasse på hvert element
@@ -81,39 +83,42 @@ async function createCard() {
     userImgContainer.classList.add("user-img-container");
     userTxt.classList.add("user-txt");
     btnContainer.classList.add("btn-container");
-    deleteBtn.classList.add("delete-btn");
     chatBtn.classList.add("chat-btn");
 
     //legger til innhold i elementene på kortet
     dogImgContainer.innerHTML = `<img src="${user.dogImg}" id="dog-img" />`;
     userImgContainer.innerHTML = `<img src="${user.userImg}" class="user-img-container" />`;
     userTxt.innerHTML = `<p>${user.name}</p> <p>${user.location}</p>`;
-    deleteBtn.innerHTML = `<img src="assets/delete.png" class="delete-btn" />`;
     chatBtn.innerHTML = `<img src="assets/chat.png" class="chat-btn" />`;
 
     //appender alt til profileCard
     profileCard.append(dogImgContainer, userContainer, btnContainer);
     userContainer.append(userImgContainer, userTxt);
-    btnContainer.append(chatBtn, deleteBtn);
+    btnContainer.append(chatBtn);
+    cardContainer.appendChild(profileCard);
 
-    return profileCard;
-  }
+    //Slette-knapp - skal kun vises om det IKKE er filter på, dette må kodes
+    const deleteBtn = document.createElement("button");
+    deleteBtn.classList.add("delete-btn");
+    deleteBtn.innerHTML = `<img src="assets/delete.png" class="delete-btn" />`;
+    btnContainer.append(deleteBtn);
+  });
 }
 
-// Viser kortene på siden
-async function showCards() {
-  cardContainer.innerHTML = "";
-  for (let i = 0; i < 10; i++) {
-    const card = await createCard();
-    cardContainer.appendChild(card);
-  }
-}
-
-//filterfunksjon - ikke ferdig
+//filter
+const breedFilter = document.querySelector("#breed-filter");
+const filterBtn = document.querySelector("#filter-btn");
+filterBtn.addEventListener("click", filterByBreed);
 
 function filterByBreed() {
-  const selectedBreed = breedFilter.value;
+  selectedBreed = breedFilter.value;
 
-  if (dogImgUrl.includes(selectedBreed)) {
+  if (selectedBreed == "all") {
+    createAndShowCards(currentUsers);
+  } else {
+    filteredUsers = currentUsers.filter(
+      (user) => user.dogBreed == selectedBreed
+    );
+    createAndShowCards(filteredUsers);
   }
 }
