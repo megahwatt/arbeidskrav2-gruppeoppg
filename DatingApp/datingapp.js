@@ -57,27 +57,35 @@ document.getElementById('filter-both').addEventListener('click', () => {
     fetchRandomUser('');
 });
 
-// Event listener for edit button
-editBtn.addEventListener('click', () => {
-    const newName = prompt("Enter new name:");
-    const newLocation = prompt("Enter new location:");
-    // Update profile information
-    nameElement.textContent = newName;
-    locationElement.textContent = newLocation;
-    // Update information in likedProfiles array
-    likedProfiles = likedProfiles.map(profile => {
-        if (profile.name === nameElement.textContent) {
-            return {
-                ...profile,
-                name: newName,
-                location: newLocation
-            };
-        }
-        return profile;
-    });
-    // Update information in localStorage
-    localStorage.setItem('likedProfiles', JSON.stringify(likedProfiles));
+// Function to get the selected gender for filtering
+function getSelectedGender() {
+    const selectedGender = document.querySelector('input[name="gender"]:checked').value;
+    if (selectedGender === 'women') {
+        return 'female';
+    } else if (selectedGender === 'men') {
+        return 'male';
+    } else {
+        return '';
+    }
+}
+// Event listener for keyboard input
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowLeft') {
+        // Not interested
+        updateScore();
+        fetchRandomUser(getSelectedGender());
+    } else if (event.key === 'ArrowRight') {
+        // Interested
+        updateScore();
+        likedProfiles.push({
+            name: nameElement.textContent,
+            location: locationElement.textContent
+        });
+        messageElement.textContent = "Added to your liked profiles!";
+        fetchRandomUser(getSelectedGender());
+    }
 });
+
 
 // Event listeners for swipe buttons
 notInterestedBtn.addEventListener('click', () => {
@@ -91,21 +99,37 @@ interestedBtn.addEventListener('click', () => {
         name: nameElement.textContent,
         location: locationElement.textContent
     }); // Add the current user to likedProfiles array
-    messageElement.textContent = "Added to your liked profiles!";
+    messageElement.textContent = "Added to your profiles!";
     fetchRandomUser(getSelectedGender()); // Fetch next random user based on selected gender
 });
 
-// Function to get the selected gender for filtering
-function getSelectedGender() {
-    const selectedGender = document.querySelector('input[name="gender"]:checked').value;
-    if (selectedGender === 'women') {
-        return 'female';
-    } else if (selectedGender === 'men') {
-        return 'male';
-    } else {
-        return '';
-    }
-}
+
+
+// Event listener for edit button
+editBtn.addEventListener('click', () => {
+    const newName = prompt("Enter new name:");
+    const newLocation = prompt("Enter new location:");
+
+// Update profile information
+    nameElement.textContent = newName;
+    locationElement.textContent = newLocation;
+
+// Update information in likedProfiles array
+    likedProfiles = likedProfiles.map(profile => {
+        if (profile.name === nameElement.textContent) {
+            return {
+                ...profile,
+                name: newName,
+                location: newLocation
+            };
+        }
+        return profile;
+    });
+
+    // Update information in localStorage
+    localStorage.setItem('likedProfiles', JSON.stringify(likedProfiles));
+});
+
 
 // Initial fetch on page load
 window.addEventListener('load', () => {
