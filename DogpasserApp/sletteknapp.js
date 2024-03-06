@@ -8,7 +8,7 @@ const breeds = ["labrador", "germanshepherd", "husky", "beagle", "akita"];
 
 let currentUsers = [];
 
-// fetchRandomUser -- henter inn 10 brukere
+//fetch en random user med bilde, navn og lokasjon
 async function fetchRandomUserWithDog() {
 	try {
 		const request = await fetch("https://randomuser.me/api/?results=1&nat=us&inc=name,location,picture");
@@ -30,7 +30,7 @@ async function fetchRandomUserWithDog() {
 	}
 }
 
-// fetchRandomDogImg -- henter inn bilder av hunder basert på et rase-filter
+//fetch ett tilfeldig hundebilde, men kun ut ifra 5 valgte raser
 async function fetchRandomDog() {
 	try {
 		const randomDogBreed = breeds[Math.floor(Math.random() * breeds.length)];
@@ -49,7 +49,7 @@ function emptyCurrentUsers() {
 	currentUsers = [];
 }
 
-// showCards -- viser 10 nye kort hver gang man trykker på knappen, og legger til index-paramteret i kortene
+// refresher kortene på siden
 async function getNewCards() {
 	emptyCurrentUsers();
 	for (let i = 0; i < 10; i++) {
@@ -58,7 +58,7 @@ async function getNewCards() {
 	createAndShowCards(currentUsers);
 }
 
-// viser kort når siden lastes
+// kaller på funksjonen slik at kortene vises når siden lastes
 getNewCards();
 
 //slettefunksjon
@@ -79,7 +79,7 @@ function setupDeleteBtn(index) {
 	return deleteBtn;
 }
 
-// createCard -- setter sammen alle elementene med informasjonen fra de to forrige funksjonene, og lager et kort
+// setter sammen alle elementene med informasjonen fra de to forrige funksjonene, og lager et kort
 function createAndShowCards(users) {
 	cardContainer.innerHTML = "";
 
