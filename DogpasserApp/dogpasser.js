@@ -92,6 +92,7 @@ function createAndShowCards(users) {
 		const userImgContainer = document.createElement("div");
 		const userTxt = document.createElement("div");
 		const btnContainer = document.createElement("div");
+		const deleteBtn = setupDeleteBtn(index);
 		const chatBtn = document.createElement("button");
 
 		//legger til klasse på hvert element
@@ -113,7 +114,7 @@ function createAndShowCards(users) {
 		//appender alt til profileCard
 		profileCard.append(dogImgContainer, userContainer, btnContainer);
 		userContainer.append(userImgContainer, userTxt);
-		btnContainer.append(chatBtn);
+		btnContainer.append(chatBtn, deleteBtn);
 		cardContainer.appendChild(profileCard);
 
 		/*
