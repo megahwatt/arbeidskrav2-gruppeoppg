@@ -8,6 +8,8 @@ const breeds = ["labrador", "germanshepherd", "husky", "beagle", "akita"];
 
 let currentUsers = [];
 
+let activeFilter = false;
+
 //fetch en random user, og legg til et hundebilde på hver user
 async function fetchRandomUserWithDog() {
 	try {
@@ -114,8 +116,6 @@ function createAndShowCards(users) {
 		//appender alt til profileCard
 		profileCard.append(dogImgContainer, userContainer, btnContainer);
 		userContainer.append(userImgContainer, userTxt);
-		btnContainer.append(chatBtn, deleteBtn);
-		cardContainer.appendChild(profileCard);
 
 		/*
 		Slette-knapp - skal kun vises om det IKKE er filter på, dette må kodes
@@ -124,21 +124,32 @@ function createAndShowCards(users) {
 		deleteBtn.innerHTML = `<img src="assets/delete.png" class="delete-btn" />`;
 		btnContainer.append(deleteBtn);
 		*/
+		if (!activeFilter) {
+			//legger bare til deleteBtn dersom filteret ikke er aktivt (se filterByBreed*)
+			btnContainer.append(deleteBtn);
+		}
+		btnContainer.append(chatBtn);
+		cardContainer.appendChild(profileCard);
 	});
 }
 
 //filter
 const breedFilter = document.querySelector("#breed-filter");
+
 const filterBtn = document.querySelector("#filter-btn");
+
 filterBtn.addEventListener("click", filterByBreed);
 
 function filterByBreed() {
 	selectedBreed = breedFilter.value;
 
-	if (selectedBreed == "all") {
-		createAndShowCards(currentUsers);
-	} else {
+	activeFilter = selectedBreed != "all";
+
+	if (activeFilter) {
+		//sjekker om filteret er true/aktivt
 		filteredUsers = currentUsers.filter((user) => user.dogBreed == selectedBreed);
 		createAndShowCards(filteredUsers);
+	} else {
+		createAndShowCards(currentUsers);
 	}
 }
