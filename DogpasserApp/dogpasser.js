@@ -3,12 +3,10 @@ const cardContainer = document.querySelector(".card-container");
 
 const showCardsBtn = document.querySelector("#show-cards-btn");
 showCardsBtn.addEventListener("click", getNewCards);
-
 const breeds = ["labrador", "germanshepherd", "husky", "beagle", "akita"];
-
 let currentUsers = [];
 
-//fetch en random user med bilde, navn og lokasjon
+//fetch en random user, og legg til et hundebilde på hver user
 async function fetchRandomUserWithDog() {
 	try {
 		const request = await fetch("https://randomuser.me/api/?results=1&nat=us&inc=name,location,picture");
@@ -17,7 +15,7 @@ async function fetchRandomUserWithDog() {
 		const randomDog = await fetchRandomDog();
 
 		const userWithDog = {
-			name: `${user.name.first}`,
+			name: `${user.name.last}, ${user.name.first}`,
 			location: `${user.location.city}, ${user.location.state}`,
 			userImg: user.picture.large,
 			dogImg: randomDog.url,
@@ -44,12 +42,12 @@ async function fetchRandomDog() {
 	}
 }
 
-//cemptyCurrentUsers -- tømmer users-arrayet hver gang så det bare vises 10 av gangen
+//tømmer users-arrayet hver gang så det bare vises 10 av gangen
 function emptyCurrentUsers() {
 	currentUsers = [];
 }
 
-// refresher kortene på siden
+//Vis 10 nye kort
 async function getNewCards() {
 	emptyCurrentUsers();
 	for (let i = 0; i < 10; i++) {
@@ -58,32 +56,13 @@ async function getNewCards() {
 	createAndShowCards(currentUsers);
 }
 
-// kaller på funksjonen slik at kortene vises når siden lastes
-getNewCards();
+getNewCards(); // Viser kort når siden lastes
 
-//slettefunksjon
-async function deleteCard(index) {
-	currentUsers.splice(index, 1);
-
-	await fetchRandomUserWithDog();
-
-	createAndShowCards(currentUsers);
-}
-
-function setupDeleteBtn(index) {
-	const deleteBtn = document.createElement("button");
-	deleteBtn.classList.add("delete-btn");
-	deleteBtn.innerHTML = `<img src="assets/delete.png" class="delete-btn" />`;
-
-	deleteBtn.onclick = () => deleteCard(index);
-	return deleteBtn;
-}
-
-// setter sammen alle elementene med informasjonen fra de to forrige funksjonene, og lager et kort
+//Lage og vise kort på siden
 function createAndShowCards(users) {
 	cardContainer.innerHTML = "";
 
-	users.forEach((user, index) => {
+	users.forEach((user) => {
 		//lager selve kortet
 		const profileCard = document.createElement("div");
 		const dogImgContainer = document.createElement("div");
@@ -91,7 +70,6 @@ function createAndShowCards(users) {
 		const userImgContainer = document.createElement("div");
 		const userTxt = document.createElement("div");
 		const btnContainer = document.createElement("div");
-		const deleteBtn = setupDeleteBtn(index);
 		const chatBtn = document.createElement("button");
 
 		//legger til klasse på hvert element
@@ -113,16 +91,14 @@ function createAndShowCards(users) {
 		//appender alt til profileCard
 		profileCard.append(dogImgContainer, userContainer, btnContainer);
 		userContainer.append(userImgContainer, userTxt);
-		btnContainer.append(chatBtn, deleteBtn);
+		btnContainer.append(chatBtn);
 		cardContainer.appendChild(profileCard);
 
-		/*
-		Slette-knapp - skal kun vises om det IKKE er filter på, dette må kodes
+		//Slette-knapp - skal kun vises om det IKKE er filter på, dette må kodes
 		const deleteBtn = document.createElement("button");
 		deleteBtn.classList.add("delete-btn");
 		deleteBtn.innerHTML = `<img src="assets/delete.png" class="delete-btn" />`;
 		btnContainer.append(deleteBtn);
-		*/
 	});
 }
 
