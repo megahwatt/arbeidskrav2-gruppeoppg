@@ -13,7 +13,7 @@ let currentProfile;
 
 // Function to update score
 function updateScore() {
-  score--;
+  score--; //her må score hente inn antall likedProfiles fra localStorage og regne ut hvor mange poeng som er igjen. Denne funksjonen må også kjøres ved page load.
   scoreElement.textContent = score;
   if (score <= 0) {
     const response = prompt(
@@ -80,8 +80,7 @@ function updateSelectedGender(gender) {
 document.addEventListener("keydown", function (e) {
   if (e.key === "ArrowRight") {
     //interessert
-    likedProfiles.unshift(currentProfile); //begrense til å bare kunne like en gang, så ikke man fyller arrayet med den samme profilen flere ganger
-    console.log(likedProfiles);
+    saveLikedProfile();
     updateLikedProfilesList();
     updateScore();
     fetchRandomUser(selectedGender);
@@ -91,21 +90,35 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
+function saveLikedProfile() {
+  likedProfiles = JSON.parse(localStorage.getItem("likedProfiles")) || []; //sjekker om det ligger noe lagret fra før
+  likedProfiles.unshift(currentProfile);
+  localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
+}
+
 //Oppdaterer liste over likte profiler
 function updateLikedProfilesList() {
   likedProfileContainer.innerHTML = "";
 
-  likedProfiles.forEach((profile) => {
+  likedProfiles = JSON.parse(localStorage.getItem("likedProfiles")) || []; //sjekker om det ligger noe lagret fra før
+
+  likedProfiles.forEach((profile, index) => {
+    //lager profil-kortet
     const card = document.createElement("div");
     card.innerHTML = `<img src="${profile.picture.large}"> <p> ${profile.name.first} ${profile.name.last},${profile.location.city}, ${profile.location.country} </p>`;
 
+    //slette-knapp
     const deleteBtn = document.createElement("button");
     deleteBtn.innerHTML = "Delete";
+    deleteBtn.addEventListener("click", function () {
+      deleteProfile(index); //funksjonen er ikke laget enda
+    });
 
+    //rediger-knapp
     const editBtn = document.createElement("button");
     editBtn.innerHTML = "Edit";
     editBtn.addEventListener("click", function () {
-      editProfile();
+      editProfile(index); //må man ha index her også?
     });
 
     card.append(editBtn, deleteBtn);
@@ -141,4 +154,5 @@ function editProfile() {
 // Initial fetch on page load
 window.addEventListener("load", () => {
   fetchRandomUser("");
+  updateLikedProfilesList();
 });
