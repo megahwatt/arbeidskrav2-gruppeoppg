@@ -17,7 +17,7 @@ async function fetchRandomUserWithDog() {
 		const randomDog = await fetchRandomDog();
 
 		const userWithDog = {
-			name: `${user.name.last}, ${user.name.first}`,
+			name: `${user.name.first} ${user.name.last}`,
 			location: `${user.location.city}, ${user.location.state}`,
 			userImg: user.picture.large,
 			dogImg: randomDog.url,
