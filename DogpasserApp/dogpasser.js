@@ -3,7 +3,9 @@ const cardContainer = document.querySelector(".card-container");
 
 const showCardsBtn = document.querySelector("#show-cards-btn");
 showCardsBtn.addEventListener("click", getNewCards);
+
 const breeds = ["labrador", "germanshepherd", "husky", "beagle", "akita"];
+
 let currentUsers = [];
 
 //fetch en random user, og legg til et hundebilde på hver user
@@ -47,7 +49,7 @@ function emptyCurrentUsers() {
 	currentUsers = [];
 }
 
-//Vis 10 nye kort
+// "vis 10 nye kort" -- refresher kortene på siden
 async function getNewCards() {
 	emptyCurrentUsers();
 	for (let i = 0; i < 10; i++) {
@@ -56,13 +58,33 @@ async function getNewCards() {
 	createAndShowCards(currentUsers);
 }
 
-getNewCards(); // Viser kort når siden lastes
+// kaller på funksjonen slik at kortene vises når siden lastes
+getNewCards();
+
+//slettefunksjon
+async function deleteCard(index) {
+	currentUsers.splice(index, 1);
+
+	await fetchRandomUserWithDog();
+
+	createAndShowCards(currentUsers);
+}
+
+function setupDeleteBtn(index) {
+	const deleteBtn = document.createElement("button");
+	deleteBtn.classList.add("delete-btn");
+	deleteBtn.innerHTML = `<img src="assets/delete.png" class="delete-btn" />`;
+
+	deleteBtn.onclick = () => deleteCard(index);
+	return deleteBtn;
+}
 
 //Lage og vise kort på siden
+// setter sammen alle elementene med informasjonen fra de to forrige funksjonene, og lager et kort
 function createAndShowCards(users) {
 	cardContainer.innerHTML = "";
 
-	users.forEach((user) => {
+	users.forEach((user, index) => {
 		//lager selve kortet
 		const profileCard = document.createElement("div");
 		const dogImgContainer = document.createElement("div");
@@ -94,11 +116,13 @@ function createAndShowCards(users) {
 		btnContainer.append(chatBtn);
 		cardContainer.appendChild(profileCard);
 
-		//Slette-knapp - skal kun vises om det IKKE er filter på, dette må kodes
+		/*
+		Slette-knapp - skal kun vises om det IKKE er filter på, dette må kodes
 		const deleteBtn = document.createElement("button");
 		deleteBtn.classList.add("delete-btn");
 		deleteBtn.innerHTML = `<img src="assets/delete.png" class="delete-btn" />`;
 		btnContainer.append(deleteBtn);
+		*/
 	});
 }
 
