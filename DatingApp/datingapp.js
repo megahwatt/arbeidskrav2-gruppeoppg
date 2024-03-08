@@ -49,19 +49,13 @@ async function fetchRandomUser() {
     locationElement.innerHTML = `${user.location.city}, ${user.location.country}`;
     profileImgElement.src = user.picture.large;
 
-    //lager egen container til currentProfile-kort slik at kortet kan styles ulikt for mann/kvinne
+    //Ulik styling på kortet for mann/kvinne
     const container = document.querySelector(".container");
-    const currentProfileCard = document.createElement("div");
     if (currentProfile.gender == "female") {
-      currentProfileCard.style.backgroundColor = "pink";
+      container.style.backgroundColor = "red";
     } else {
-      currentProfileCard.style.backgroundColor = "lightblue";
+      container.style.backgroundColor = "blue";
     }
-
-    currentProfileCard.append(profileImgElement, nameElement, locationElement);
-    //currentProfileCard.style.border = "5px solid black";
-
-    container.append(currentProfileCard);
   } catch (error) {
     console.error("Error fetching random user:", error);
   }
