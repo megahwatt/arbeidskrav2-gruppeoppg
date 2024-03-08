@@ -10,6 +10,11 @@ let currentUsers = [];
 
 let activeFilter = false;
 
+/*
+const chatBtn = document.querySelector(".chat-btn");
+chatBtn.addEventListener("click", openChatBox);
+*/
+
 //fetch en random user, og legg til et hundebilde på hver user
 async function fetchRandomUserWithDog() {
 	try {
@@ -122,7 +127,7 @@ function createAndShowCards(users) {
 			btnContainer.append(deleteBtn);
 		}
 		btnContainer.append(chatBtn);
-		cardContainer.appendChild(profileCard);
+		cardContainer.insertBefore(profileCard, cardContainer.firstChild); //endrer koden slik at nytt profileCard lastes inn fra nedre høgre i stede for øvre venstre
 	});
 
 	//legger til snakkeboble-funksjonalitet på hver kort
@@ -183,7 +188,6 @@ function dogGreets(event) {
 }
 
 /*
-
 //chatbox
 function openChatBox() {
 	const chatBox = document.createElement("div");
@@ -214,9 +218,20 @@ function openChatBox() {
 	});
 }
 
+/*
 function closeChatBox() {
 	const chatBox = document.querySelector(".chat-box");
 
 	chatBox.style.display = "none";
+}
+
+
+function closeChatBox() {
+	const chatBox = document.querySelector(".chat-box");
+	chatBox.style.display = "none";
+}
+
+function sendMessage(userName) {
+	// Your send message logic using the provided userName
 }
 */
