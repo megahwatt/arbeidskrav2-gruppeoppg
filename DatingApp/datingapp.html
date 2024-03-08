@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dating App gruppe 9</title>
-    <link rel="stylesheet" href="datingapp.css" />
-  </head>
-  <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dating App - gruppe 9</title>
+    <link rel="stylesheet" href="datingapp.css">
+</head>
+<body>
     <div class="container">
-      <div class="header">
-        <h1>Dating App Gruppe 9</h1>
-        <div class="score">Score: <span id="score">10</span></div>
-      </div>
-      <div class="filter-buttons">
-        <button id="filter-women">Women</button>
-        <button id="filter-men">Men</button>
-        <button id="filter-both">Both</button>
-      </div>
-      <div class="profile-card">
-        <img src="" alt="Profile Picture" />
-        <h2 class="name"></h2>
-        <p class="location"></p>
-      </div>
-      <div id="message"></div>
+        <div class="header">
+            <h1>Dating App - Gruppe 9</h1>
+            <div class="score">Score: <span id="score">10</span></div>
+        </div>
+        <div class="filter-buttons">
+            <button id="filter-women">Dame</button>
+            <button id="filter-men">Menn</button>
+            <button id="filter-both">Begge</button>
+        </div>
+        <div class="profile-card">
+            <img src="" alt="Profile Picture">
+            <h2 class="name"></h2>
+            <p class="location"></p>
+            <p class="age"></p>
+            <button id="edit-profile">Redigere profil</button>
+        </div>
+        <h3 class="liked-profiles-header">Dine likte profiler:</h3>
+        <div class="liked-profiles-container"></div>
+        <div id="message"></div>
     </div>
-    <h3>Your liked profiles:</h3>
-    <div class="liked-profiles-container"></div>
     <script src="datingapp.js"></script>
-  </body>
+</body>
 </html>
