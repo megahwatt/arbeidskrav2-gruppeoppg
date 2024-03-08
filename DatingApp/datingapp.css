@@ -3,16 +3,16 @@ body {
     font-family: -apple-system;
     margin: 0;
     padding: 0;
-    background-color: #ff6600;
+    background-color: #ff6600; /* Bakgrunnsfarge for hele siden */
 }
 
 .container {
     max-width: 50rem;
     margin: 3.125rem auto;
-    background-color: #D35400;
+    background-color: #D35400; /* Bakgrunnsfarge for hovedbeholderen */
     border-radius: 0.625rem;
     padding: 1.25rem;
-    box-shadow: 0 0 0.625rem rgba(0, 0, 0, 5);
+    box-shadow: 0 0 0.625rem rgba(0, 0, 0, 5); /* Skyggeeffekt for beholderen */
 }
 
 /* Header styles */
@@ -23,15 +23,15 @@ body {
     margin-bottom: 1.875rem;
 }
 
-/* Tittle text */
+/* Title text */
 .header h1 {
     font-size: 1.6rem;
-    color: #FFBFB1;
+    color: #FFBFB1; /* Tekstfarge for overskrift */
 }
 
 .score {
     font-size: 1.125rem;
-    color: #FFBFB1; /* score text */
+    color: #FFBFB1; /* Tekstfarge for poeng */
 }
 
 /* Filter buttons styles */
@@ -45,17 +45,16 @@ body {
     padding: 1.25rem 5rem;
     border: none;
     border-radius: 0.625rem;
-    background-color: #FFA033; /* button background */
-    color: #000; /*  button text */
+    background-color: #FFA033; /* Bakgrunnsfarge for knapper */
+    color: #000; /* Tekstfarge for knapper */
     cursor: pointer;
     transition: background-color 0.3s ease;
     outline: none;
 }
 
-  /* button background on hover */
 .filter-buttons button:hover {
-    background-color: #4d2900;
-  color: #ffffff;
+    background-color: #4d2900; /* Bakgrunnsfarge for knapper ved hover */
+    color: #ffffff;
 }
 
 /* Profile card styles */
@@ -75,15 +74,14 @@ body {
 .profile-card h2 {
     font-size: 1.25rem;
     margin: 0.625rem 0;
-    color: #ffff99; 
+    color: #ffff99; /* Tekstfarge for overskrift */
 }
 
 .profile-card p {
     font-size: 1rem;
     margin: 0.625rem 0;
-    color: #ffff99; 
+    color: #ffff99; /* Tekstfarge for vanlig tekst */
 }
-
 
 .swipe-buttons {
     display: flex;
@@ -95,9 +93,9 @@ body {
     padding: 1.25rem 1.25rem;
     margin: 1.25rem;
     font-size: 1.25rem;
-    border: 0.125rem solid #ffff80; 
+    border: 0.125rem solid #ffff80;
     border-radius: 0.3125rem;
-    background-color: #FFA033; 
+    background-color: #FFA033;
     color: #4d2900;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -105,37 +103,71 @@ body {
 }
 
 .swipe-buttons button:hover {
-    background-color: #4d2900; 
-    color: #ffffff; 
+    background-color: #4d2900;
+    color: #ffffff;
 }
 
 /* Message styles */
 #message {
     font-size: 1.125rem;
     font-weight: bold;
-    color: #fff; /* Red message text */
+    color: #fff; /* Tekstfarge for meldinger */
     margin-top: 1.25rem;
 }
-.liked-profiles-header {
-    display: block; /* Gjør overskriften til et blokknivåelement */
-    margin-bottom: 20px; /* Legg til ønsket avstand under overskriften */
-}
 
-
-.liked-profile-image {
-    width: 100px; /* Juster størrelsen etter behov */
-    height: 100px; /* Juster størrelsen etter behov */
-    border-radius: 50%; /* Gjør bildet rundt hvis ønskelig */
-    margin-right: 10px; /* Legg til margin om nødvendig */
-}
+/* Liked profiles styles */
 .liked-profiles-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px; /* Legg til ønsket avstand mellom kortene */
+    justify-content: center;
 }
 
-.liked-profile-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.liked-profile {
+    flex-basis: 20%;
+    margin: 0.625rem;
+    padding: 0.5rem;
+    border-radius: 0.625rem;
+    box-shadow: 0 0 0.3125rem rgba(0, 0, 0, 0.1);
+}
+
+/* Styles for different genders */
+.liked-profile.female {
+    background-color: #FF80BF; /* Bakgrunnsfarge for kvinnelige profiler */
+    color: #4d2900; /* Tekstfarge for kvinnelige profiler */
+    box-shadow: 0 0 0.625rem rgba(255, 128, 191, 0.5); /* Skyggefarge for kvinnelige profiler */
+}
+
+.liked-profile.male {
+    background-color: #80bfff; /* Bakgrunnsfarge for mannlige profiler */
+    color: #4d2900; /* Tekstfarge for mannlige profiler */
+    box-shadow: 0 0 0.625rem rgba(128, 191, 255, 0.5); /* Skyggefarge for mannlige profiler */
+}
+
+.liked-profile img {
+    width: 100%;
+    height: 12.5rem;
+    object-fit: cover;
+    border-radius: 0.3125rem;
+    margin-bottom: 0.625rem;
+}
+
+.liked-profile p {
+    font-size: 1rem;
+    margin: 0.3125rem 0;
+}
+
+.liked-profile button {
+    padding: 0.625rem 2.5rem;
+    border: none;
+    border-radius: 0.3125rem;
+    background-color: #ffff80; /* Bakgrunnsfarge for knapper */
+    color: #4d2900; /* Tekstfarge for knapper */
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    outline: none;
+}
+
+.liked-profile button:hover {
+    background-color: #4d2900; /* Endre bakgrunnsfarge på hover */
+    color: #ffffff; /* Endre tekstfarge på hover */
 }

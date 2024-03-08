@@ -1,6 +1,7 @@
 const scoreElement = document.getElementById("score");
 const nameElement = document.querySelector(".name");
 const locationElement = document.querySelector(".location");
+const ageElement = document.querySelector(".age"); // Add this line
 const profileImgElement = document.querySelector(".profile-card img");
 const editBtn = document.getElementById("edit-profile");
 const messageElement = document.getElementById("message");
@@ -8,6 +9,7 @@ const messageElement = document.getElementById("message");
 let score = 10;
 let likedProfiles = [];
 let currentProfile;
+let selectedGender;
 
 // Function to update score
 function updateScore() {
@@ -15,9 +17,9 @@ function updateScore() {
   scoreElement.textContent = score;
   if (score <= 0) {
     const response = prompt(
-      "Out of swipes! Would you like to swipe more? Yes/No"
+      "Tom for sveip! Vil du sveipe mer? Ja/Nei"
     );
-    if (response && response.toLowerCase() === "yes") {
+    if (response && response.toLowerCase() === "ja") {
       score = 10;
       scoreElement.textContent = score;
       messageElement.textContent = "";
@@ -25,36 +27,37 @@ function updateScore() {
       interestedBtn.disabled = false;
     } else {
       messageElement.textContent =
-        "Come back later when you're ready to swipe more!";
+        "Kom tilbake senere når du er klar til å sveipe mer!";
       notInterestedBtn.disabled = true;
       interestedBtn.disabled = true;
     }
   }
 }
 
-// Fetch en random profil og vis på siden
-async function fetchRandomUser() {
+// Fetch random profile
+async function fetchRandomUser(gender) {
   try {
     const response = await fetch(
-      `https://randomuser.me/api/?gender=${selectedGender}`
+      `https://randomuser.me/api/?gender=${gender}`
     );
     const data = await response.json();
     const user = data.results[0];
+    user.gender = gender; //
     currentProfile = user;
 
     nameElement.innerHTML = `${user.name.first} ${user.name.last}`;
     locationElement.innerHTML = `${user.location.city}, ${user.location.country}`;
+    ageElement.innerHTML = `${user.dob.age}`; // Vis alderen
     profileImgElement.src = user.picture.large;
   } catch (error) {
-    console.error("Error fetching random user:", error);
+    console.error("Feil ved henting av tilfeldig bruker:", error);
   }
 }
 
-// Filtrering av kjønn
+// Filter by sex
 const filterWomen = document.querySelector("#filter-women");
 const filterMen = document.querySelector("#filter-men");
 const filterBoth = document.querySelector("#filter-both");
-let selectedGender;
 
 filterWomen.addEventListener("click", function () {
   updateSelectedGender("female");
@@ -70,21 +73,21 @@ filterBoth.addEventListener("click", function () {
 
 function updateSelectedGender(gender) {
   selectedGender = gender;
-  console.log("Inne i updateSelectedGender", selectedGender);
+  console.log("Inside updateSelectedGender", selectedGender); // console logg
   fetchRandomUser(selectedGender);
 }
 
 // Event listener for edit button
 editBtn.addEventListener("click", () => {
-  const newName = prompt("Enter new name:");
-  const newLocation = prompt("Enter new location:");
-  const newAge = prompt("Enter new age:");
+  const newName = prompt("Skriv inn nytt navn:");
+  const newLocation = prompt("Skriv inn ny plassering:");
+  const newAge = prompt("Skriv inn ny alder:");
 
-  // Update profile information
+  // Oprofile information update
   nameElement.textContent = newName;
   locationElement.textContent = newLocation;
 
-  // Update information in likedProfiles array
+  // likedProfiles-arrayen update
   likedProfiles = likedProfiles.map((profile) => {
     if (profile.name === nameElement.textContent) {
       return {
@@ -96,7 +99,7 @@ editBtn.addEventListener("click", () => {
     }
     return profile;
   });
-  // Update information in localStorage
+  //  localStorage profil information update.
 
   localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
 });
@@ -105,7 +108,7 @@ editBtn.addEventListener("click", () => {
 document.addEventListener("keydown", function (e) {
   if (e.key === "ArrowRight") {
     //interested
-    likedProfiles.unshift(currentProfile); //restrict to only being able to like once, so you don't fill the array with the same profile multiple times
+    likedProfiles.unshift(currentProfile); //restriction to being able to like only once, so you don't fill the array with the same profile multiple times
     console.log(likedProfiles);
     updateLikedProfilesList();
     updateScore();
@@ -124,7 +127,7 @@ function updateLikedProfilesList() {
 
   likedProfileContainer.innerHTML = "";
 
-// Add the new profiles with the edit button
+// liked profiles
   likedProfiles.forEach((profile) => {
     const card = document.createElement("div");
     card.classList.add("liked-profile");
@@ -135,9 +138,9 @@ function updateLikedProfilesList() {
 
     card.innerHTML = `
       <img src="${profile.picture.large}">
-      <p>Name: ${profile.name.first} ${profile.name.last}</p>
-      <p>Age: ${profile.dob.age}</p>
-      <p>Location: ${profile.location.city}, ${profile.location.country}</p>`;
+      <p>Navn: ${profile.name.first} ${profile.name.last}</p>
+      <p>Alder: ${profile.dob.age}</p>
+      <p>Plassering: ${profile.location.city}, ${profile.location.country}</p>`;
     
     card.appendChild(editButton);
     likedProfileContainer.appendChild(card);
@@ -146,11 +149,11 @@ function updateLikedProfilesList() {
 
 // Function to edit liked profile
 function editProfile(profile) {
-  const newName = prompt("Enter new name:");
-  const newLocation = prompt("Enter new location:");
-  const newAge = prompt("Enter new age:");
+  const newName = prompt("Skriv inn nytt navn:");
+  const newLocation = prompt("Skriv inn ny plassering:");
+  const newAge = prompt("Skriv inn ny alder:");
 
-  // Updating profile information
+  // prifile update
   profile.name.first = newName;
   profile.location.city = newLocation;
   profile.dob.age = newAge;
