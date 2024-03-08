@@ -2,10 +2,8 @@ const scoreElement = document.getElementById("score");
 const nameElement = document.querySelector(".name");
 const locationElement = document.querySelector(".location");
 const profileImgElement = document.querySelector(".profile-card img");
+const editBtn = document.getElementById("edit-profile");
 const messageElement = document.getElementById("message");
-const likedProfileContainer = document.querySelector(
-  ".liked-profiles-container"
-);
 
 let score = 10;
 let likedProfiles = [];
@@ -14,13 +12,13 @@ let selectedGender;
 
 // Function to update score
 function updateScore() {
-  score--; //her må score hente inn antall likedProfiles fra localStorage og regne ut hvor mange poeng som er igjen. Denne funksjonen må også kjøres ved page load.
+  score--;
   scoreElement.textContent = score;
   if (score <= 0) {
     const response = prompt(
-      "Out of swipes! Would you like to swipe more? Yes/No"
+      "Tom for sveip! Vil du sveipe mer? Ja/Nei"
     );
-    if (response && response.toLowerCase() === "yes") {
+    if (response && response.toLowerCase() === "ja") {
       score = 10;
       scoreElement.textContent = score;
       messageElement.textContent = "";
@@ -28,18 +26,18 @@ function updateScore() {
       interestedBtn.disabled = false;
     } else {
       messageElement.textContent =
-        "Come back later when you're ready to swipe more!";
+        "Kom tilbake senere når du er klar til å sveipe mer!";
       notInterestedBtn.disabled = true;
       interestedBtn.disabled = true;
     }
   }
 }
 
-// Fetch en random profil og vis på siden
-async function fetchRandomUser() {
+// Fetch random profile
+async function fetchRandomUser(gender) {
   try {
     const response = await fetch(
-      `https://randomuser.me/api/?gender=${selectedGender}`
+      `https://randomuser.me/api/?gender=${gender}`
     );
     const data = await response.json();
     const user = data.results[0];
@@ -57,11 +55,11 @@ async function fetchRandomUser() {
       container.style.backgroundColor = "blue";
     }
   } catch (error) {
-    console.error("Error fetching random user:", error);
+    console.error("Feil ved henting av tilfeldig bruker:", error);
   }
 }
 
-// Filtrering av kjønn
+// Filter by sex
 const filterWomen = document.querySelector("#filter-women");
 const filterMen = document.querySelector("#filter-men");
 const filterBoth = document.querySelector("#filter-both");
@@ -78,42 +76,67 @@ filterBoth.addEventListener("click", function () {
   updateSelectedGender("");
 });
 
+
 function updateSelectedGender(gender) {
   selectedGender = gender;
-  console.log("Inne i updateSelectedGender", selectedGender);
+  console.log("Inside updateSelectedGender", selectedGender); // console logg
   fetchRandomUser(selectedGender);
 }
 
-// "SWIPE" piltast høyre/venstre
+// Event listener for edit button
+editBtn.addEventListener("click", () => {
+  const newName = prompt("Skriv inn nytt navn:");
+  const newLocation = prompt("Skriv inn ny plassering:");
+  const newAge = prompt("Skriv inn ny alder:");
+
+  // Oprofile information update
+  nameElement.textContent = newName;
+  locationElement.textContent = newLocation;
+
+  // likedProfiles-arrayen update
+  likedProfiles = likedProfiles.map((profile) => {
+    if (profile.name === nameElement.textContent) {
+      return {
+        ...profile,
+        name: newName,
+        location: newLocation,
+        dob: { ...profile.dob, age: newAge }
+      };
+    }
+    return profile;
+  });
+  //  localStorage profil information update.
+
+  localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
+});
+
+// "SWIPE" right/left
 document.addEventListener("keydown", function (e) {
   if (e.key === "ArrowRight") {
-    //interessert
-    saveLikedProfile();
+    //interested
+    likedProfiles.unshift(currentProfile); //restriction to being able to like only once, so you don't fill the array with the same profile multiple times
+    console.log(likedProfiles);
     updateLikedProfilesList();
     updateScore();
     fetchRandomUser(selectedGender);
   } else if (e.key === "ArrowLeft") {
-    //ikke interessert
+    //NOT INTERESTED
     fetchRandomUser(selectedGender);
   }
 });
 
-function saveLikedProfile() {
-  likedProfiles = JSON.parse(localStorage.getItem("likedProfiles")) || []; //sjekker om det ligger noe lagret fra før
-  likedProfiles.unshift(currentProfile);
-  localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
-}
-
-//Oppdaterer liste over likte profiler
+//Updates list of liked profiles
 function updateLikedProfilesList() {
+  const likedProfileContainer = document.querySelector(
+    ".liked-profiles-container"
+  );
+
   likedProfileContainer.innerHTML = "";
 
-  likedProfiles = JSON.parse(localStorage.getItem("likedProfiles")) || []; //sjekker om det ligger noe lagret fra før
-
-  likedProfiles.forEach((profile, index) => {
-    //lager profil-kortet
+// liked profiles
+  likedProfiles.forEach((profile) => {
     const card = document.createElement("div");
-    card.innerHTML = `<img src="${profile.picture.large}"> <p> ${profile.name.first} ${profile.name.last},${profile.location.city}, ${profile.location.country} </p>`;
+    card.classList.add("liked-profile");
 
     //slette-knapp
     const deleteBtn = document.createElement("button");
@@ -162,5 +185,4 @@ function editProfile() {
 // Initial fetch on page load
 window.addEventListener("load", () => {
   fetchRandomUser("");
-  updateLikedProfilesList();
 });
