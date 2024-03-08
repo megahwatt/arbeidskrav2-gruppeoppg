@@ -156,10 +156,29 @@ function filterByBreed() {
 }
 
 //snakkeboble fra hund
-function dogGreets() {
+
+function dogGreets(event) {
 	const dogGreetings = ["Voff voff", "Grrr!", "Mjau??", "Voff!", "Voff voff voff", "WRAFF!!!"];
 
-	randomDogGreeting = dogGreetings[Math.floor(Math.random() * dogGreetings.length)];
+	const randomDogGreeting = dogGreetings[Math.floor(Math.random() * dogGreetings.length)];
 
-	alert(randomDogGreeting);
+	const talkBubble = document.createElement("div");
+	talkBubble.classList.add("talk-bubble");
+	talkBubble.innerHTML = randomDogGreeting;
+
+	const rect = event.target.getBoundingClientRect(); //henter inn informasjon om hvor bildet man trykker på er plassert
+	const leftPosition = rect.left + window.scrollX + event.target.width / 4; //sentrerer snakkeboblen på X-aksen
+	const topPosition = rect.top + window.scrollY + event.target.height / 4; //sentrerer snakkeboblen på Y-aksen
+
+	//bruker informasjonen som ble kalkulert i forrige trinn
+	//til å sette den reelle plasseringen for hver snakkeboble,
+	//slik at den blir sentrert uavgengig av hvilket bilde man trykker på
+	talkBubble.style.left = `${leftPosition}px`;
+	talkBubble.style.top = `${topPosition}px`;
+
+	document.body.appendChild(talkBubble);
+
+	setTimeout(() => {
+		document.body.removeChild(talkBubble);
+	}, 2000);
 }
