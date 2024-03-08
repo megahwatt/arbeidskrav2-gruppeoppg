@@ -182,6 +182,8 @@ function dogGreets(event) {
 	}, 2000);
 }
 
+/*
+
 //chatbox
 function openChatBox() {
 	const chatBox = document.createElement("div");
@@ -217,3 +219,4 @@ function closeChatBox() {
 
 	chatBox.style.display = "none";
 }
+*/
