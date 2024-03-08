@@ -40,7 +40,7 @@ async function fetchRandomUser() {
     );
     const data = await response.json();
     const user = data.results[0];
-    currentProfile = user; //for å huke tak i denne i
+    currentProfile = user;
 
     nameElement.innerHTML = `${user.name.first} ${user.name.last}`;
     locationElement.innerHTML = `${user.location.city}, ${user.location.country}`;
@@ -78,6 +78,7 @@ function updateSelectedGender(gender) {
 editBtn.addEventListener("click", () => {
   const newName = prompt("Enter new name:");
   const newLocation = prompt("Enter new location:");
+  const newAge = prompt("Enter new age:");
 
   // Update profile information
   nameElement.textContent = newName;
@@ -90,6 +91,7 @@ editBtn.addEventListener("click", () => {
         ...profile,
         name: newName,
         location: newLocation,
+        dob: { ...profile.dob, age: newAge }
       };
     }
     return profile;
@@ -99,32 +101,63 @@ editBtn.addEventListener("click", () => {
   localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
 });
 
-// SWIPE
+// "SWIPE" right/left
 document.addEventListener("keydown", function (e) {
   if (e.key === "ArrowRight") {
-    //interessert
-    likedProfiles.unshift(currentProfile); //unike profile
+    //interested
+    likedProfiles.unshift(currentProfile); //restrict to only being able to like once, so you don't fill the array with the same profile multiple times
     console.log(likedProfiles);
     updateLikedProfilesList();
     updateScore();
     fetchRandomUser(selectedGender);
   } else if (e.key === "ArrowLeft") {
-    //not
+    //NOT INTERESTED
     fetchRandomUser(selectedGender);
   }
 });
 
+//Updates list of liked profiles
 function updateLikedProfilesList() {
-    const likedProfileContainer = document.querySelector(".liked-profiles-container");
-      likedProfileContainer.innerHTML = "";
-  
-    // LNew profiles
-    likedProfiles.forEach((profile) => {
-      const card = document.createElement("div");
-      card.innerHTML = `<img src="${profile.picture.large}"> <p>${profile.name.first} ${profile.name.last}, ${profile.location.city}, ${profile.location.country}</p>`;
-      likedProfileContainer.append(card);
-    });
-  }
+  const likedProfileContainer = document.querySelector(
+    ".liked-profiles-container"
+  );
+
+  likedProfileContainer.innerHTML = "";
+
+// Add the new profiles with the edit button
+  likedProfiles.forEach((profile) => {
+    const card = document.createElement("div");
+    card.classList.add("liked-profile");
+
+    const editButton = document.createElement("button");
+    editButton.textContent = "Redigere profil";
+    editButton.addEventListener("click", () => editProfile(profile));
+
+    card.innerHTML = `
+      <img src="${profile.picture.large}">
+      <p>Name: ${profile.name.first} ${profile.name.last}</p>
+      <p>Age: ${profile.dob.age}</p>
+      <p>Location: ${profile.location.city}, ${profile.location.country}</p>`;
+    
+    card.appendChild(editButton);
+    likedProfileContainer.appendChild(card);
+  });
+}
+
+// Function to edit liked profile
+function editProfile(profile) {
+  const newName = prompt("Enter new name:");
+  const newLocation = prompt("Enter new location:");
+  const newAge = prompt("Enter new age:");
+
+  // Updating profile information
+  profile.name.first = newName;
+  profile.location.city = newLocation;
+  profile.dob.age = newAge;
+
+  // localStorage update
+  updateLikedProfilesList();
+  localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
 }
 
 // Initial fetch on page load
