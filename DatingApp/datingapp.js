@@ -10,6 +10,7 @@ const likedProfileContainer = document.querySelector(
 let score = 10;
 let likedProfiles = [];
 let currentProfile;
+let selectedGender;
 
 // Function to update score
 function updateScore() {
@@ -47,6 +48,20 @@ async function fetchRandomUser() {
     nameElement.innerHTML = `${user.name.first} ${user.name.last}`;
     locationElement.innerHTML = `${user.location.city}, ${user.location.country}`;
     profileImgElement.src = user.picture.large;
+
+    //lager egen container til currentProfile-kort slik at kortet kan styles ulikt for mann/kvinne
+    const container = document.querySelector(".container");
+    const currentProfileCard = document.createElement("div");
+    if (currentProfile.gender == "female") {
+      currentProfileCard.style.backgroundColor = "pink";
+    } else {
+      currentProfileCard.style.backgroundColor = "lightblue";
+    }
+
+    currentProfileCard.append(profileImgElement, nameElement, locationElement);
+    //currentProfileCard.style.border = "5px solid black";
+
+    container.append(currentProfileCard);
   } catch (error) {
     console.error("Error fetching random user:", error);
   }
@@ -56,7 +71,6 @@ async function fetchRandomUser() {
 const filterWomen = document.querySelector("#filter-women");
 const filterMen = document.querySelector("#filter-men");
 const filterBoth = document.querySelector("#filter-both");
-let selectedGender;
 
 filterWomen.addEventListener("click", function () {
   updateSelectedGender("female");
