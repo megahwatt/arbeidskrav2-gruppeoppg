@@ -90,40 +90,16 @@ h1 {
 	padding: 25px;
 }
 
-/* Style for the chat box */
 .chat-box {
-	position: absolute;
-	bottom: 20px;
-	right: 20px;
-	max-width: 300px;
-	background-color: #fff;
-	border: 1px solid #ccc;
-	border-radius: 8px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	padding: 10px;
+	background-color: lightgray;
+	border: #3a3537;
 	display: none;
 }
 
-/* Style for the textarea */
+/*
 #your-message {
-	width: 100%;
-	box-sizing: border-box;
-	margin-bottom: 10px;
-	padding: 8px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
 }
 
-/* Style for the buttons */
 button {
-	cursor: pointer;
-	padding: 8px 12px;
-	margin-right: 5px;
-	border: none;
-	border-radius: 4px;
-	background-color: #4caf50;
-	color: #fff;
-	font-size: 14px;
 }
-
-/* Add additional styles as needed */
+*/
