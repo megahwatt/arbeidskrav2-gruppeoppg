@@ -6,9 +6,6 @@ showCardsBtn.addEventListener("click", getNewCards);
 
 const breeds = ["labrador", "germanshepherd", "husky", "beagle", "akita"];
 
-const chatBtn = document.querySelector(".chat-btn");
-//chatBtn.addEventListener("onclick", openChatBox);
-
 let currentUsers = [];
 
 let activeFilter = false;
@@ -183,13 +180,4 @@ function dogGreets(event) {
 	setTimeout(() => {
 		document.body.removeChild(talkBubble);
 	}, 2000);
-}
-
-//chatbox
-function openChatBox() {
-	document.querySelector(".chat-box").style.display = "block";
-}
-
-function closeChatBox() {
-	document.querySelector(".chat-box").style.display = "none";
 }
