@@ -70,7 +70,7 @@ function updateSelectedGender(gender) {
   fetchRandomUser(selectedGender);
 }
 
-// Event listener for edit button
+// Event listener for edit button - REDIGERER CURRENT PROFILE - IKKE FERDIG
 editBtn.addEventListener("click", () => {
   const newName = prompt("Enter new name:");
   const newLocation = prompt("Enter new location:");
@@ -81,7 +81,7 @@ editBtn.addEventListener("click", () => {
   locationElement.textContent = newLocation;
   ageElement.textContent = `Age: ${newAge}`;
 
-  // Update likedProfiles array
+  // Update likedProfiles array  - CURRENT PROFILE LIGGER IKKE I LIKEDPROFILES-ARRAY, SÅ DENNE KODEN VIL IKEK FUNGERE
   likedProfiles = likedProfiles.map((profile) => {
     if (profile.name === nameElement.textContent) {
       return {
@@ -98,7 +98,7 @@ editBtn.addEventListener("click", () => {
   localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
 });
 
-// "SWIPE" piltast høyre/venstre
+// "SWIPE" piltast høyre/venstre - IKKE FERDIG. MANGLER BEGRENSNING PÅ 10 LIKTE PROFILER
 document.addEventListener("keydown", function (e) {
   if (e.key === "ArrowRight") {
     // Interested
@@ -165,7 +165,7 @@ function updateLikedProfilesList() {
   });
 }
 
-// Function to edit liked profile - FUNGERER IKKE
+// Redigere likte profiler (oppdaterer oversikt på siden, array og localstorage) - FUNGERER IKKE
 function editProfile(index) {
   const newName = prompt("Enter new name:");
   const newLocation = prompt("Enter new location:");
