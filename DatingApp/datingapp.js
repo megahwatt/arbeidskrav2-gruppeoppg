@@ -14,9 +14,9 @@ let likedProfiles = [];
 let currentProfile;
 let selectedGender;
 
-// Function to update score - IKKE FERDIG
+// Function to update score
 function updateScore() {
-  score--; //her må score hente inn antall likedProfiles fra localStorage og regne ut hvor mange poeng som er igjen.
+  score--;
   scoreElement.textContent = score;
   if (score <= 0) {
     const response = prompt("Tom for swipes. Vil du swipe mer? Ja/Nei");
@@ -24,8 +24,6 @@ function updateScore() {
       score = 10;
       scoreElement.textContent = score;
       messageElement.textContent = "";
-    } else {
-      //her skal spørsmålet/prompten stilles igjen, helt til brukeren svarer ja
     }
   }
 }
@@ -101,7 +99,7 @@ editBtn.addEventListener("click", () => {
   localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
 });
 
-// "SWIPE" piltast høyre/venstre - IKKE FERDIG. MANGLER BEGRENSNING PÅ 10 LIKTE PROFILER
+// "SWIPE" piltast høyre/venstre
 document.addEventListener("keydown", function (e) {
   if (e.key === "ArrowRight") {
     // Interested
@@ -203,5 +201,4 @@ function deleteProfile(index) {
 window.addEventListener("load", () => {
   fetchRandomUser("");
   updateLikedProfilesList();
-  updateScore();
 });
