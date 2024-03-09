@@ -4,11 +4,11 @@ const cardContainer = document.querySelector(".card-container");
 const showCardsBtn = document.querySelector("#show-cards-btn");
 showCardsBtn.addEventListener("click", getNewCards);
 
-const chatbox = document.querySelector(".chatbox");
+/*const chatbox = document.querySelector(".chatbox");
 chatbox.addEventListener("click", openChatbox);
 
 const sendBtn = document.querySelector(".send-btn");
-/*sendBtn.addEventListener("click", addMessageToArray);*/
+sendBtn.addEventListener("click", addMessageToArray);*/
 
 const sentMssgs = document.querySelector(".sent-mssgs");
 
@@ -140,6 +140,15 @@ function createAndShowCards(users) {
 	dogImages.forEach((dogImg) => {
 		dogImg.addEventListener("click", dogGreets);
 	});
+
+	const chatBtn = document.querySelector(".chat-btn");
+
+	chatBtn.forEach((chatBtn) => {
+		chatBtn.addEventListener("click", () => {
+			const user = chatBtn.getAttribute("data-user");
+			openChatbox(user);
+		});
+	});
 }
 
 //filter
@@ -193,10 +202,12 @@ function dogGreets(event) {
 //chatbox
 function displayMessages() {}
 
-function openChatbox() {
+function openChatbox(user) {
 	chatbox.classList.remove("hidden");
 
-	sentMssgs.innerHTML = `NAVN: Hei! Jeg er en hundeeier`;
+	sentMssgs.innerHTML = [
+		`name: ${user.name}, message: Hei jeg er en hundeeier`
+	];
 
 	console.log("inne i openChatbox");
 }
@@ -221,5 +232,3 @@ function addMessageToArray() {
 	messagesArray.push({ name, message });
 }
 */
-
-// ...
