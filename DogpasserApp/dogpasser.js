@@ -4,6 +4,9 @@ const cardContainer = document.querySelector(".card-container");
 const showCardsBtn = document.querySelector("#show-cards-btn");
 showCardsBtn.addEventListener("click", getNewCards);
 
+const chatbox = document.querySelector(".chatbox");
+chatbox.addEventListener("click", openChatbox);
+
 const breeds = ["labrador", "germanshepherd", "husky", "beagle", "akita"];
 
 let currentUsers = [];
@@ -180,4 +183,18 @@ function dogGreets(event) {
 	setTimeout(() => {
 		document.body.removeChild(talkBubble);
 	}, 2000);
+}
+
+function openChatbox() {
+	chatbox.classList.remove("hidden");
+
+	console.log("inne i openChatbox");
+}
+
+openChatbox();
+
+function closeChatbox() {
+	chatbox.classList.add("hidden");
+
+	console.log("inne i closeChatbox");
 }

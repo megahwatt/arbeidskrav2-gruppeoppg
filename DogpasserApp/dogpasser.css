@@ -89,3 +89,47 @@ h1 {
 	background-color: lightgray;
 	padding: 25px;
 }
+
+.chatbox {
+	background-color: red;
+	border: #3a3537;
+	position: fixed;
+	bottom: 25px;
+	right: 25px;
+	max-width: 300px;
+}
+
+.hidden {
+	display: none;
+}
+
+.sent-messgs {
+}
+
+.chatbox input {
+	width: 100%;
+	padding: 15px;
+	margin: 5px 0 22px 0;
+	border: none;
+	border-radius: 20px;
+	background: #ddd;
+	resize: none;
+	height: 50px;
+	color: #777;
+}
+
+#send-btn {
+	background-color: #04aa6d;
+	color: white;
+	font-size: 17px;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 20px;
+	cursor: pointer;
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+#close-btn {
+	background-color: #1974d2;
+}
