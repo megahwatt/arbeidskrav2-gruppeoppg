@@ -1,62 +1,57 @@
 const scoreElement = document.getElementById("score");
 const nameElement = document.querySelector(".name");
 const locationElement = document.querySelector(".location");
+const ageElement = document.querySelector(".age");
 const profileImgElement = document.querySelector(".profile-card img");
+const editBtn = document.getElementById("edit-profile");
 const messageElement = document.getElementById("message");
-const likedProfileContainer = document.querySelector(
-  ".liked-profiles-container"
-);
 
 let score = 10;
 let likedProfiles = [];
 let currentProfile;
+let selectedGender;
 
-// Function to update score
+// Function to update score - IKKE FERDIG
 function updateScore() {
-  score--; //her må score hente inn antall likedProfiles fra localStorage og regne ut hvor mange poeng som er igjen. Denne funksjonen må også kjøres ved page load.
+  score--; //her må score hente inn antall likedProfiles fra localStorage og regne ut hvor mange poeng som er igjen.
   scoreElement.textContent = score;
   if (score <= 0) {
-    const response = prompt(
-      "Out of swipes! Would you like to swipe more? Yes/No"
-    );
-    if (response && response.toLowerCase() === "yes") {
+    const response = prompt("Tom for swipes. Vil du swipe mer? Ja/Nei");
+    if (response && response.toLowerCase() === "ja") {
       score = 10;
       scoreElement.textContent = score;
       messageElement.textContent = "";
-      notInterestedBtn.disabled = false;
-      interestedBtn.disabled = false;
     } else {
-      messageElement.textContent =
-        "Come back later when you're ready to swipe more!";
-      notInterestedBtn.disabled = true;
-      interestedBtn.disabled = true;
+      //her skal spørsmålet/prompten stilles igjen, helt til brukeren svarer ja
     }
   }
 }
 
-// Fetch en random profil og vis på siden
-async function fetchRandomUser() {
+// Fetch random profile
+async function fetchRandomUser(gender) {
   try {
-    const response = await fetch(
-      `https://randomuser.me/api/?gender=${selectedGender}`
-    );
+    const response = await fetch(`https://randomuser.me/api/?gender=${gender}`);
     const data = await response.json();
     const user = data.results[0];
     currentProfile = user;
 
     nameElement.innerHTML = `${user.name.first} ${user.name.last}`;
     locationElement.innerHTML = `${user.location.city}, ${user.location.country}`;
+    ageElement.innerHTML = `Age: ${user.dob.age}`;
     profileImgElement.src = user.picture.large;
+
+    //Ulik styling på kortet for mann/kvinne
+    const container = document.querySelector(".container");
+    container.style.backgroundColor = user.gender === "female" ? "red" : "blue";
   } catch (error) {
     console.error("Error fetching random user:", error);
   }
 }
 
-// Filtrering av kjønn
+// Filtrering kjønn
 const filterWomen = document.querySelector("#filter-women");
 const filterMen = document.querySelector("#filter-men");
 const filterBoth = document.querySelector("#filter-both");
-let selectedGender;
 
 filterWomen.addEventListener("click", function () {
   updateSelectedGender("female");
@@ -72,31 +67,73 @@ filterBoth.addEventListener("click", function () {
 
 function updateSelectedGender(gender) {
   selectedGender = gender;
-  console.log("Inne i updateSelectedGender", selectedGender);
   fetchRandomUser(selectedGender);
 }
 
-// "SWIPE" piltast høyre/venstre
+// Event listener for edit button - REDIGERER CURRENT PROFILE - IKKE FERDIG
+editBtn.addEventListener("click", () => {
+  const newName = prompt("Enter new name:");
+  const newLocation = prompt("Enter new location:");
+  const newAge = prompt("Enter new age:");
+
+  // Update profile information
+  nameElement.textContent = newName;
+  locationElement.textContent = newLocation;
+  ageElement.textContent = `Age: ${newAge}`;
+
+  // Update likedProfiles array  - CURRENT PROFILE LIGGER IKKE I LIKEDPROFILES-ARRAY, SÅ DENNE KODEN VIL IKEK FUNGERE
+  likedProfiles = likedProfiles.map((profile) => {
+    if (profile.name === nameElement.textContent) {
+      return {
+        ...profile,
+        name: newName,
+        location: newLocation,
+        dob: { ...profile.dob, age: newAge },
+      };
+    }
+    return profile;
+  });
+
+  // Update localStorage profile information
+  localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
+});
+
+// "SWIPE" piltast høyre/venstre - IKKE FERDIG. MANGLER BEGRENSNING PÅ 10 LIKTE PROFILER
 document.addEventListener("keydown", function (e) {
   if (e.key === "ArrowRight") {
-    //interessert
+    // Interested
     saveLikedProfile();
     updateLikedProfilesList();
     updateScore();
     fetchRandomUser(selectedGender);
   } else if (e.key === "ArrowLeft") {
-    //ikke interessert
+    // Not Interested
     fetchRandomUser(selectedGender);
   }
 });
 
+//Lagre likte profiler
 function saveLikedProfile() {
   likedProfiles = JSON.parse(localStorage.getItem("likedProfiles")) || []; //sjekker om det ligger noe lagret fra før
-  likedProfiles.unshift(currentProfile);
+
+  //legger til profilen under likte profiler, hvis den ikke allerede er lagt til tidligere
+  const profileIndex = likedProfiles.findIndex(
+    (profile) => profile.name === currentProfile.name
+  );
+
+  if (profileIndex !== -1) {
+    // Replace existing profile
+    likedProfiles.splice(profileIndex, 1, currentProfile);
+  } else {
+    // Add new profile
+    likedProfiles.unshift(currentProfile);
+  }
+
+  //oppdaterer likte profiler i localStorage
   localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
 }
 
-//Oppdaterer liste over likte profiler
+// Updates list of liked profiles
 function updateLikedProfilesList() {
   likedProfileContainer.innerHTML = "";
 
@@ -105,49 +142,52 @@ function updateLikedProfilesList() {
   likedProfiles.forEach((profile, index) => {
     //lager profil-kortet
     const card = document.createElement("div");
-    card.innerHTML = `<img src="${profile.picture.large}"> <p> ${profile.name.first} ${profile.name.last},${profile.location.city}, ${profile.location.country} </p>`;
+    card.innerHTML = `<img src="${profile.picture.large}"> <p> ${profile.name.first} ${profile.name.last},${profile.location.city}, ${profile.location.country} </p> <p class="age">Age: ${profile.dob.age}</p>`;
+    card.classList.add(profile.gender);
 
     //slette-knapp
     const deleteBtn = document.createElement("button");
     deleteBtn.innerHTML = "Delete";
     deleteBtn.addEventListener("click", function () {
-      deleteProfile(index); //funksjonen er ikke laget enda
+      deleteProfile(index);
     });
 
     //rediger-knapp
     const editBtn = document.createElement("button");
     editBtn.innerHTML = "Edit";
     editBtn.addEventListener("click", function () {
-      editProfile(index); //må man ha index her også?
+      editProfile(index);
     });
 
-    card.append(editBtn, deleteBtn);
-    likedProfileContainer.append(card);
+    card.appendChild(editBtn);
+    card.appendChild(deleteBtn);
+    likedProfileContainer.appendChild(card);
   });
 }
 
-// Edit profiles
-function editProfile() {
+// Redigere likte profiler (oppdaterer oversikt på siden, array og localstorage) - FUNGERER IKKE
+function editProfile(index) {
   const newName = prompt("Enter new name:");
   const newLocation = prompt("Enter new location:");
+  const newAge = prompt("Enter new age:");
 
-  // Update profile information
-  nameElement.textContent = newName;
-  locationElement.textContent = newLocation;
+  // Update profile in likedProfiles array
+  likedProfiles[index] = {
+    ...likedProfiles[index],
+    name: newName,
+    location: newLocation,
+    dob: { ...likedProfiles[index].dob, age: newAge },
+  };
 
-  // Update information in likedProfiles array
-  likedProfiles = likedProfiles.map((profile) => {
-    if (profile.name === nameElement.textContent) {
-      return {
-        ...profile,
-        name: newName,
-        location: newLocation,
-      };
-    }
-    return profile;
-  });
+  // Update localStorage
+  updateLikedProfilesList();
+  localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
+}
 
-  // Update information in localStorage
+// Function to delete liked profile - FUNGERER IKKE
+function deleteProfile(index) {
+  likedProfiles.splice(index, 1);
+  updateLikedProfilesList();
   localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
 }
 
@@ -155,4 +195,5 @@ function editProfile() {
 window.addEventListener("load", () => {
   fetchRandomUser("");
   updateLikedProfilesList();
+  updateScore();
 });

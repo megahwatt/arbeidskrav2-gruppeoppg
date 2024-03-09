@@ -196,7 +196,7 @@ function dogGreets(event) {
 
 	document.body.appendChild(talkBubble);
 
-	setTimeout(() => {
+  setTimeout(() => {
 		document.body.removeChild(talkBubble);
 	}, 2000);
 }
@@ -218,16 +218,3 @@ function closeChatbox() {
 
 	console.log("inne i closeChatbox");
 }
-
-/*
-let messagesArray = [
-	{name: `${user.name.first} ${user.name.last}`, message: }
-];
-
-function addMessageToArray() {
-	const name = `Amina`;
-	let message = document.querySelector("your-mssg").value;
-
-	messagesArray.push({ name, message });
-}
-*/
