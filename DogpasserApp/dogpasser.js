@@ -4,6 +4,8 @@ const cardContainer = document.querySelector(".card-container");
 const showCardsBtn = document.querySelector("#show-cards-btn");
 showCardsBtn.addEventListener("click", getNewCards);
 
+userName = chatBtn.getAttribute("data-fullname");
+
 /*const chatbox = document.querySelector(".chatbox");
 chatbox.addEventListener("click", openChatbox);
 
@@ -146,8 +148,7 @@ function createAndShowCards(users) {
 
 	chatBtn.forEach((chatBtn) => {
 		chatBtn.addEventListener("click", () => {
-			const user = chatBtn.getAttribute("data-fullname");
-			openChatbox(user);
+			openChatbox(userName);
 		});
 	});
 }
@@ -203,7 +204,7 @@ function dogGreets(event) {
 //chatbox
 function displayMessages() {}
 
-function openChatbox(user) {
+function openChatbox(userName) {
 	const chatbox = document.querySelector(".chatbox");
 	chatbox.classList.remove("hidden");
 
