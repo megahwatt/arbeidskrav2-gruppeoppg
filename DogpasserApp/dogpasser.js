@@ -7,6 +7,11 @@ showCardsBtn.addEventListener("click", getNewCards);
 const chatbox = document.querySelector(".chatbox");
 chatbox.addEventListener("click", openChatbox);
 
+const sendBtn = document.querySelector(".send-btn");
+/*sendBtn.addEventListener("click", addMessageToArray);*/
+
+const sentMssgs = document.querySelector(".sent-mssgs");
+
 const breeds = ["labrador", "germanshepherd", "husky", "beagle", "akita"];
 
 let currentUsers = [];
@@ -114,7 +119,7 @@ function createAndShowCards(users) {
 		dogImgContainer.innerHTML = `<img src="${user.dogImg}" class="dog-img" />`;
 		userImgContainer.innerHTML = `<img src="${user.userImg}" class="user-img-container" />`;
 		userTxt.innerHTML = `<p>${user.name}</p> <p>${user.location}</p>`;
-		chatBtn.innerHTML = `<img src="assets/chat.png" class="chat-btn" />`;
+		chatBtn.innerHTML = `<img src="assets/chat.png" class="chat-btn" data-user=${user.name.first}/>`;
 
 		//appender alt til profileCard
 		profileCard.append(dogImgContainer, userContainer, btnContainer);
@@ -185,8 +190,13 @@ function dogGreets(event) {
 	}, 2000);
 }
 
+//chatbox
+function displayMessages() {}
+
 function openChatbox() {
 	chatbox.classList.remove("hidden");
+
+	sentMssgs.innerHTML = `NAVN: Hei! Jeg er en hundeeier`;
 
 	console.log("inne i openChatbox");
 }
@@ -198,3 +208,18 @@ function closeChatbox() {
 
 	console.log("inne i closeChatbox");
 }
+
+/*
+let messagesArray = [
+	{name: `${user.name.first} ${user.name.last}`, message: }
+];
+
+function addMessageToArray() {
+	const name = `Amina`;
+	let message = document.querySelector("your-mssg").value;
+
+	messagesArray.push({ name, message });
+}
+*/
+
+// ...
