@@ -105,10 +105,15 @@ editBtn.addEventListener("click", () => {
 document.addEventListener("keydown", function (e) {
   if (e.key === "ArrowRight") {
     // Interested
-    saveLikedProfile();
-    updateLikedProfilesList();
-    updateScore();
-    fetchRandomUser(selectedGender);
+
+    if (likedProfiles.length < 10) {
+      saveLikedProfile();
+      updateLikedProfilesList();
+      updateScore();
+      fetchRandomUser(selectedGender);
+    } else {
+      alert("Likte profiler er full. Slett en for å like fler profiler.");
+    }
   } else if (e.key === "ArrowLeft") {
     // Not Interested
     fetchRandomUser(selectedGender);
