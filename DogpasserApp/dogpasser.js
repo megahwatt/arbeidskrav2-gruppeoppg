@@ -119,7 +119,7 @@ function createAndShowCards(users) {
 		dogImgContainer.innerHTML = `<img src="${user.dogImg}" class="dog-img" />`;
 		userImgContainer.innerHTML = `<img src="${user.userImg}" class="user-img-container" />`;
 		userTxt.innerHTML = `<p>${user.name}</p> <p>${user.location}</p>`;
-		chatBtn.innerHTML = `<img src="assets/chat.png" class="chat-btn" data-user=${user.name.first}/>`;
+		chatBtn.innerHTML = `<img src="assets/chat.png" class="chat-btn" data-fullname="${user.name.first} ${user.name.last}"/>`;
 
 		//appender alt til profileCard
 		profileCard.append(dogImgContainer, userContainer, btnContainer);
@@ -141,11 +141,12 @@ function createAndShowCards(users) {
 		dogImg.addEventListener("click", dogGreets);
 	});
 
-	const chatBtn = document.querySelector(".chat-btn");
+	//chatbox vises når man trykker på chatBtn
+	const chatBtn = document.querySelectorAll(".chat-btn");
 
 	chatBtn.forEach((chatBtn) => {
 		chatBtn.addEventListener("click", () => {
-			const user = chatBtn.getAttribute("data-user");
+			const user = chatBtn.getAttribute("data-fullname");
 			openChatbox(user);
 		});
 	});
@@ -203,16 +204,13 @@ function dogGreets(event) {
 function displayMessages() {}
 
 function openChatbox(user) {
+	const chatbox = document.querySelector(".chatbox");
 	chatbox.classList.remove("hidden");
 
-	sentMssgs.innerHTML = [
-		`name: ${user.name}, message: Hei jeg er en hundeeier`
-	];
+	sentMssgs.innerHTML = [`name: ${user.name.first}, message: Hei jeg er en hundeeier`];
 
 	console.log("inne i openChatbox");
 }
-
-openChatbox();
 
 function closeChatbox() {
 	chatbox.classList.add("hidden");
