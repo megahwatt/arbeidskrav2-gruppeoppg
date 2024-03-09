@@ -187,11 +187,11 @@ function editProfile(index) {
   localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
 }
 
-// Function to delete liked profile - FUNGERER IKKE
+// Function to delete liked profile
 function deleteProfile(index) {
   likedProfiles.splice(index, 1);
-  updateLikedProfilesList();
   localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
+  updateLikedProfilesList();
 }
 
 // Initial fetch on page load
