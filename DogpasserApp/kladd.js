@@ -4,15 +4,8 @@ const cardContainer = document.querySelector(".card-container");
 const showCardsBtn = document.querySelector("#show-cards-btn");
 showCardsBtn.addEventListener("click", getNewCards);
 
-userName = chatBtn.getAttribute("data-fullname");
-
-/*const chatbox = document.querySelector(".chatbox");
-chatbox.addEventListener("click", openChatbox);
-
-const sendBtn = document.querySelector(".send-btn");
-sendBtn.addEventListener("click", addMessageToArray);*/
-
-const sentMssgs = document.querySelector(".sent-mssgs");
+const chatBtn = document.querySelector(".chat-btn");
+chatBtn.addEventListener("click", openChatBox);
 
 const breeds = ["labrador", "germanshepherd", "husky", "beagle", "akita"];
 
@@ -121,7 +114,7 @@ function createAndShowCards(users) {
 		dogImgContainer.innerHTML = `<img src="${user.dogImg}" class="dog-img" />`;
 		userImgContainer.innerHTML = `<img src="${user.userImg}" class="user-img-container" />`;
 		userTxt.innerHTML = `<p>${user.name}</p> <p>${user.location}</p>`;
-		chatBtn.innerHTML = `<img src="assets/chat.png" class="chat-btn" data-fullname="${user.name.first} ${user.name.last}"/>`;
+		chatBtn.innerHTML = `<img src="assets/chat.png" class="chat-btn" />`;
 
 		//appender alt til profileCard
 		profileCard.append(dogImgContainer, userContainer, btnContainer);
@@ -132,7 +125,7 @@ function createAndShowCards(users) {
 			btnContainer.append(deleteBtn);
 		}
 		btnContainer.append(chatBtn);
-		cardContainer.insertBefore(profileCard, cardContainer.firstChild); //endrer koden slik at nytt profileCard lastes inn fra nedre høgre i stede for øvre venstre
+		cardContainer.appendChild(profileCard);
 	});
 
 	//legger til snakkeboble-funksjonalitet på hver kort
@@ -141,15 +134,6 @@ function createAndShowCards(users) {
 
 	dogImages.forEach((dogImg) => {
 		dogImg.addEventListener("click", dogGreets);
-	});
-
-	//chatbox vises når man trykker på chatBtn
-	const chatBtn = document.querySelectorAll(".chat-btn");
-
-	chatBtn.forEach((chatBtn) => {
-		chatBtn.addEventListener("click", () => {
-			openChatbox(userName);
-		});
 	});
 }
 
@@ -196,25 +180,45 @@ function dogGreets(event) {
 
 	document.body.appendChild(talkBubble);
 
-  setTimeout(() => {
+	setTimeout(() => {
 		document.body.removeChild(talkBubble);
 	}, 2000);
 }
 
 //chatbox
-function displayMessages() {}
+function openChatBox() {
+	const chatBox = document.createElement("div");
+	chatBox.classList.add("chat-box");
+	chatBox.innerHTML = `
+        <form id="chatbox">
+            <textarea id="your-message" placeholder="Skriv din melding her"></textarea>
+            <button type="button" onclick="sendMessage('user')">Send</button>
+            <button type="button" onclick="closeChatBox()">Lukk</button>
+        </form>
+    `;
 
-function openChatbox(userName) {
-	const chatbox = document.querySelector(".chatbox");
-	chatbox.classList.remove("hidden");
+	//kalkulerer plasseringen til chatteboksen slik at den blir stående nede i nedre høgre hjørne
+	const leftPosition = window.innerWidth - chatBox.offsetWidth - 20;
+	const topPosition = window.innerHeight - chatBox.offsetHeight - 20;
 
-	sentMssgs.innerHTML = [`name: ${user.name.first}, message: Hei jeg er en hundeeier`];
+	//bruker informasjonen fra forrige trinn til å faktisk plassere boksen i nedre høgre hjørne
+	chatBox.style.left = `${leftPosition}px`;
+	chatBox.style.top = `${topPosition}px`;
 
-	console.log("inne i openChatbox");
+	chatBox.style.display = "block";
+
+	document.body.appendChild(chatBox);
+
+	document.querySelector("#chatbox").addEventListener("submit", function (event) {
+		event.preventDefault();
+		sendMessage("Deg");
+	});
 }
 
-function closeChatbox() {
-	chatbox.classList.add("hidden");
+function closeChatBox() {
+	const chatBox = document.querySelector(".chat-btn");
 
-	console.log("inne i closeChatbox");
+	chatBox.style.display = "none";
 }
+
+function sendMessage() {}
