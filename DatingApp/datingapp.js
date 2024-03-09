@@ -5,6 +5,9 @@ const ageElement = document.querySelector(".age");
 const profileImgElement = document.querySelector(".profile-card img");
 const editBtn = document.getElementById("edit-profile");
 const messageElement = document.getElementById("message");
+const likedProfileContainer = document.querySelector(
+  ".liked-profiles-container"
+);
 
 let score = 10;
 let likedProfiles = [];
