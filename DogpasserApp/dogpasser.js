@@ -6,17 +6,12 @@ showCardsBtn.addEventListener("click", getNewCards);
 
 const breeds = ["labrador", "germanshepherd", "husky", "beagle", "akita"];
 
-const openChatBox = document.querySelector(".chat-btn");
+const chatBtn = document.querySelector(".chat-btn");
 chatBtn.addEventListener("click", openChatBox);
 
 let currentUsers = [];
 
 let activeFilter = false;
-
-/*
-const chatBtn = document.querySelector(".chat-btn");
-chatBtn.addEventListener("click", openChatBox);
-*/
 
 //fetch en random user, og legg til et hundebilde på hver user
 async function fetchRandomUserWithDog() {
@@ -191,3 +186,10 @@ function dogGreets(event) {
 }
 
 //chatbox
+function openChatBox() {
+	document.getElementById("chat-box").style.display = "block";
+}
+
+function closeChatBox() {
+	document.getElementById("chat-box").style.display = "none";
+}
