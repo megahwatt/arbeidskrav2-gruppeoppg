@@ -5,9 +5,6 @@ const ageElement = document.querySelector(".age");
 const profileImgElement = document.querySelector(".profile-card img");
 const editBtn = document.getElementById("edit-profile");
 const messageElement = document.getElementById("message");
-const likedProfileContainer = document.querySelector(
-  ".liked-profiles-container"
-);
 
 let score = 10;
 let likedProfiles = [];
@@ -30,18 +27,17 @@ function updateScore() {
   }
 }
 
-// Fetch en random profil og vis på siden
-async function fetchRandomUser() {
+// Fetch random profile
+async function fetchRandomUser(gender) {
   try {
-    const response = await fetch(
-      `https://randomuser.me/api/?gender=${selectedGender}`
-    );
+    const response = await fetch(`https://randomuser.me/api/?gender=${gender}`);
     const data = await response.json();
     const user = data.results[0];
     currentProfile = user;
 
     nameElement.innerHTML = `${user.name.first} ${user.name.last}`;
     locationElement.innerHTML = `${user.location.city}, ${user.location.country}`;
+    ageElement.innerHTML = `Age: ${user.dob.age}`;
     profileImgElement.src = user.picture.large;
 
     //Ulik styling på kortet for mann/kvinne
@@ -52,7 +48,7 @@ async function fetchRandomUser() {
   }
 }
 
-// Filtrering av kjønn
+// Filtrering kjønn
 const filterWomen = document.querySelector("#filter-women");
 const filterMen = document.querySelector("#filter-men");
 const filterBoth = document.querySelector("#filter-both");
@@ -105,13 +101,13 @@ editBtn.addEventListener("click", () => {
 // "SWIPE" piltast høyre/venstre
 document.addEventListener("keydown", function (e) {
   if (e.key === "ArrowRight") {
-    //interessert
+    // Interested
     saveLikedProfile();
     updateLikedProfilesList();
     updateScore();
     fetchRandomUser(selectedGender);
   } else if (e.key === "ArrowLeft") {
-    //ikke interessert
+    // Not Interested
     fetchRandomUser(selectedGender);
   }
 });
@@ -137,7 +133,7 @@ function saveLikedProfile() {
   localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
 }
 
-//Oppdaterer liste over likte profiler
+// Updates list of liked profiles
 function updateLikedProfilesList() {
   likedProfileContainer.innerHTML = "";
 
@@ -163,8 +159,9 @@ function updateLikedProfilesList() {
       editProfile(index);
     });
 
-    card.append(editBtn, deleteBtn);
-    likedProfileContainer.append(card);
+    card.appendChild(editBtn);
+    card.appendChild(deleteBtn);
+    likedProfileContainer.appendChild(card);
   });
 }
 
