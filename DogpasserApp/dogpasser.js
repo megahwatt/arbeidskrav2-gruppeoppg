@@ -4,14 +4,14 @@ const cardContainer = document.querySelector(".card-container");
 const showCardsBtn = document.querySelector("#show-cards-btn");
 showCardsBtn.addEventListener("click", getNewCards);
 
-userName = chatBtn.getAttribute("data-fullname");
+/*
+    userName = chatBtn.getAttribute("data-fullname");
 
-/*const chatbox = document.querySelector(".chatbox");
-chatbox.addEventListener("click", openChatbox);
+    const sendBtn = document.querySelector(".send-btn");
+    sendBtn.addEventListener("click", addMessageToArray);
+*/
 
-const sendBtn = document.querySelector(".send-btn");
-sendBtn.addEventListener("click", addMessageToArray);*/
-
+const chatbox = document.querySelector(".chatbox");
 const sentMssgs = document.querySelector(".sent-mssgs");
 
 const breeds = ["labrador", "germanshepherd", "husky", "beagle", "akita"];
@@ -121,7 +121,7 @@ function createAndShowCards(users) {
 		dogImgContainer.innerHTML = `<img src="${user.dogImg}" class="dog-img" />`;
 		userImgContainer.innerHTML = `<img src="${user.userImg}" class="user-img-container" />`;
 		userTxt.innerHTML = `<p>${user.name}</p> <p>${user.location}</p>`;
-		chatBtn.innerHTML = `<img src="assets/chat.png" class="chat-btn" data-fullname="${user.name.first} ${user.name.last}"/>`;
+		chatBtn.innerHTML = `<img src="assets/chat.png" class="chat-btn">`;
 
 		//appender alt til profileCard
 		profileCard.append(dogImgContainer, userContainer, btnContainer);
@@ -148,7 +148,7 @@ function createAndShowCards(users) {
 
 	chatBtn.forEach((chatBtn) => {
 		chatBtn.addEventListener("click", () => {
-			openChatbox(userName);
+			openChatbox();
 		});
 	});
 }
@@ -196,25 +196,44 @@ function dogGreets(event) {
 
 	document.body.appendChild(talkBubble);
 
-  setTimeout(() => {
+	setTimeout(() => {
 		document.body.removeChild(talkBubble);
 	}, 2000);
 }
 
 //chatbox
-function displayMessages() {}
 
-function openChatbox(userName) {
-	const chatbox = document.querySelector(".chatbox");
-	chatbox.classList.remove("hidden");
-
-	sentMssgs.innerHTML = [`name: ${user.name.first}, message: Hei jeg er en hundeeier`];
-
-	console.log("inne i openChatbox");
-}
-
-function closeChatbox() {
+function hiddenChatbox() {
 	chatbox.classList.add("hidden");
 
 	console.log("inne i closeChatbox");
+}
+
+function openChatbox() {
+	chatbox.classList.remove("hidden");
+
+	console.log("inne i openChatbox");
+
+	if (currentUsers.length === 0) {
+		fetchRandomUserWithDog().then((userWithDog) => {
+			displayAutoMssg(userWithDog);
+		});
+	} else {
+		displayAutoMssg(currentUsers[0]);
+	}
+
+	closeChatbox();
+}
+
+function displayAutoMssg(userWithDog) {
+	sentMssgs.innerHTML = `${userWithDog.name.first}: message: Hei jeg er en hundeeier`;
+	console.log("inne i sent-mssgs");
+}
+
+function closeChatbox() {
+	const closeBtn = document.querySelector(".close-btn");
+
+	closeBtn.addEventListener("click", hiddenChatbox);
+
+	console.log("inne i lukk");
 }
