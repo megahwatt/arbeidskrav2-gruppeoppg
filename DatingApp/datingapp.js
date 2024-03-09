@@ -1,7 +1,9 @@
 const scoreElement = document.getElementById("score");
 const nameElement = document.querySelector(".name");
 const locationElement = document.querySelector(".location");
+const ageElement = document.querySelector(".age");
 const profileImgElement = document.querySelector(".profile-card img");
+const editBtn = document.getElementById("edit-profile");
 const messageElement = document.getElementById("message");
 const likedProfileContainer = document.querySelector(
   ".liked-profiles-container"
@@ -12,25 +14,18 @@ let likedProfiles = [];
 let currentProfile;
 let selectedGender;
 
-// Function to update score
+// Function to update score - IKKE FERDIG
 function updateScore() {
-  score--; //her må score hente inn antall likedProfiles fra localStorage og regne ut hvor mange poeng som er igjen. Denne funksjonen må også kjøres ved page load.
+  score--; //her må score hente inn antall likedProfiles fra localStorage og regne ut hvor mange poeng som er igjen.
   scoreElement.textContent = score;
   if (score <= 0) {
-    const response = prompt(
-      "Out of swipes! Would you like to swipe more? Yes/No"
-    );
-    if (response && response.toLowerCase() === "yes") {
+    const response = prompt("Tom for swipes. Vil du swipe mer? Ja/Nei");
+    if (response && response.toLowerCase() === "ja") {
       score = 10;
       scoreElement.textContent = score;
       messageElement.textContent = "";
-      notInterestedBtn.disabled = false;
-      interestedBtn.disabled = false;
     } else {
-      messageElement.textContent =
-        "Come back later when you're ready to swipe more!";
-      notInterestedBtn.disabled = true;
-      interestedBtn.disabled = true;
+      //her skal spørsmålet/prompten stilles igjen, helt til brukeren svarer ja
     }
   }
 }
@@ -51,11 +46,7 @@ async function fetchRandomUser() {
 
     //Ulik styling på kortet for mann/kvinne
     const container = document.querySelector(".container");
-    if (currentProfile.gender == "female") {
-      container.style.backgroundColor = "red";
-    } else {
-      container.style.backgroundColor = "blue";
-    }
+    container.style.backgroundColor = user.gender === "female" ? "red" : "blue";
   } catch (error) {
     console.error("Error fetching random user:", error);
   }
@@ -80,9 +71,36 @@ filterBoth.addEventListener("click", function () {
 
 function updateSelectedGender(gender) {
   selectedGender = gender;
-  console.log("Inne i updateSelectedGender", selectedGender);
   fetchRandomUser(selectedGender);
 }
+
+// Event listener for edit button
+editBtn.addEventListener("click", () => {
+  const newName = prompt("Enter new name:");
+  const newLocation = prompt("Enter new location:");
+  const newAge = prompt("Enter new age:");
+
+  // Update profile information
+  nameElement.textContent = newName;
+  locationElement.textContent = newLocation;
+  ageElement.textContent = `Age: ${newAge}`;
+
+  // Update likedProfiles array
+  likedProfiles = likedProfiles.map((profile) => {
+    if (profile.name === nameElement.textContent) {
+      return {
+        ...profile,
+        name: newName,
+        location: newLocation,
+        dob: { ...profile.dob, age: newAge },
+      };
+    }
+    return profile;
+  });
+
+  // Update localStorage profile information
+  localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
+});
 
 // "SWIPE" piltast høyre/venstre
 document.addEventListener("keydown", function (e) {
@@ -98,9 +116,24 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
+//Lagre likte profiler
 function saveLikedProfile() {
   likedProfiles = JSON.parse(localStorage.getItem("likedProfiles")) || []; //sjekker om det ligger noe lagret fra før
-  likedProfiles.unshift(currentProfile);
+
+  //legger til profilen under likte profiler, hvis den ikke allerede er lagt til tidligere
+  const profileIndex = likedProfiles.findIndex(
+    (profile) => profile.name === currentProfile.name
+  );
+
+  if (profileIndex !== -1) {
+    // Replace existing profile
+    likedProfiles.splice(profileIndex, 1, currentProfile);
+  } else {
+    // Add new profile
+    likedProfiles.unshift(currentProfile);
+  }
+
+  //oppdaterer likte profiler i localStorage
   localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
 }
 
@@ -113,20 +146,21 @@ function updateLikedProfilesList() {
   likedProfiles.forEach((profile, index) => {
     //lager profil-kortet
     const card = document.createElement("div");
-    card.innerHTML = `<img src="${profile.picture.large}"> <p> ${profile.name.first} ${profile.name.last},${profile.location.city}, ${profile.location.country} </p>`;
+    card.innerHTML = `<img src="${profile.picture.large}"> <p> ${profile.name.first} ${profile.name.last},${profile.location.city}, ${profile.location.country} </p> <p class="age">Age: ${profile.dob.age}</p>`;
+    card.classList.add(profile.gender);
 
     //slette-knapp
     const deleteBtn = document.createElement("button");
     deleteBtn.innerHTML = "Delete";
     deleteBtn.addEventListener("click", function () {
-      deleteProfile(index); //funksjonen er ikke laget enda
+      deleteProfile(index);
     });
 
     //rediger-knapp
     const editBtn = document.createElement("button");
     editBtn.innerHTML = "Edit";
     editBtn.addEventListener("click", function () {
-      editProfile(index); //må man ha index her også?
+      editProfile(index);
     });
 
     card.append(editBtn, deleteBtn);
@@ -134,28 +168,29 @@ function updateLikedProfilesList() {
   });
 }
 
-// Edit profiles
-function editProfile() {
+// Function to edit liked profile - FUNGERER IKKE
+function editProfile(index) {
   const newName = prompt("Enter new name:");
   const newLocation = prompt("Enter new location:");
+  const newAge = prompt("Enter new age:");
 
-  // Update profile information
-  nameElement.textContent = newName;
-  locationElement.textContent = newLocation;
+  // Update profile in likedProfiles array
+  likedProfiles[index] = {
+    ...likedProfiles[index],
+    name: newName,
+    location: newLocation,
+    dob: { ...likedProfiles[index].dob, age: newAge },
+  };
 
-  // Update information in likedProfiles array
-  likedProfiles = likedProfiles.map((profile) => {
-    if (profile.name === nameElement.textContent) {
-      return {
-        ...profile,
-        name: newName,
-        location: newLocation,
-      };
-    }
-    return profile;
-  });
+  // Update localStorage
+  updateLikedProfilesList();
+  localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
+}
 
-  // Update information in localStorage
+// Function to delete liked profile - FUNGERER IKKE
+function deleteProfile(index) {
+  likedProfiles.splice(index, 1);
+  updateLikedProfilesList();
   localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
 }
 
@@ -163,4 +198,5 @@ function editProfile() {
 window.addEventListener("load", () => {
   fetchRandomUser("");
   updateLikedProfilesList();
+  updateScore();
 });
