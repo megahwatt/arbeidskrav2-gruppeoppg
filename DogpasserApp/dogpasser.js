@@ -6,6 +6,9 @@ showCardsBtn.addEventListener("click", getNewCards);
 
 const breeds = ["labrador", "germanshepherd", "husky", "beagle", "akita"];
 
+const openChatBox = document.querySelector(".chat-btn");
+chatBtn.addEventListener("click", openChatBox);
+
 let currentUsers = [];
 
 let activeFilter = false;
@@ -187,7 +190,6 @@ function dogGreets(event) {
 	}, 2000);
 }
 
-/*
 //chatbox
 function openChatBox() {
 	const chatBox = document.createElement("div");
@@ -199,7 +201,8 @@ function openChatBox() {
             <button type="button" onclick="closeChatBox()">Lukk</button>
         </form>
     `;
-
+}
+/*
 	//kalkulerer plasseringen til chatteboksen slik at den blir stående nede i nedre høgre hjørne
 	const leftPosition = window.innerWidth - chatBox.offsetWidth - 20;
 	const topPosition = window.innerHeight - chatBox.offsetHeight - 20;
