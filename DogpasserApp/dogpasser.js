@@ -214,6 +214,13 @@ function openChatbox(index) {
 	sendBtn.addEventListener("click", sendMessage);
 }
 
+function closeChatbox() {
+	messages = [];
+	chatbox.classList.add("hidden");
+
+	console.log("inne i lukk");
+}
+
 function sendMessage() {
 	const yourMssg = document.querySelector("#your-mssg");
 	messages.push(`Du: ${yourMssg.value}`);
@@ -238,46 +245,16 @@ function updateChat() {
 	}
 }
 
-/*
-function displayMovies(filteredMovies = movies) {
-	const movieList = document.getElementById("movie-list");
-	movieList.innerHTML = "";
-
-	filteredMovies
-		.map((movie, index) => {
-			const li = document.createElement("li");
-			li.textContent = `${movie.title}, ${movie.year}`;
-			li.appendChild(createDeleteButton(index));
-			return li;
-		})
-
-		.forEach((li) => movieList.appendChild(li));
-}
-//<button class="delete-mssg-btn">Slett</button></p>
-function createDeleteButton(index) {
-	const deleteButton = document.createElement("button");
-	deleteButton.textContent = "Slett";
-	deleteButton.onclick = () => deleteMovie(index);
-	return deleteButton;
-}
-*/
-
-async function deleteMssg(index) {
+function deleteMssg(index) {
 	messages.splice(index, 1);
+	updateChat();
 }
 
 function setupMssgDelete(index) {
 	const mssgDelete = document.createElement("button");
 	mssgDelete.classList.add("delete-btn");
-	mssgDelete.innerHTML = `slett`;
+	mssgDelete.innerHTML = `Slett`;
 
 	mssgDelete.onclick = () => deleteMssg(index);
 	return mssgDelete;
-}
-
-function closeChatbox() {
-	messages = [];
-	chatbox.classList.add("hidden");
-
-	console.log("inne i lukk");
 }

@@ -103,10 +103,9 @@ h1 {
 	display: none;
 }
 
-/*
-.sent-messgs {
+.sent-mssgs {
+	padding: 10px;
 }
-*/
 
 .chatbox input {
 	width: 100%;
