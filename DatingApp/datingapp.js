@@ -48,32 +48,33 @@ async function fetchRandomUser(gender) {
     }
 }
 
-
 // Function to edit a liked profile
 function editProfile(index) {
-    console.log("Before editing:", likedProfiles); // Log before editing
+    console.log("Før redigering:", likedProfiles); // Logg før redigering
 
-    const newName = prompt("Enter new name:");
-    const newAge = parseInt(prompt("Enter new age:"));
-    const newLocation = prompt("Enter new location:");
+    const newName = prompt("Skriv inn nytt navn:");
+    const newAge = parseInt(prompt("Skriv inn ny alder:"));
+    const newLocationCity = prompt("Skriv inn ny by:");
+    const newLocationState = prompt("Skriv inn ny stat:");
 
-    // Check if inputs are valid
-    if (newName !== null && !isNaN(newAge) && newLocation !== null) {
-        // Update profile in likedProfiles array
-        likedProfiles[index].name.first = newName; // Update first name
-        likedProfiles[index].name.last = ""; // Clear last name
+    // Sjekk om inndataene er gyldige
+    if (newName !== null && !isNaN(newAge) && newLocationCity !== null && newLocationState !== null) {
+        // Oppdater profilen i likedProfiles-arrayet
+        likedProfiles[index].name.first = newName; // Oppdater fornavnet
+        likedProfiles[index].name.last = ""; // Tøm etternavn
         likedProfiles[index].dob.age = newAge;
-        likedProfiles[index].location.city = newLocation;
+        likedProfiles[index].location.city = newLocationCity;
+        likedProfiles[index].location.state = newLocationState;
 
-        // Update localStorage
+        // Oppdater localStorage
         localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
 
-        // Update liked profiles list on the page
+        // Oppdater listen over likte profiler på siden
         updateLikedProfilesList();
 
-        console.log("After editing:", likedProfiles); // Log after editing
+        console.log("Etter redigering:", likedProfiles); // Logg etter redigering
     } else {
-        console.log("Invalid input or canceled."); // Log if inputs are invalid or canceled
+        console.log("Ugyldig inndata eller avbrutt."); // Logg hvis inndataene er ugyldige eller avbrutt
     }
 }
 
