@@ -91,6 +91,14 @@ function setupDeleteBtn(index) {
 	return deleteBtn;
 }
 
+function setupChatBtn(index) {
+	const chatBtn = document.createElement("button");
+	chatBtn.classList.add("chat-btn");
+	chatBtn.innerHTML = `<img src="assets/chat.png" class="chat-btn" />`;
+
+	return chatBtn;
+}
+
 //Lage og vise kort på siden
 // setter sammen alle elementene med informasjonen fra de to forrige funksjonene, og lager et kort
 function createAndShowCards(users) {
@@ -105,7 +113,7 @@ function createAndShowCards(users) {
 		const userTxt = document.createElement("div");
 		const btnContainer = document.createElement("div");
 		const deleteBtn = setupDeleteBtn(index);
-		const chatBtn = document.createElement("button");
+		const chatBtn = setupChatBtn(index);
 
 		//legger til klasse på hvert element
 		profileCard.classList.add("profile-card");
@@ -115,13 +123,11 @@ function createAndShowCards(users) {
 		userImgContainer.classList.add("user-img-container");
 		userTxt.classList.add("user-txt");
 		btnContainer.classList.add("btn-container");
-		chatBtn.classList.add("chat-btn");
 
 		//legger til innhold i elementene på kortet
 		dogImgContainer.innerHTML = `<img src="${user.dogImg}" class="dog-img" />`;
 		userImgContainer.innerHTML = `<img src="${user.userImg}" class="user-img-container" />`;
 		userTxt.innerHTML = `<p>${user.name}</p> <p>${user.location}</p>`;
-		chatBtn.innerHTML = `<img src="assets/chat.png" class="chat-btn">`;
 
 		//appender alt til profileCard
 		profileCard.append(dogImgContainer, userContainer, btnContainer);
@@ -214,6 +220,7 @@ function openChatbox() {
 
 	console.log("inne i openChatbox");
 
+	/*
 	if (currentUsers.length === 0) {
 		fetchRandomUserWithDog().then((userWithDog) => {
 			displayAutoMssg(userWithDog);
@@ -221,7 +228,7 @@ function openChatbox() {
 	} else {
 		displayAutoMssg(currentUsers[0]);
 	}
-
+*/
 	closeChatbox();
 }
 
