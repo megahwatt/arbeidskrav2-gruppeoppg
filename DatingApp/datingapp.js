@@ -115,6 +115,7 @@ document.addEventListener("keydown", function (e) {
     }
   } else if (e.key === "ArrowLeft") {
     // Not Interested
+    updateScore();
     fetchRandomUser(selectedGender);
   }
 });
