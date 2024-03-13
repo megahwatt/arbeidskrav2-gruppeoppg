@@ -42,8 +42,9 @@ async function fetchRandomUser(gender) {
     profileImgElement.src = user.picture.large;
 
     //Ulik styling på kortet for mann/kvinne
-    const container = document.querySelector(".container");
-    container.style.backgroundColor = user.gender === "female" ? "red" : "blue";
+    const profileCard = document.querySelector(".profile-card");
+    profileCard.style.backgroundColor =
+      user.gender === "female" ? "red" : "blue";
   } catch (error) {
     console.error("Error fetching random user:", error);
   }
