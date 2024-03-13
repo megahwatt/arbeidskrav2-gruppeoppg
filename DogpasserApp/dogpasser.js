@@ -14,6 +14,7 @@ showCardsBtn.addEventListener("click", getNewCards);
 const chatbox = document.querySelector(".chatbox");
 
 const sentMssgs = document.querySelector(".sent-mssgs");
+let sentMssgs = [];
 
 const breeds = ["labrador", "germanshepherd", "husky", "beagle", "akita"];
 
@@ -243,14 +244,5 @@ name.first
 function displayAutoMssg() {
 	sentMssgs.innerHTML = `${currentUsers[index].name.first}: message: Hei jeg er en hundeeier`;
 	console.log("inne i sent-mssgs");
-}
-
-/*
-function closeChatbox() {
-	const closeBtn = document.querySelector(".close-btn");
-
-	closeBtn.addEventListener("click", hiddenChatbox);
-
-	console.log("inne i lukk");
 }
 */
