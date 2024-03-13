@@ -96,6 +96,7 @@ function setupChatBtn(index) {
 	chatBtn.classList.add("chat-btn");
 	chatBtn.innerHTML = `<img src="assets/chat.png" class="chat-btn" />`;
 
+	chatBtn.onclick = () => openChatbox(index);
 	return chatBtn;
 }
 
@@ -148,15 +149,6 @@ function createAndShowCards(users) {
 	dogImages.forEach((dogImg) => {
 		dogImg.addEventListener("click", dogGreets);
 	});
-
-	//chatbox vises når man trykker på chatBtn
-	const chatBtn = document.querySelectorAll(".chat-btn");
-
-	chatBtn.forEach((chatBtn) => {
-		chatBtn.addEventListener("click", () => {
-			openChatbox();
-		});
-	});
 }
 
 //filter
@@ -208,19 +200,34 @@ function dogGreets(event) {
 }
 
 //chatbox
-
 function hiddenChatbox() {
 	chatbox.classList.add("hidden");
 
 	console.log("inne i closeChatbox");
 }
 
-function openChatbox() {
+function openChatbox(index) {
 	chatbox.classList.remove("hidden");
 
 	console.log("inne i openChatbox");
 
-	/*
+	sentMssgs.innerHTML = `${currentUsers[index].name}: Hei, jeg er en hundeeier!`;
+}
+
+//closeBtn.addEventListener("click", hiddenChatbox);
+
+function closeChatbox() {
+	const closeBtn = document.querySelector(".close-btn");
+	chatbox.classList.add("hidden");
+
+	console.log("inne i lukk");
+}
+
+/*
+${currentUsers[index].name.first}
+name.first
+
+	
 	if (currentUsers.length === 0) {
 		fetchRandomUserWithDog().then((userWithDog) => {
 			displayAutoMssg(userWithDog);
@@ -229,14 +236,15 @@ function openChatbox() {
 		displayAutoMssg(currentUsers[0]);
 	}
 */
-	closeChatbox();
-}
+//	closeChatbox();
 
-function displayAutoMssg(userWithDog) {
-	sentMssgs.innerHTML = `${userWithDog.name.first}: message: Hei jeg er en hundeeier`;
+/*
+function displayAutoMssg() {
+	sentMssgs.innerHTML = `${currentUsers[index].name.first}: message: Hei jeg er en hundeeier`;
 	console.log("inne i sent-mssgs");
 }
 
+/*
 function closeChatbox() {
 	const closeBtn = document.querySelector(".close-btn");
 
@@ -244,3 +252,4 @@ function closeChatbox() {
 
 	console.log("inne i lukk");
 }
+*/
