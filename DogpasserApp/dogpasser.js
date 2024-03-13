@@ -12,6 +12,7 @@ showCardsBtn.addEventListener("click", getNewCards);
 */
 
 const chatbox = document.querySelector(".chatbox");
+
 const sentMssgs = document.querySelector(".sent-mssgs");
 
 const breeds = ["labrador", "germanshepherd", "husky", "beagle", "akita"];
@@ -212,12 +213,12 @@ function openChatbox(index) {
 	console.log("inne i openChatbox");
 
 	sentMssgs.innerHTML = `${currentUsers[index].name}: Hei, jeg er en hundeeier!`;
+
+	const closeBtn = document.querySelector("#close-btn");
+	closeBtn.addEventListener("click", closeChatbox);
 }
 
-//closeBtn.addEventListener("click", hiddenChatbox);
-
 function closeChatbox() {
-	const closeBtn = document.querySelector(".close-btn");
 	chatbox.classList.add("hidden");
 
 	console.log("inne i lukk");
