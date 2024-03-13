@@ -29,7 +29,7 @@ function updateScore() {
 async function fetchRandomUser(gender) {
     try {
         const response = await fetch(
-            `https://randomuser.me/api/?results=1&nat=us&inc=name,location,dob,picture&gender=${gender}`
+            `https://randomuser.me/api/?results=1&nat=us&inc=name,location,dob,picture,gender&gender=${gender}`
         );
         const data = await response.json();
         const user = data.results[0];
@@ -42,11 +42,12 @@ async function fetchRandomUser(gender) {
 
         //Ulik styling på kortet for mann/kvinne
         const profileCard = document.querySelector(".profile-card");
-        profileCard.style.backgroundColor = user.gender === "female" ? "red" : "blue";
+        profileCard.style.backgroundColor = user.gender === "female" ? "pink" : "lightblue"; // Endre fargen her basert på kjønn
     } catch (error) {
         console.error("Error fetching random user:", error);
     }
 }
+
 
 // Function to edit a liked profile
 function editProfile(index) {
