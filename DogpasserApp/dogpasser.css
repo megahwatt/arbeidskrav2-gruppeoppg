@@ -86,17 +86,24 @@ h1 {
 	border: #3a3537;
 	border-radius: 50%;
 	position: absolute;
-	background-color: lightgray;
+	background-color: #fff;
 	padding: 25px;
 }
 
 .chatbox {
-	background-color: red;
-	border: #3a3537;
+	box-sizing: border-box;
+	background-color: lightgray;
+	border: #000 solid 1px;
+	padding: 10px;
 	position: fixed;
 	bottom: 25px;
 	right: 25px;
-	max-width: 300px;
+	width: 300px;
+	max-height: 500px;
+	font-size: 14px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	white-space: wrap;
 }
 
 .hidden {
@@ -104,33 +111,49 @@ h1 {
 }
 
 .sent-mssgs {
-	padding: 10px;
-}
-
-.chatbox input {
-	width: 100%;
 	padding: 15px;
-	margin: 5px 0 22px 0;
-	border: none;
-	border-radius: 20px;
-	background: #ddd;
-	resize: none;
-	height: 50px;
-	color: #777;
-}
-
-#send-btn {
-	background-color: #04aa6d;
-	color: white;
-	font-size: 17px;
-	padding: 10px 20px;
-	border: none;
-	border-radius: 20px;
-	cursor: pointer;
-	width: 100%;
 	margin-bottom: 10px;
 }
 
+#your-mssg {
+	box-sizing: border-box;
+	width: 100%;
+	padding: 10px;
+	background: #fff;
+	border: none;
+	resize: none;
+	height: 100px;
+	overflow-y: scroll;
+}
+
+button {
+	font-family: "Courier New", Courier, monospace;
+}
+
+.mssg-delete-btn,
+#send-btn,
 #close-btn {
-	background-color: #1974d2;
+	margin: 15px auto 0 auto;
+	padding: 5px;
+	border: #000 solid 1px;
+	background-color: #fff;
+	font-size: bold;
+}
+
+#send-btn,
+#close-btn {
+	width: 100%;
+}
+
+.mssg-delete-btn:hover {
+	border: red solid 1px;
+	color: red;
+	background-color: lightgray;
+}
+
+#send-btn:hover,
+#close-btn:hover {
+	border: #fff solid 1px;
+	color: #fff;
+	background-color: #3a3537;
 }

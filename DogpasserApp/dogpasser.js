@@ -205,13 +205,14 @@ function openChatbox(index) {
 
 	console.log("inne i openChatbox");
 
-	messages.push(`${currentUsers[index].name}: Hei, jeg er en hundeeier!`);
+	messages.push(`<b>${currentUsers[index].name}:</b><br />Hei, jeg er en hundeeier!`);
 	updateChat();
+
+	const sendBtn = document.querySelector("#send-btn");
+	sendBtn.addEventListener("click", sendMessage);
 
 	const closeBtn = document.querySelector("#close-btn");
 	closeBtn.addEventListener("click", closeChatbox);
-	const sendBtn = document.querySelector("#send-btn");
-	sendBtn.addEventListener("click", sendMessage);
 }
 
 function closeChatbox() {
@@ -223,7 +224,7 @@ function closeChatbox() {
 
 function sendMessage() {
 	const yourMssg = document.querySelector("#your-mssg");
-	messages.push(`Du: ${yourMssg.value}`);
+	messages.push(`<b>Du:</b><br />${yourMssg.value}`);
 
 	yourMssg.value = "";
 	console.log(yourMssg.value);
@@ -252,8 +253,8 @@ function deleteMssg(index) {
 
 function setupMssgDelete(index) {
 	const mssgDelete = document.createElement("button");
-	mssgDelete.classList.add("delete-btn");
-	mssgDelete.innerHTML = `Slett`;
+	mssgDelete.classList.add("mssg-delete-btn");
+	mssgDelete.innerHTML = `<b>SLETT</b>`;
 
 	mssgDelete.onclick = () => deleteMssg(index);
 	return mssgDelete;

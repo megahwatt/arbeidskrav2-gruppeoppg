@@ -74,6 +74,7 @@ function updateSelectedGender(gender) {
 /*
 //DENNE GJELDER FOR KNAPPEN TIL STOR PROFIL, DEN KNAPPEN ER NÅ FJERNET, SÅ DENNE MÅ KODES OM/FLYTTES
 // Event listener for edit button - REDIGERER CURRENT PROFILE - IKKE FERDIG
+
 editBtn.addEventListener("click", () => {
 	const newName = prompt("Skriv inn nytt navn:");
 	const newAge = parseInt(prompt("Skriv inn ny alder:"));
