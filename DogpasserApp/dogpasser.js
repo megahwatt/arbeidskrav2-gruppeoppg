@@ -205,7 +205,15 @@ function openChatbox(index) {
 
 	console.log("inne i openChatbox");
 
-	messages.push(`<b>${currentUsers[index].name}:</b><br />Hei, jeg er en hundeeier!`);
+	const ownerGreetings = [
+		"Heisann! Jeg er en hundeeier.",
+		"Vil du passe hunden min?",
+		"Hei! Kan du passe hunden min i helgen?",
+		"Så hyggelig at du vil passe bikkja mi!",
+	];
+	const randomOwnerGreeting = ownerGreetings[Math.floor(Math.random() * ownerGreetings.length)];
+
+	messages.push(`<b>${currentUsers[index].name}:</b><br />${randomOwnerGreeting}<br />`);
 	updateChat();
 
 	const sendBtn = document.querySelector("#send-btn");
@@ -224,7 +232,7 @@ function closeChatbox() {
 
 function sendMessage() {
 	const yourMssg = document.querySelector("#your-mssg");
-	messages.push(`<b>Du:</b><br />${yourMssg.value}`);
+	messages.push(`<b>Du:</b><br />${yourMssg.value}<br />`);
 
 	yourMssg.value = "";
 	console.log(yourMssg.value);
