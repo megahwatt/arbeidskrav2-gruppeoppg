@@ -107,7 +107,7 @@ function editProfile(index) {
 		likedProfiles[index].name.last = ""; // Tøm etternavn
 		likedProfiles[index].dob.age = newAge;
 		likedProfiles[index].location.city = newLocationCity;
-		likedProfiles[index].location.state = newLocationState;
+		likedProfiles[index].location.state = "";
 
 		// Oppdater localStorage
 		localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
