@@ -58,7 +58,7 @@ async function fetchRandomUser(gender) {
 		const user = data.results[0];
 		currentProfile = user;
 
-		nameElement.innerHTML = `<p>Navn: ${user.name.first} ${user.name.last}</p>`;
+		nameElement.innerHTML = `<p>Navn: ${user.name.first}<br />${user.name.last}</p>`;
 		ageElement.innerHTML = `<p>Alder: ${user.dob.age}</p>`;
 		locationElement.innerHTML = `<p>Bosted: ${user.location.city},<br />${user.location.state}</p>`;
 		profileImgElement.src = user.picture.large;
@@ -162,7 +162,7 @@ function updateLikedProfilesList() {
 	likedProfiles.forEach((profile, index) => {
 		//lager profil-kortet
 		const card = document.createElement("div");
-		card.innerHTML = `<img src="${profile.picture.large}"> <p>Navn:<br />${profile.name.first} ${profile.name.last}</p><p>Alder: ${profile.dob.age}</p>Bosted:<br />${profile.location.city},<br />${profile.location.state}</p>`;
+		card.innerHTML = `<img src="${profile.picture.large}"> <p>Navn:<br />${profile.name.first}<br />${profile.name.last}</p><p>Alder: ${profile.dob.age}</p>Bosted:<br />${profile.location.city},<br />${profile.location.state}</p>`;
 
 		//slette-knapp
 		const deleteBtn = document.createElement("button");
