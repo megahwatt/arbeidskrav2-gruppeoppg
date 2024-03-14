@@ -25,6 +25,26 @@ function updateScore() {
 	}
 }
 
+document.addEventListener("keydown", function (e) {
+	if (score > 0 && score <= 10) {
+		if (e.key === "ArrowRight") {
+			if (likedProfiles.length < 10) {
+				saveLikedProfile();
+				updateLikedProfilesList();
+				updateScore();
+				fetchRandomUser(selectedGender);
+			} else {
+				alert("Likte profiler er full. Slett en for å like fler profiler.");
+			}
+		} else if (e.key === "ArrowLeft") {
+			updateScore();
+			fetchRandomUser(selectedGender);
+		}
+	} else {
+		alert("Score tom!");
+	}
+});
+
 // Fetch random profile
 async function fetchRandomUser(gender) {
 	try {
@@ -160,22 +180,3 @@ function updateLikedProfilesList() {
 		likedProfileContainer.appendChild(card);
 	});
 }
-
-// "SWIPE" piltast høyre/venstre
-document.addEventListener("keydown", function (e) {
-	if (e.key === "ArrowRight") {
-		// Interested
-		if (likedProfiles.length < 10) {
-			saveLikedProfile();
-			updateLikedProfilesList();
-			updateScore();
-			fetchRandomUser(selectedGender);
-		} else {
-			alert("Likte profiler er full. Slett en for å like fler profiler.");
-		}
-	} else if (e.key === "ArrowLeft") {
-		// Not Interested
-		updateScore();
-		fetchRandomUser(selectedGender);
-	}
-});

@@ -38,7 +38,6 @@ body {
 .filter-buttons button {
 	padding: 25px 50px;
 	background-color: #f0f0f0;
-	color: #000;
 }
 
 .filter-buttons button:hover {
@@ -101,10 +100,8 @@ body {
 
 .liked-profile button {
 	padding: 25px;
-	background-color: #fff;
 }
 
 .liked-profile button:hover {
 	background-color: #000;
-	color: #fff;
 }
