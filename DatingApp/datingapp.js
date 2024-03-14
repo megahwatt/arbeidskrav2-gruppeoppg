@@ -3,7 +3,6 @@ const nameElement = document.querySelector(".name");
 const locationElement = document.querySelector(".location");
 const ageElement = document.querySelector(".age");
 const profileImgElement = document.querySelector(".profile-card img");
-const messageElement = document.querySelector("#message");
 const likedProfileContainer = document.querySelector(".liked-profiles-container");
 
 let score = 10;
@@ -23,7 +22,6 @@ function updateScore() {
 		}
 		score = 10;
 		scoreElement.textContent = score;
-		messageElement.textContent = "";
 	}
 }
 

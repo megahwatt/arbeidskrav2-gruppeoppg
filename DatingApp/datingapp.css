@@ -68,12 +68,6 @@ body {
 	color: #fff;
 }
 
-#message {
-	font-size: 12px;
-	color: #fff;
-	margin-top: 15px;
-}
-
 .liked-profiles-container {
 	display: flex;
 	flex-wrap: wrap;
