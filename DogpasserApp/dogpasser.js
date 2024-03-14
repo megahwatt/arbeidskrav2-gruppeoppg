@@ -14,7 +14,21 @@ let currentUsers = [];
 
 let activeFilter = false;
 
-//fetch en random user, og legg til et hundebilde på hver user
+//fetch ett tilfeldig hundebilde, men kun ut ifra 5 valgte raser -- begge
+async function fetchRandomDog() {
+	try {
+		const randomDogBreed = breeds[Math.floor(Math.random() * breeds.length)];
+		const request = await fetch(`https://dog.ceo/api/breed/${randomDogBreed}/images/random`);
+		const response = await request.json();
+		const randomDog = { url: response.message, breed: randomDogBreed };
+
+		return randomDog;
+	} catch (error) {
+		console.error("Kunne ikke hente hundebilde", error);
+	}
+}
+
+//fetch en random user, og legg til et hundebilde på hver user -- begge
 async function fetchRandomUserWithDog() {
 	try {
 		const request = await fetch("https://randomuser.me/api/?results=1&nat=us&inc=name,location,picture");
@@ -36,26 +50,12 @@ async function fetchRandomUserWithDog() {
 	}
 }
 
-//fetch ett tilfeldig hundebilde, men kun ut ifra 5 valgte raser
-async function fetchRandomDog() {
-	try {
-		const randomDogBreed = breeds[Math.floor(Math.random() * breeds.length)];
-		const request = await fetch(`https://dog.ceo/api/breed/${randomDogBreed}/images/random`);
-		const response = await request.json();
-		const randomDog = { url: response.message, breed: randomDogBreed };
-
-		return randomDog;
-	} catch (error) {
-		console.error("Kunne ikke hente hundebilde", error);
-	}
-}
-
-//tømmer users-arrayet hver gang så det bare vises 10 av gangen
+//tømmer users-arrayet hver gang så det bare vises 10 av gangen -- camilla
 function emptyCurrentUsers() {
 	currentUsers = [];
 }
 
-// "vis 10 nye kort" -- refresher kortene på siden
+// "vis 10 nye kort" -- refresher kortene på siden -- camilla
 async function getNewCards() {
 	emptyCurrentUsers();
 	for (let i = 0; i < 10; i++) {
@@ -67,7 +67,7 @@ async function getNewCards() {
 // kaller på funksjonen slik at kortene vises når siden lastes
 getNewCards();
 
-//slettefunksjon
+//slettefunksjon -- susanne
 async function deleteCard(index) {
 	currentUsers.splice(index, 1);
 
@@ -94,7 +94,7 @@ function setupChatBtn(index) {
 	return chatBtn;
 }
 
-//Lage og vise kort på siden
+//Lage og vise kort på siden -- begge
 // setter sammen alle elementene med informasjonen fra de to forrige funksjonene, og lager et kort
 function createAndShowCards(users) {
 	cardContainer.innerHTML = "";
@@ -136,7 +136,7 @@ function createAndShowCards(users) {
 		cardContainer.insertBefore(profileCard, cardContainer.firstChild); //endrer koden slik at nytt profileCard lastes inn fra nedre høgre i stede for øvre venstre
 	});
 
-	//legger til snakkeboble-funksjonalitet på hver kort
+	//legger til snakkeboble-funksjonalitet på hver kort -- begge
 	const dogImages = document.querySelectorAll(".dog-img");
 	console.log(dogImages);
 
@@ -145,28 +145,7 @@ function createAndShowCards(users) {
 	});
 }
 
-//filter
-const breedFilter = document.querySelector("#breed-filter");
-
-const filterBtn = document.querySelector("#filter-btn");
-
-filterBtn.addEventListener("click", filterByBreed);
-
-function filterByBreed() {
-	selectedBreed = breedFilter.value;
-
-	activeFilter = selectedBreed != "all";
-
-	if (activeFilter) {
-		//sjekker om filteret er true/aktivt
-		filteredUsers = currentUsers.filter((user) => user.dogBreed == selectedBreed);
-		createAndShowCards(filteredUsers);
-	} else {
-		createAndShowCards(currentUsers);
-	}
-}
-
-//snakkeboble fra hund
+//snakkeboble fra hund -- begge
 function dogGreets(event) {
 	const dogGreetings = ["Voff voff", "Grrr!", "Mjau??", "Voff!", "Voff voff voff", "WRAFF!!!"];
 
@@ -193,11 +172,39 @@ function dogGreets(event) {
 	}, 2000);
 }
 
-//chatbox
+//filter -- camilla
+const breedFilter = document.querySelector("#breed-filter");
+
+const filterBtn = document.querySelector("#filter-btn");
+
+filterBtn.addEventListener("click", filterByBreed);
+
+function filterByBreed() {
+	selectedBreed = breedFilter.value;
+
+	activeFilter = selectedBreed != "all";
+
+	// "if (activeFilter)" sjekker om filteret er true/aktivt
+	if (activeFilter) {
+		filteredUsers = currentUsers.filter((user) => user.dogBreed == selectedBreed);
+		createAndShowCards(filteredUsers);
+	} else {
+		createAndShowCards(currentUsers);
+	}
+}
+
+//chatbox -- begge
 function hiddenChatbox() {
 	chatbox.classList.add("hidden");
 
 	console.log("inne i closeChatbox");
+}
+
+function closeChatbox() {
+	messages = [];
+	chatbox.classList.add("hidden");
+
+	console.log("inne i lukk");
 }
 
 function openChatbox(index) {
@@ -221,13 +228,6 @@ function openChatbox(index) {
 
 	const closeBtn = document.querySelector("#close-btn");
 	closeBtn.addEventListener("click", closeChatbox);
-}
-
-function closeChatbox() {
-	messages = [];
-	chatbox.classList.add("hidden");
-
-	console.log("inne i lukk");
 }
 
 function sendMessage() {
