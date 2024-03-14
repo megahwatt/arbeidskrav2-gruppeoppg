@@ -11,17 +11,17 @@ let likedProfiles = [];
 let currentProfile;
 let selectedGender;
 
-// Function to update score
 function updateScore() {
 	score--;
 	scoreElement.textContent = score;
 	if (score <= 0) {
-		const response = prompt("Tom for swipes. Vil du swipe mer? Ja/Nei");
-		if (response && response.toLowerCase() === "ja") {
-			score = 10;
-			scoreElement.textContent = score;
-			messageElement.textContent = "";
+		let response = "";
+		while (response.toLowerCase() !== "ja") {
+			response = prompt("Tom for swipes. Vil du swipe mer? Ja/Nei");
 		}
+		score = 10;
+		scoreElement.textContent = score;
+		messageElement.textContent = "";
 	}
 }
 
@@ -42,6 +42,7 @@ document.addEventListener("keydown", function (e) {
 		}
 	} else {
 		alert("Score tom!");
+		updateScore();
 	}
 });
 
