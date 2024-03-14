@@ -12,8 +12,10 @@ let currentProfile;
 let selectedGender;
 
 function updateScore() {
-	score--;
-	scoreElement.textContent = score;
+	if (score > 0) {
+		score--;
+		scoreElement.textContent = score;
+	}
 	if (score <= 0) {
 		let response = "";
 		while (response.toLowerCase() !== "ja") {
