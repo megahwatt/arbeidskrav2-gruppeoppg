@@ -1,3 +1,4 @@
+// Globale variabler -- Camilla
 const scoreElement = document.querySelector("#score");
 const nameElement = document.querySelector(".name");
 const locationElement = document.querySelector(".location");
@@ -10,6 +11,30 @@ let likedProfiles = [];
 let currentProfile;
 let selectedGender;
 
+// Fetch random profile -- Camilla
+async function fetchRandomUser(gender) {
+	try {
+		const response = await fetch(
+			`https://randomuser.me/api/?results=1&nat=us&inc=name,location,dob,picture,gender&gender=${gender}`
+		);
+		const data = await response.json();
+		const user = data.results[0];
+		currentProfile = user;
+
+		nameElement.innerHTML = `<p>Navn: ${user.name.first}<br />${user.name.last}</p>`;
+		ageElement.innerHTML = `<p>Alder: ${user.dob.age}</p>`;
+		locationElement.innerHTML = `<p>Bosted: ${user.location.city},<br />${user.location.state}</p>`;
+		profileImgElement.src = user.picture.large;
+
+		//Ulik styling på kortet for mann/kvinne
+		const profileCard = document.querySelector(".profile-card");
+		profileCard.style.backgroundColor = user.gender === "female" ? "red" : "blue";
+	} catch (error) {
+		console.error("Error fetching random user:", error);
+	}
+}
+
+// alle
 function updateScore() {
 	if (score > 0) {
 		score--;
@@ -46,30 +71,7 @@ document.addEventListener("keydown", function (e) {
 	}
 });
 
-// Fetch random profile
-async function fetchRandomUser(gender) {
-	try {
-		const response = await fetch(
-			`https://randomuser.me/api/?results=1&nat=us&inc=name,location,dob,picture,gender&gender=${gender}`
-		);
-		const data = await response.json();
-		const user = data.results[0];
-		currentProfile = user;
-
-		nameElement.innerHTML = `<p>Navn: ${user.name.first}<br />${user.name.last}</p>`;
-		ageElement.innerHTML = `<p>Alder: ${user.dob.age}</p>`;
-		locationElement.innerHTML = `<p>Bosted: ${user.location.city},<br />${user.location.state}</p>`;
-		profileImgElement.src = user.picture.large;
-
-		//Ulik styling på kortet for mann/kvinne
-		const profileCard = document.querySelector(".profile-card");
-		profileCard.style.backgroundColor = user.gender === "female" ? "red" : "blue";
-	} catch (error) {
-		console.error("Error fetching random user:", error);
-	}
-}
-
-// Filtrering kjønn
+// Filtrering kjønn -- Camilla
 const filterWomen = document.querySelector("#filter-women");
 const filterMen = document.querySelector("#filter-men");
 const filterBoth = document.querySelector("#filter-both");
@@ -91,7 +93,7 @@ function updateSelectedGender(gender) {
 	fetchRandomUser(selectedGender);
 }
 
-// Function to edit a liked profile
+// Function to edit a liked profile -- Lallo
 function editProfile(index) {
 	console.log("Før redigering:", likedProfiles); // Logg før redigering
 
@@ -121,20 +123,20 @@ function editProfile(index) {
 	}
 }
 
-// Function to delete liked profile
+// Function to delete liked profile -- Susanne
 function deleteProfile(index) {
 	likedProfiles.splice(index, 1);
 	localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
 	updateLikedProfilesList();
 }
 
-// Initial fetch on page load
+// Initial fetch on page load -- lallo
 window.addEventListener("load", () => {
 	fetchRandomUser("");
 	updateLikedProfilesList();
 });
 
-// Function to save liked profile
+// Function to save liked profile -- Lallo, Camilla
 function saveLikedProfile() {
 	likedProfiles = JSON.parse(localStorage.getItem("likedProfiles")) || [];
 
@@ -151,7 +153,7 @@ function saveLikedProfile() {
 	localStorage.setItem("likedProfiles", JSON.stringify(likedProfiles));
 }
 
-// Updates list of liked profiles
+// Updates list of liked profiles -- Lallo, Camilla, Susanne
 function updateLikedProfilesList() {
 	likedProfileContainer.innerHTML = "";
 

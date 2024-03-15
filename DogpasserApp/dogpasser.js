@@ -1,10 +1,8 @@
-// Globale variabler
+// Globale variabler -- Camilla
 const cardContainer = document.querySelector(".card-container");
-
+const chatbox = document.querySelector(".chatbox");
 const showCardsBtn = document.querySelector("#show-cards-btn");
 showCardsBtn.addEventListener("click", getNewCards);
-
-const chatbox = document.querySelector(".chatbox");
 
 let messages = [];
 
@@ -14,7 +12,7 @@ let currentUsers = [];
 
 let activeFilter = false;
 
-//fetch ett tilfeldig hundebilde, men kun ut ifra 5 valgte raser -- begge
+//fetch ett tilfeldig hundebilde, men kun ut ifra 5 valgte raser -- Camilla
 async function fetchRandomDog() {
 	try {
 		const randomDogBreed = breeds[Math.floor(Math.random() * breeds.length)];
@@ -28,7 +26,7 @@ async function fetchRandomDog() {
 	}
 }
 
-//fetch en random user, og legg til et hundebilde på hver user -- begge
+//fetch en random user, og legg til et hundebilde på hver user -- Camilla
 async function fetchRandomUserWithDog() {
 	try {
 		const request = await fetch("https://randomuser.me/api/?results=1&nat=us&inc=name,location,picture");
@@ -55,7 +53,7 @@ function emptyCurrentUsers() {
 	currentUsers = [];
 }
 
-// "vis 10 nye kort" -- refresher kortene på siden -- camilla
+// "vis 10 nye kort" -- refresher kortene på siden -- Camilla
 async function getNewCards() {
 	emptyCurrentUsers();
 	for (let i = 0; i < 10; i++) {
@@ -64,10 +62,10 @@ async function getNewCards() {
 	createAndShowCards(currentUsers);
 }
 
-// kaller på funksjonen slik at kortene vises når siden lastes
+// kaller på funksjonen slik at kortene vises når siden lastes -- Camilla
 getNewCards();
 
-//slettefunksjon -- susanne
+//slettefunksjon -- Susanne
 async function deleteCard(index) {
 	currentUsers.splice(index, 1);
 
@@ -94,7 +92,7 @@ function setupChatBtn(index) {
 	return chatBtn;
 }
 
-//Lage og vise kort på siden -- begge
+//Lage og vise kort på siden -- Camilla, Susanne
 // setter sammen alle elementene med informasjonen fra de to forrige funksjonene, og lager et kort
 function createAndShowCards(users) {
 	cardContainer.innerHTML = "";
@@ -136,7 +134,7 @@ function createAndShowCards(users) {
 		cardContainer.insertBefore(profileCard, cardContainer.firstChild); //endrer koden slik at nytt profileCard lastes inn fra nedre høgre i stede for øvre venstre
 	});
 
-	//legger til snakkeboble-funksjonalitet på hver kort -- begge
+	//legger til snakkeboble-funksjonalitet på hver kort -- Camilla, Susanne
 	const dogImages = document.querySelectorAll(".dog-img");
 	console.log(dogImages);
 
@@ -145,7 +143,7 @@ function createAndShowCards(users) {
 	});
 }
 
-//snakkeboble fra hund -- begge
+//snakkeboble fra hund -- Camilla, Susanne
 function dogGreets(event) {
 	const dogGreetings = ["Voff voff", "Grrr!", "Mjau??", "Voff!", "Voff voff voff", "WRAFF!!!"];
 
@@ -172,7 +170,7 @@ function dogGreets(event) {
 	}, 2000);
 }
 
-//filter -- camilla
+//filter -- Camilla
 const breedFilter = document.querySelector("#breed-filter");
 
 const filterBtn = document.querySelector("#filter-btn");
@@ -193,7 +191,7 @@ function filterByBreed() {
 	}
 }
 
-//chatbox -- begge
+//chatbox -- Camilla, Susanne
 function hiddenChatbox() {
 	chatbox.classList.add("hidden");
 
