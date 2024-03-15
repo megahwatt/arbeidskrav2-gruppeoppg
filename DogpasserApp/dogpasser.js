@@ -48,7 +48,7 @@ async function fetchRandomUserWithDog() {
 	}
 }
 
-//tømmer users-arrayet hver gang så det bare vises 10 av gangen -- camilla
+//tømmer users-arrayet hver gang så det bare vises 10 av gangen -- Camilla
 function emptyCurrentUsers() {
 	currentUsers = [];
 }

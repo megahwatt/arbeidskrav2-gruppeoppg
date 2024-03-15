@@ -34,7 +34,7 @@ async function fetchRandomUser(gender) {
 	}
 }
 
-// alle
+// Lallo, Camilla, Susanne
 function updateScore() {
 	if (score > 0) {
 		score--;
@@ -130,7 +130,7 @@ function deleteProfile(index) {
 	updateLikedProfilesList();
 }
 
-// Initial fetch on page load -- lallo
+// Initial fetch on page load -- Lallo
 window.addEventListener("load", () => {
 	fetchRandomUser("");
 	updateLikedProfilesList();
