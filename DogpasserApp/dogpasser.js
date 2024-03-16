@@ -1,267 +1,278 @@
-// Globale variabler -- Camilla
+// Globale variabler
 const cardContainer = document.querySelector(".card-container");
 const chatbox = document.querySelector(".chatbox");
 const showCardsBtn = document.querySelector("#show-cards-btn");
 showCardsBtn.addEventListener("click", getNewCards);
-
-let messages = [];
-
+let messages = []; // for lagring av chat-meldinger
 const breeds = ["labrador", "germanshepherd", "husky", "beagle", "akita"];
-
-let currentUsers = [];
-
+let currentUsers = []; //10 brukere av gangen legges inn her
 let activeFilter = false;
 
-//fetch ett tilfeldig hundebilde, men kun ut ifra 5 valgte raser -- Camilla
+//fetch ett tilfeldig hundebilde, men kun ut ifra 5 valgte raser
 async function fetchRandomDog() {
-	try {
-		const randomDogBreed = breeds[Math.floor(Math.random() * breeds.length)];
-		const request = await fetch(`https://dog.ceo/api/breed/${randomDogBreed}/images/random`);
-		const response = await request.json();
-		const randomDog = { url: response.message, breed: randomDogBreed };
+  try {
+    const randomDogBreed = breeds[Math.floor(Math.random() * breeds.length)];
+    const request = await fetch(
+      `https://dog.ceo/api/breed/${randomDogBreed}/images/random`
+    );
+    const response = await request.json();
+    const randomDog = { url: response.message, breed: randomDogBreed };
 
-		return randomDog;
-	} catch (error) {
-		console.error("Kunne ikke hente hundebilde", error);
-	}
+    return randomDog;
+  } catch (error) {
+    console.error("Kunne ikke hente hundebilde", error);
+  }
 }
 
-//fetch en random user, og legg til et hundebilde på hver user -- Camilla
+//fetch en random user, og legg til et hundebilde på hver user
 async function fetchRandomUserWithDog() {
-	try {
-		const request = await fetch("https://randomuser.me/api/?results=1&nat=us&inc=name,location,picture");
-		const data = await request.json();
-		const user = data.results[0];
-		const randomDog = await fetchRandomDog();
+  try {
+    const request = await fetch(
+      "https://randomuser.me/api/?results=1&nat=us&inc=name,location,picture"
+    );
+    const data = await request.json();
+    const user = data.results[0];
+    const randomDog = await fetchRandomDog();
 
-		const userWithDog = {
-			name: `${user.name.first} ${user.name.last}`,
-			location: `${user.location.city}, ${user.location.state}`,
-			userImg: user.picture.large,
-			dogImg: randomDog.url,
-			dogBreed: randomDog.breed,
-		};
+    const userWithDog = {
+      name: `${user.name.first} ${user.name.last}`,
+      location: `${user.location.city}, ${user.location.state}`,
+      userImg: user.picture.large,
+      dogImg: randomDog.url,
+      dogBreed: randomDog.breed,
+    };
 
-		currentUsers.unshift(userWithDog);
-	} catch (error) {
-		console.error("Kunne ikke hente user og randomdog", error);
-	}
+    currentUsers.unshift(userWithDog);
+  } catch (error) {
+    console.error("Kunne ikke hente user og randomdog", error);
+  }
 }
 
-//tømmer users-arrayet hver gang så det bare vises 10 av gangen -- Camilla
+//tømmer users-arrayet hver gang så det bare vises 10 av gangen
 function emptyCurrentUsers() {
-	currentUsers = [];
+  currentUsers = [];
 }
 
-// "vis 10 nye kort" -- refresher kortene på siden -- Camilla
+// "vis 10 nye kort" -- refresher kortene på siden
 async function getNewCards() {
-	emptyCurrentUsers();
-	for (let i = 0; i < 10; i++) {
-		await fetchRandomUserWithDog();
-	}
-	createAndShowCards(currentUsers);
+  emptyCurrentUsers();
+  for (let i = 0; i < 10; i++) {
+    await fetchRandomUserWithDog();
+  }
+  createAndShowCards(currentUsers);
 }
 
-// kaller på funksjonen slik at kortene vises når siden lastes -- Camilla
+// kaller på funksjonen slik at kortene vises når siden lastes
 getNewCards();
 
-//slettefunksjon -- Susanne
+//slettefunksjon
 async function deleteCard(index) {
-	currentUsers.splice(index, 1);
+  currentUsers.splice(index, 1);
 
-	await fetchRandomUserWithDog();
+  await fetchRandomUserWithDog();
 
-	createAndShowCards(currentUsers);
+  createAndShowCards(currentUsers);
 }
 
+//slette-knapp setup
 function setupDeleteBtn(index) {
-	const deleteBtn = document.createElement("button");
-	deleteBtn.classList.add("delete-btn");
-	deleteBtn.innerHTML = `<img src="assets/delete.png" class="delete-btn" />`;
+  const deleteBtn = document.createElement("button");
+  deleteBtn.classList.add("delete-btn");
+  deleteBtn.innerHTML = `<img src="assets/delete.png" class="delete-btn" />`;
 
-	deleteBtn.onclick = () => deleteCard(index);
-	return deleteBtn;
+  deleteBtn.addEventListener("click", function () {
+    deleteCard(index);
+  });
+  return deleteBtn;
 }
 
+//chat-knapp setup
 function setupChatBtn(index) {
-	const chatBtn = document.createElement("button");
-	chatBtn.classList.add("chat-btn");
-	chatBtn.innerHTML = `<img src="assets/chat.png" class="chat-btn" />`;
+  const chatBtn = document.createElement("button");
+  chatBtn.classList.add("chat-btn");
+  chatBtn.innerHTML = `<img src="assets/chat.png" class="chat-btn" />`;
 
-	chatBtn.onclick = () => openChatbox(index);
-	return chatBtn;
+  chatBtn.onclick = () => openChatbox(index);
+  return chatBtn;
 }
 
-//Lage og vise kort på siden -- Camilla, Susanne
+//Lage og vise kort på siden
 // setter sammen alle elementene med informasjonen fra de to forrige funksjonene, og lager et kort
 function createAndShowCards(users) {
-	cardContainer.innerHTML = "";
+  cardContainer.innerHTML = "";
 
-	users.forEach((user, index) => {
-		//lager selve kortet
-		const profileCard = document.createElement("div");
-		const dogImgContainer = document.createElement("div");
-		const userContainer = document.createElement("div");
-		const userImgContainer = document.createElement("div");
-		const userTxt = document.createElement("div");
-		const btnContainer = document.createElement("div");
-		const deleteBtn = setupDeleteBtn(index);
-		const chatBtn = setupChatBtn(index);
+  users.forEach((user, index) => {
+    //lager selve kortet
+    const profileCard = document.createElement("div");
+    const dogImgContainer = document.createElement("div");
+    const userContainer = document.createElement("div");
+    const userImgContainer = document.createElement("div");
+    const userTxt = document.createElement("div");
+    const btnContainer = document.createElement("div");
+    const deleteBtn = setupDeleteBtn(index);
+    const chatBtn = setupChatBtn(index);
 
-		//legger til klasse på hvert element
-		profileCard.classList.add("profile-card");
-		profileCard.classList.add(`${user.dogBreed}`); // legger til breed som klasse på kortet
-		dogImgContainer.classList.add("dog-img-container");
-		userContainer.classList.add("user-container");
-		userImgContainer.classList.add("user-img-container");
-		userTxt.classList.add("user-txt");
-		btnContainer.classList.add("btn-container");
+    //legger til klasse på hvert element
+    profileCard.classList.add("profile-card");
+    dogImgContainer.classList.add("dog-img-container");
+    userContainer.classList.add("user-container");
+    userImgContainer.classList.add("user-img-container");
+    userTxt.classList.add("user-txt");
+    btnContainer.classList.add("btn-container");
 
-		//legger til innhold i elementene på kortet
-		dogImgContainer.innerHTML = `<img src="${user.dogImg}" class="dog-img" />`;
-		userImgContainer.innerHTML = `<img src="${user.userImg}" class="user-img-container" />`;
-		userTxt.innerHTML = `<p>${user.name}</p> <p>${user.location}</p>`;
+    //legger til innhold i elementene på kortet
+    dogImgContainer.innerHTML = `<img src="${user.dogImg}" class="dog-img" />`;
+    userImgContainer.innerHTML = `<img src="${user.userImg}" class="user-img-container" />`;
+    userTxt.innerHTML = `<p>${user.name}</p> <p>${user.location}</p>`;
 
-		//appender alt til profileCard
-		profileCard.append(dogImgContainer, userContainer, btnContainer);
-		userContainer.append(userImgContainer, userTxt);
+    //appender alt til profileCard
+    profileCard.append(dogImgContainer, userContainer, btnContainer);
+    userContainer.append(userImgContainer, userTxt);
 
-		if (!activeFilter) {
-			//legger bare til deleteBtn dersom filteret ikke er aktivt (se filterByBreed*)
-			btnContainer.append(deleteBtn);
-		}
-		btnContainer.append(chatBtn);
-		cardContainer.insertBefore(profileCard, cardContainer.firstChild); //endrer koden slik at nytt profileCard lastes inn fra nedre høgre i stede for øvre venstre
-	});
+    if (!activeFilter) {
+      //legger bare til deleteBtn dersom filteret ikke er aktivt (se filterByBreed*)
+      btnContainer.append(deleteBtn);
+    }
+    btnContainer.append(chatBtn);
+    cardContainer.insertBefore(profileCard, cardContainer.firstChild); //endrer koden slik at nytt profileCard lastes inn fra nedre høgre i stede for øvre venstre
+  });
 
-	//legger til snakkeboble-funksjonalitet på hver kort -- Camilla, Susanne
-	const dogImages = document.querySelectorAll(".dog-img");
-	console.log(dogImages);
+  //legger til snakkeboble-funksjonalitet på hver kort
+  const dogImages = document.querySelectorAll(".dog-img");
 
-	dogImages.forEach((dogImg) => {
-		dogImg.addEventListener("click", dogGreets);
-	});
+  dogImages.forEach((dogImg) => {
+    dogImg.addEventListener("click", dogGreets);
+  });
 }
 
-//snakkeboble fra hund -- Camilla, Susanne
+//snakkeboble fra hund
 function dogGreets(event) {
-	const dogGreetings = ["Voff voff", "Grrr!", "Mjau??", "Voff!", "Voff voff voff", "WRAFF!!!"];
+  const dogGreetings = [
+    "Voff voff",
+    "Grrr!",
+    "Mjau??",
+    "Voff!",
+    "Voff voff voff",
+    "WRAFF!!!",
+  ];
 
-	const randomDogGreeting = dogGreetings[Math.floor(Math.random() * dogGreetings.length)];
+  const randomDogGreeting =
+    dogGreetings[Math.floor(Math.random() * dogGreetings.length)];
 
-	const talkBubble = document.createElement("div");
-	talkBubble.classList.add("talk-bubble");
-	talkBubble.innerHTML = randomDogGreeting;
+  const talkBubble = document.createElement("div");
+  talkBubble.classList.add("talk-bubble");
+  talkBubble.innerHTML = randomDogGreeting;
 
-	const rect = event.target.getBoundingClientRect(); //henter inn informasjon om hvor bildet man trykker på er plassert
-	const leftPosition = rect.left + window.scrollX + event.target.width / 4; //sentrerer snakkeboblen på X-aksen
-	const topPosition = rect.top + window.scrollY + event.target.height / 4; //sentrerer snakkeboblen på Y-aksen
+  const rect = event.target.getBoundingClientRect(); //henter inn informasjon om hvor bildet man trykker på er plassert
+  const leftPosition = rect.left + window.scrollX + event.target.width / 4; //sentrerer snakkeboblen på X-aksen
+  const topPosition = rect.top + window.scrollY + event.target.height / 4; //sentrerer snakkeboblen på Y-aksen
 
-	//bruker informasjonen som ble kalkulert i forrige trinn
-	//til å sette den reelle plasseringen for hver snakkeboble,
-	//slik at den blir sentrert uavgengig av hvilket bilde man trykker på
-	talkBubble.style.left = `${leftPosition}px`;
-	talkBubble.style.top = `${topPosition}px`;
+  //bruker informasjonen som ble kalkulert i forrige trinn
+  //til å sette den reelle plasseringen for hver snakkeboble,
+  //slik at den blir sentrert uavgengig av hvilket bilde man trykker på
+  talkBubble.style.left = `${leftPosition}px`;
+  talkBubble.style.top = `${topPosition}px`;
 
-	document.body.appendChild(talkBubble);
+  document.body.appendChild(talkBubble);
 
-	setTimeout(() => {
-		document.body.removeChild(talkBubble);
-	}, 2000);
+  setTimeout(() => {
+    document.body.removeChild(talkBubble);
+  }, 2000);
 }
 
-//filter -- Camilla
+//filter-funksjon
 const breedFilter = document.querySelector("#breed-filter");
-
 const filterBtn = document.querySelector("#filter-btn");
-
 filterBtn.addEventListener("click", filterByBreed);
 
 function filterByBreed() {
-	selectedBreed = breedFilter.value;
+  selectedBreed = breedFilter.value;
 
-	activeFilter = selectedBreed != "all";
+  activeFilter = selectedBreed != "all";
 
-	// "if (activeFilter)" sjekker om filteret er true/aktivt
-	if (activeFilter) {
-		filteredUsers = currentUsers.filter((user) => user.dogBreed == selectedBreed);
-		createAndShowCards(filteredUsers);
-	} else {
-		createAndShowCards(currentUsers);
-	}
+  // "if (activeFilter)" sjekker om filteret er true/aktivt
+  if (activeFilter) {
+    filteredUsers = currentUsers.filter(
+      (user) => user.dogBreed == selectedBreed
+    );
+    createAndShowCards(filteredUsers);
+  } else {
+    createAndShowCards(currentUsers);
+  }
 }
 
-//chatbox -- Camilla, Susanne
+//chatbox
 function hiddenChatbox() {
-	chatbox.classList.add("hidden");
-
-	console.log("inne i closeChatbox");
+  chatbox.classList.add("hidden");
 }
 
+//lukke chat
 function closeChatbox() {
-	messages = [];
-	chatbox.classList.add("hidden");
-
-	console.log("inne i lukk");
+  messages = [];
+  chatbox.classList.add("hidden");
 }
 
+// åpne chat
 function openChatbox(index) {
-	chatbox.classList.remove("hidden");
+  chatbox.classList.remove("hidden");
 
-	console.log("inne i openChatbox");
+  const ownerGreetings = [
+    "Heisann! Jeg er en hundeeier.",
+    "Vil du passe hunden min?",
+    "Hei! Kan du passe hunden min i helgen?",
+    "Så hyggelig at du vil passe bikkja mi!",
+  ];
+  const randomOwnerGreeting =
+    ownerGreetings[Math.floor(Math.random() * ownerGreetings.length)];
 
-	const ownerGreetings = [
-		"Heisann! Jeg er en hundeeier.",
-		"Vil du passe hunden min?",
-		"Hei! Kan du passe hunden min i helgen?",
-		"Så hyggelig at du vil passe bikkja mi!",
-	];
-	const randomOwnerGreeting = ownerGreetings[Math.floor(Math.random() * ownerGreetings.length)];
+  messages.push(
+    `<b>${currentUsers[index].name}:</b><br />${randomOwnerGreeting}<br />`
+  );
+  updateChat();
 
-	messages.push(`<b>${currentUsers[index].name}:</b><br />${randomOwnerGreeting}<br />`);
-	updateChat();
+  const sendBtn = document.querySelector("#send-btn");
+  sendBtn.addEventListener("click", sendMessage);
 
-	const sendBtn = document.querySelector("#send-btn");
-	sendBtn.addEventListener("click", sendMessage);
-
-	const closeBtn = document.querySelector("#close-btn");
-	closeBtn.addEventListener("click", closeChatbox);
+  const closeBtn = document.querySelector("#close-btn");
+  closeBtn.addEventListener("click", closeChatbox);
 }
 
+// sende melding
 function sendMessage() {
-	const yourMssg = document.querySelector("#your-mssg");
-	messages.push(`<b>Du:</b><br />${yourMssg.value}<br />`);
+  const yourMssg = document.querySelector("#your-mssg");
+  messages.push(`<b>Du:</b><br />${yourMssg.value}<br />`);
 
-	yourMssg.value = "";
-	console.log(yourMssg.value);
-	console.log(messages);
-	updateChat();
+  yourMssg.value = "";
+  updateChat();
 }
 
 function updateChat() {
-	const sentMssgs = document.querySelector(".sent-mssgs");
-	sentMssgs.innerHTML = "";
+  const sentMssgs = document.querySelector(".sent-mssgs");
+  sentMssgs.innerHTML = "";
 
-	for (i = 0; i < messages.length; i++) {
-		const message = document.createElement("p");
-		message.innerHTML += `${messages[i]}<br />`;
-		if (i > 0) {
-			message.appendChild(setupMssgDelete(i));
-		}
-		sentMssgs.appendChild(message);
-	}
+  for (i = 0; i < messages.length; i++) {
+    const message = document.createElement("p");
+    message.innerHTML += `${messages[i]}<br />`;
+    if (i > 0) {
+      message.appendChild(setupMssgDelete(i));
+    }
+    sentMssgs.appendChild(message);
+  }
 }
 
+// slette melding
 function deleteMssg(index) {
-	messages.splice(index, 1);
-	updateChat();
+  messages.splice(index, 1);
+  updateChat();
 }
 
 function setupMssgDelete(index) {
-	const mssgDelete = document.createElement("button");
-	mssgDelete.classList.add("mssg-delete-btn");
-	mssgDelete.innerHTML = `<b>SLETT</b>`;
+  const mssgDelete = document.createElement("button");
+  mssgDelete.classList.add("mssg-delete-btn");
+  mssgDelete.innerHTML = `<b>SLETT</b>`;
 
-	mssgDelete.onclick = () => deleteMssg(index);
-	return mssgDelete;
+  mssgDelete.addEventListener("click", function () {
+    deleteMssg(index);
+  });
+  return mssgDelete;
 }
